@@ -14,6 +14,4 @@ public class Edge {
 	this.bandwidth = bandwidth;
 	this.packet_loss = packet_loss;
     }
-
-    
 }
