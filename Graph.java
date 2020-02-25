@@ -5,35 +5,46 @@ import java.util.Queue;
 
 public class Graph {
 
-    Graph(int fromNode, int toNode, pathFunc) {
+    Graph(Excelfile excelfile, pathFunc) {
 	queue = new LinkedList<Node>();
 
-	// build graph from excel data
+	// build graph from excel data and pathFunc
+	for (int y = 0; y < ..; ++y) {
+	    Node node = new Node(y);
+	    nodes.add(node);
+	    
+	    for (int x = 0; x < ..; ++x) {
+		int cellValue = excelfile.getCell(x, y);
+		
+		if (pathFunc(cellValue)) {
+		    node.addNeighbour(x);
+		}
+	    }
+	}
     }
 
     static class Node {    
 	int id;
 	boolean visited;
-    
+	List<Node> neighbours;
+	
 	Node(int id) {
 	    this.id = id;
 	    this.visited = false;
 	}
 	
-	public List<Node> getNeighbours(func_ptr) {
-	    // lookup in the excel doc
-	    // return only those accepted by func_ptr?
+	public List<Node> getNeighbours() {
+	    return neighbours;
 	}
 
-	public void setNeighbours(List<Node> neighbours) {
-	    this.neighbours = neighbours;
+	public void addNeighbour(int id) {
+	    neighbours.add(id);
 	}
     }
     static ArrayList<Node> nodes = new ArrayList<Node>();
     
     private Queue<Node> queue;
     
-    // returns edge connecting A and B
     public Edge getEdge(node A, node B) {
 	// lookup in the excel doc
     }
@@ -43,7 +54,8 @@ public class Graph {
 
 	queue.add(node);
 	node.visited = true;
-        // hopcounter? (max hops dependent on pathFunc?)
+        // TODO: hopcounter
+        // TODO: prioritize the immidiate path between A -> B!
 	
 	while (!queue.isEmpty()) {
 	    
@@ -51,7 +63,7 @@ public class Graph {
 	    
 	    System.out.print(element.data + "t");
 	    
-	    List<Node> neighbours = element.getNeighbours(func_ptr);
+	    List<Node> neighbours = element.getNeighbours();
 	    
 	    for (int i = 0; i < neighbours.size(); i++) {
 
