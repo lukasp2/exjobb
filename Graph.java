@@ -1,7 +1,15 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 public class Graph {
 
-    // initiate with data from excel
-    Graph() { queue = new LinkedList<Node>(); }
+    Graph(int fromNode, int toNode, pathFunc) {
+	queue = new LinkedList<Node>();
+
+	// build graph from excel data
+    }
 
     static class Node {    
 	int id;
@@ -31,11 +39,11 @@ public class Graph {
     }
     
     // performs a BFS search for a possible connection between A and B
-    public void bfs(node A, node B, func_ptr) {
+    public void bfs(node A, node B, pathFunc) {
 
 	queue.add(node);
 	node.visited = true;
-        // hopcounter?
+        // hopcounter? (max hops dependent on pathFunc?)
 	
 	while (!queue.isEmpty()) {
 	    
