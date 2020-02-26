@@ -1,10 +1,11 @@
 import java.io.FileInputStream;
 import java.io.FileInputStream;
-
+/*
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+*/
 
 public class ExcelRW {
     private static Workbook wb;
@@ -25,5 +26,9 @@ public class ExcelRW {
 	cell = row.getCell(x);
 
 	return cell.getNumericCellValue();
+    }
+
+    public static int getNumNodes() {
+	sheet.getPhysicalNumberOfRows();
     }
 }

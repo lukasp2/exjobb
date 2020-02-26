@@ -1,12 +1,12 @@
 public class Radio {
 
     // defines on which sheets in the excel document the different values are
-    private final int LATENCY = 0;
-    private final int BANDWIDTH = 1;
-    private final int PACKETLOSS = 2;
+    private static final int LATENCY = 0;
+    private static final int BANDWIDTH = 1;
+    private static final int PACKETLOSS = 2;
     
     // defines which communication type is currently used in the graph
-    private int comType;
+    private static int comType;
 
     public static void setCom(int i) {
 	comType = i;

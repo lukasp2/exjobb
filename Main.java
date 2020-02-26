@@ -27,6 +27,8 @@ public class Main {
 	// perform bfs search in the graph for a path between A and B!
 	graph.bfs(fromNode, toNode);
 
+	// print path from bfs
+	
 	// ... //
     }
 }
