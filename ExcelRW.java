@@ -17,10 +17,10 @@ public class ExcelRW {
     ExcelRW(String filename) {
 	ifs = new FileInputStream(filename);
 	wb = WorkbookFactory.create(ifs);
-	sheet = wb.getSheetAt(0);
     }
     
-    public static float readCell(int x, int y) {
+    public static float readCell(int x, int y, int s) {
+	sheet = wb.getSheetAt(s);
 	row = sheet.getRow(y);
 	cell = row.getCell(x);
 

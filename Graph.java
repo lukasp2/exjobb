@@ -5,7 +5,7 @@ import java.util.Queue;
 
 public class Graph {
 
-    Graph(Excelfile excelfile, pathFunc) {
+    Graph(Excelfile excelRW, Radio radio) {
 	queue = new LinkedList<Node>();
 
 	// build graph from excel data and pathFunc
@@ -14,9 +14,8 @@ public class Graph {
 	    nodes.add(node);
 	    
 	    for (int x = 0; x < ..; ++x) {
-		int cellValue = excelfile.getCell(x, y);
 		
-		if (pathFunc(cellValue)) {
+		if (radio.Com(excelRW, y, x)) {
 		    node.addNeighbour(x);
 		}
 	    }

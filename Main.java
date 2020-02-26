@@ -12,18 +12,17 @@ public class Main {
     public static void main(String args[]) {
 
 	// open the excel file
-        ExcelRW excelfile = new ExcelRW("./file.xlsx");
+        ExcelRW excelRW = new ExcelRW("./file.xlsx");
 
 	// create the radio functions
 	Radio radio = new Radio();
 
 	// .. following part is looped when a new request comes in .. //
-	
-	// sets a specified path function
-	pathFunc = radio.voiceCom();
+	// set communication type to voice e.g.
+	radio.setCom(0);
 	
 	// creates adjecency matrix - Graph(pathFunction);
-	Graph graph = new Graph(excelfile, pathFunc);
+	Graph graph = new Graph(excelRW, radio);
 	
 	// perform bfs search in the graph for a path between A and B!
 	graph.bfs(fromNode, toNode);

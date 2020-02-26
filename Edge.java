@@ -7,7 +7,7 @@ public class Edge {
     float bandwidth;
 
     // decimal = [0 .. 1]
-    int packet_loss;
+    int packetloss;
 
     Edge(float latency, float bandwidth, int packet_loss) {
 	this.latency = latency;
