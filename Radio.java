@@ -12,26 +12,25 @@ public class Radio {
 	comType = i;
     }
 
-    public static boolean Com(ExcelRW excelRW, int A, int B) {
+    public static boolean Com(ExcelSim excelRW, int A, int B) {
 	switch (comType) {
 	case 0:
 	    return voiceCom(excelRW, A, B);
-	    break;
 	case 1:
 	    return dataCom(excelRW, A, B);
-	    break;
 	}
+	return false;
     }
     
     // return the possibility of voice communication between node A and node B
-    public static boolean voiceCom(ExcelRW excelRW, int A, int B) {
-	return excelRW.readCell(A, B, LATENCY) < 100
-	    && excelRW.readCell(A, B, BANDWIDTH) > 1
-	    && excelRW.readCell(A, B, PACKETLOSS) < 0.1;
+    public static boolean voiceCom(ExcelSim excelRW, int A, int B) {
+	return excelRW.readCell(A, B, LATENCY) < 50
+	    && excelRW.readCell(A, B, BANDWIDTH) > 500
+	    && excelRW.readCell(A, B, PACKETLOSS) < 0.7;
     }
     
     // return the possibility of data communication between node A and node B
-    public static boolean dataCom(ExcelRW excelRW, int A, int B) {
+    public static boolean dataCom(ExcelSim excelRW, int A, int B) {
 	return excelRW.readCell(A, B, LATENCY) < 1000
 	    && excelRW.readCell(A, B, BANDWIDTH) > 0.01
 	    && excelRW.readCell(A, B, PACKETLOSS) < 0.1;

@@ -10,11 +10,11 @@ public class Graph {
     private Queue<Node> queue;
     private boolean success;
     
-    Graph(Excelfile excelRW, Radio radio) {
+    Graph(ExcelSim excelRW, Radio radio) {
 	queue = new LinkedList<Node>();
 
 	int numNodes = excelRW.getNumNodes();
-	for (int i = 1; i <= numNodes; ++i) {
+	for (int i = 0; i < numNodes; ++i) {
 	    Node node = new Node(i);
 	    nodes.add(node);
 	}
@@ -57,13 +57,14 @@ public class Graph {
 	
 	public static void printPath(int goal) {
 	    int curr = goal;
-
+	    
+	    System.out.println("Found path!");
 	    while (steps.get(curr) != -1) {
 		System.out.print(curr + " -> ");
 		curr = steps.get(curr);
 	    }
 	    
-	    System.out.print(curr);
+	    System.out.println(curr);
 	}
 
 	public static void addStep(int me, int prev) {
@@ -73,6 +74,7 @@ public class Graph {
     
     public void bfs(Node start, Node goal) {
 	Path path = new Path();
+	path.addStep(start.id, -1);
 	queue.add(start);
 	start.visited = true;
         // TODO: hopcounter
@@ -100,7 +102,7 @@ public class Graph {
 	}
 
 	if (!success) {
-	    System.out.println("failed to find a path between node " + start + " and " + goal);
+	    System.out.println("failed to find a path between node " + start.id + " and " + goal.id);
 	}
     }
 }

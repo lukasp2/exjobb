@@ -12,8 +12,10 @@ public class Main {
     public static void main(String args[]) {
 
 	// open the excel file
-        ExcelRW excelRW = new ExcelRW("./file.xlsx");
-
+        // ExcelRW excelRW = new ExcelRW("./file.xlsx");
+	ExcelSim excelSim = new ExcelSim();
+	excelSim.printSheets();
+	
 	// create the radio functions
 	Radio radio = new Radio();
 
@@ -22,12 +24,11 @@ public class Main {
 	radio.setCom(0);
 	
 	// creates adjecency matrix - Graph(pathFunction);
-	Graph graph = new Graph(excelRW, radio);
+	// Graph graph = new Graph(excelRW, radio);
+	Graph graph = new Graph(excelSim, radio);
 	
 	// perform bfs search in the graph for a path between A and B!
-	graph.bfs(fromNode, toNode);
-
-	// print path from bfs
+	graph.bfs(graph.nodes.get(0), graph.nodes.get(9));
 	
 	// ... //
     }
