@@ -102,7 +102,7 @@ public class Graph {
 	}
 
 	if (!success) {
-	    System.out.println("failed to find a path between node " + start.id + " and " + goal.id);
+	    System.out.println("failed to find a path");
 	}
     }
 

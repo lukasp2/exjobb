@@ -14,14 +14,19 @@ public class Main {
 	// open the excel file
         // ExcelRW excelRW = new ExcelRW("./file.xlsx");
 	ExcelSim excelSim = new ExcelSim();
-	excelSim.printSheets();
 	
 	// create the radio functions
 	Radio radio = new Radio();
 
+	excelSim.generateSheets();
+	excelSim.printSheets();
+	int communication_type = excelSim.getCom();
+	int[] to_from_node = excelSim.getNodes();
+	System.out.println("Seeking path between node " + to_from_node[0] + " and " + to_from_node[1] + "\n");
+	
 	// .. following part is looped when a new request comes in .. //
 	// set communication type to voice e.g.
-	radio.setCom(0);
+	radio.setCom(communication_type);
 	
 	// creates adjecency matrix - Graph(pathFunction);
 	// Graph graph = new Graph(excelRW, radio);
@@ -29,7 +34,7 @@ public class Main {
 	graph.printNeighbours();
 	
 	// perform bfs search in the graph for a path between A and B!
-	graph.bfs(graph.nodes.get(0), graph.nodes.get(1));
+	graph.bfs(graph.nodes.get(to_from_node[0]), graph.nodes.get(to_from_node[1]));
 	
 	// ... //
     }
