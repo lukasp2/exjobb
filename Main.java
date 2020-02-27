@@ -26,9 +26,10 @@ public class Main {
 	// creates adjecency matrix - Graph(pathFunction);
 	// Graph graph = new Graph(excelRW, radio);
 	Graph graph = new Graph(excelSim, radio);
+	graph.printNeighbours();
 	
 	// perform bfs search in the graph for a path between A and B!
-	graph.bfs(graph.nodes.get(0), graph.nodes.get(9));
+	graph.bfs(graph.nodes.get(0), graph.nodes.get(1));
 	
 	// ... //
     }

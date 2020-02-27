@@ -54,24 +54,36 @@ public class ExcelSim {
     }
 
     public static void printSheets() {
-	System.out.println("Latency Sheet:");
+	System.out.format("%20s\n", "LATENCY SHEET");
+	System.out.format("%5s", "Node");
+	for (int i = 0; i < NUM_NODES; ++i) { System.out.format("%5d", i); } System.out.println();
+	
 	for (int y = 0; y < NUM_NODES; ++y) {
+	    System.out.format("%5d", y);
 	    for (int x = 0; x < NUM_NODES; ++x)
-		System.out.format("%4.0f ", latencySheet[y][x]);
+		System.out.format("%5.0f", latencySheet[y][x]);
+	    System.out.println();
+	}
+	
+	System.out.format("\n%20s\n", "BANDWIDTH SHEET");
+	System.out.format("%5s", "Node");
+	for (int i = 0; i < NUM_NODES; ++i) { System.out.format("%5d", i); } System.out.println();
+
+	for (int y = 0; y < NUM_NODES; ++y) {
+	    System.out.format("%5d", y);
+	    for (int x = 0; x < NUM_NODES; ++x)
+		System.out.format("%5.0f", bandwidthSheet[y][x]);
 	    System.out.println();
 	}
 
-	System.out.println("\nBandwidth Sheet:");
+	System.out.format("\n%20s\n", "PACKET LOSS SHEET");
+	System.out.format("%5s", "Node");
+	for (int i = 0; i < NUM_NODES; ++i) { System.out.format("%5d", i); } System.out.println();
+
 	for (int y = 0; y < NUM_NODES; ++y) {
+	    System.out.format("%5d", y);
 	    for (int x = 0; x < NUM_NODES; ++x)
-		System.out.format("%4.0f ", bandwidthSheet[y][x]);
-	    System.out.println();
-	}
-	    
-	System.out.println("\nPacket loss Sheet:");
-	for (int y = 0; y < NUM_NODES; ++y) {
-	    for (int x = 0; x < NUM_NODES; ++x)
-		System.out.printf("%.02f ", packetlossSheet[y][x]);
+		System.out.format("%5.02f", packetlossSheet[y][x]);
 	   System.out.println();
 	}
 	System.out.println();	

@@ -22,7 +22,7 @@ public class Graph {
 	// build graph from excel data
 	for (int y = 0; y < numNodes; ++y) {
 	    for (int x = 0; x < numNodes; ++x) {
-		if (y != x && radio.Com(excelRW, y, x)) {
+		if (y != x && radio.Com(excelRW, x, y)) {
 		    nodes.get(y).addNeighbour(nodes.get(x));
 		}
 	    }
@@ -60,7 +60,7 @@ public class Graph {
 	    
 	    System.out.println("Found path!");
 	    while (steps.get(curr) != -1) {
-		System.out.print(curr + " -> ");
+		System.out.print(curr + " <- ");
 		curr = steps.get(curr);
 	    }
 	    
@@ -70,7 +70,7 @@ public class Graph {
 	public static void addStep(int me, int prev) {
 	    steps.put(me, prev);
 	}
-      }
+    }
     
     public void bfs(Node start, Node goal) {
 	Path path = new Path();
@@ -105,4 +105,28 @@ public class Graph {
 	    System.out.println("failed to find a path between node " + start.id + " and " + goal.id);
 	}
     }
+
+    public static void printNeighbours() {
+	System.out.format("%10s\n", "Graph Adjecency List");
+	for (int i = 0; i < nodes.size(); ++i) {
+	    System.out.print("Node " + nodes.get(i).id + " | ");
+	    for (int k = 0; k < nodes.get(i).neighbours.size(); ++k) {
+		System.out.format("%4d", nodes.get(i).neighbours.get(k).id);
+	    }
+	    System.out.println();
+	}
+	System.out.println();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
