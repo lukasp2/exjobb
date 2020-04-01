@@ -16,7 +16,8 @@ public class Graph {
 	
 	// for writing to file
 	FileWriter fw = new FileWriter();
-	List<String> lines = new ArrayList<String>();
+	fw.writeHeader();
+	List<Position> posList = new ArrayList<Position>();
 	
 	// create nodes
 	int numNodes = excelRW.getNumNodes();
@@ -24,10 +25,11 @@ public class Graph {
 	    Position nodePos = excelRW.getPosition(i);
 	    Node node = new Node(i, nodePos);
 	    nodes.add(node);
-	    lines.add("[" + nodePos.x + ", " + nodePos.y + "],");
+	    posList.add(nodePos);
 	}
-	lines.add("]");
-	
+	fw.writePoints(posList);
+
+	List<String> lines = new ArrayList<String>();
 	// create graph neighbours
 	for (int y = 0; y < numNodes; ++y) {
 	    for (int x = 0; x < numNodes; ++x) {
@@ -37,15 +39,10 @@ public class Graph {
 		    
 		    n1.addNeighbour(n2);
 
-		    lines.add("plt.plot([" + n1.position.x + ", " + n2.position.x + "],"
-				 + "[" + n1.position.y + ", " + n2.position.y + "], 'y')");
-		    
+		    fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, 'y');
 		}
 	    }
 	}
-	
-	fw.writeHeader();
-	fw.writeList(lines);
     }
 
     // defines the nodes in the graph
@@ -98,7 +95,7 @@ public class Graph {
 	    }
 	    
 	    int curr = goal;
-	    while (steps.get(curr) != -1) {
+	    while (steps.get(curr) != -1) {		
 		System.out.print(curr + " <- ");
 		curr = steps.get(curr);
 	    }
@@ -123,7 +120,7 @@ public class Graph {
 		    double n2dy = Math.abs(n2.position.y - goal.position.y);
 		    double n2ddist = Math.sqrt(Math.pow(n2dx, 2) + Math.pow(n2dy, 2));
 		    
-		    return (int)(n2ddist - n1ddist);
+		    return (int)(n1ddist - n2ddist);
 		}
 	    };
 	
@@ -138,6 +135,8 @@ public class Graph {
 	
 	while (!prioQueue.isEmpty()) {
 	    Node curr = prioQueue.poll();
+
+	    System.out.println("Expanded Node " + curr.id);
 	    
 	    List<Node> neighbours = curr.getNeighbours();
 

@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ExcelSim {
-    private static final int NUM_NODES = 25;
+    private static final int NUM_NODES = 40;
     
     private static float[][] latencySheet = new float[NUM_NODES][NUM_NODES];
     private static float[][] bandwidthSheet = new float[NUM_NODES][NUM_NODES];

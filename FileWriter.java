@@ -1,12 +1,11 @@
 import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.ArrayList;
 import java.nio.file.*;
 import java.io.IOException;
 import java.nio.charset.*;
 import java.util.Arrays;
-
-// to automatically run: $echo plotter.py | entr -p ./plotter.py
 
 public class FileWriter {
 
@@ -28,17 +27,69 @@ public class FileWriter {
     
     public static void writeHeader() {
 	List<String> lines = new ArrayList<String>();
-	lines.add("#!/usr/bin/env python3\nimport matplotlib.pyplot as plt\na=[");
+	lines.add("#!/usr/bin/env python3");
+	lines.add("import matplotlib.pyplot as plt\n");
+	
 	write("plotter.py", lines, false);
     }
-    
+
+    // writes all points and names of the points
+    public static void writePoints(List<Position> positions) {
+	List<String> lines = new ArrayList<String>();
+
+	// write the points
+	lines.add("a=[");
+	for (Position pos : positions) {
+	    lines.add("[" + pos.x + ", " + pos.y + "],");
+	}
+	lines.add("]\n");
+
+	lines.add("plt.plot(*zip(*a), marker='o', color='k', ls='')\n");
+	
+	// write the id of each node above it
+	for (int i = 0; i < positions.size(); ++i) {
+	    double x = positions.get(i).x + 1;
+	    double y = positions.get(i).y + 1;
+	    
+	    lines.add("plt.text(" + x + ", " + y + ", "
+		      + i + ", "
+		      + "bbox=dict(facecolor='red', alpha=0.1), "
+		      + "fontsize=10" + ")");
+	}
+
+	lines.add("");
+	write("plotter.py", lines, true);
+    }
+
+    // writes one line
+    public static void writeLine(double x1, double y1, double x2, double y2, char color) {
+	List<String> lines = new ArrayList<String>();
+
+	lines.add("plt.plot(["
+		  + x1 + ", " + x2 + "], ["
+		  + y1 + ", " + y2 + "], '" + color + "' )");
+
+	double x_dist = Math.abs(x1 - x2);
+	double y_dist = Math.abs(y1 - y2);
+	double dist = Math.sqrt(Math.pow(x_dist, 2) + Math.pow(y_dist, 2));
+
+	double pos_x = (x1 + x2) / 2;
+	double pos_y = (y1 + y2) / 2;
+	
+	lines.add("plt.text(" + pos_x + ", " + pos_y + ", " + Math.round(dist)
+		  + ", " + "fontsize=6" + ")");
+
+	write("plotter.py", lines, true);
+    }
+
     public static void writeList(List<String> lines) {
 	write("plotter.py", lines, true);
     }
     
     public static void writeResult(Map<Integer, Integer> steps, ArrayList<Graph.Node> nodes, int goal) {
-	List<String> lines = new ArrayList<String>();
-	    
+	List<String> greenLines = new ArrayList<String>();
+	List<String> yellowLines = new ArrayList<String>();
+	
 	int curr = goal;
 	while (steps.get(curr) != -1) {
 	    double x1 = nodes.get(curr).position.x;
@@ -47,13 +98,16 @@ public class FileWriter {
 	    double x2 = nodes.get(curr).position.x;
 	    double y2 = nodes.get(curr).position.y;
 
-	    lines.add("plt.plot([" + x1 + ", "+ x2 + "],"
-		      + "[" + y1 + ", " + y2 + "], 'g')");
+	    greenLines.add("\tplt.pause(0.3)");
+	    greenLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'r' )");
+	    yellowLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'y' )");
 	}
+	greenLines.add("\tplt.pause(0.4)");
+	greenLines.add("\nwhile True:");
 
-	lines.add("plt.plot(*zip(*a), marker='o', color='k', ls='')");
-	lines.add("plt.show()");
+	Collections.reverse(greenLines);
 
-	writeList(lines);
+	writeList(greenLines);
+	writeList(yellowLines);
     }
 }
