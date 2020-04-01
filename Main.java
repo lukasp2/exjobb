@@ -21,8 +21,6 @@ public class Main {
 	excelSim.generateSheets();
 	excelSim.printSheets();
 	int communication_type = excelSim.getCom();
-	int[] to_from_node = excelSim.getNodes();
-	System.out.println("Seeking path between node " + to_from_node[0] + " and " + to_from_node[1] + "\n");
 	
 	// .. following part is looped when a new request comes in .. //
 	// set communication type to voice e.g.
@@ -32,10 +30,20 @@ public class Main {
 	// Graph graph = new Graph(excelRW, radio);
 	Graph graph = new Graph(excelSim, radio);
 	graph.printNeighbours();
+
+	int[] to_from_node = excelSim.getNodes();
+	System.out.println("Seeking path between node "
+			   + to_from_node[0] + " and " + to_from_node[1] + "\n");
 	
-	// perform bfs search in the graph for a path between A and B!
-	graph.bfs(graph.nodes.get(to_from_node[0]), graph.nodes.get(to_from_node[1]));
-	
+	// performs bfs search in the graph
+	//graph.bfs(graph.nodes.get(to_from_node[0]), graph.nodes.get(to_from_node[1]));
+
+	// performs a* search in the graph
+	graph.aStar(graph.nodes.get(to_from_node[0]), graph.nodes.get(to_from_node[1]));
 	// ... //
+
+
+	// https://editor.p5js.org/
+	// or pip3 install matplotlib
     }
 }

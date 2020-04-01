@@ -1,17 +1,17 @@
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ExcelSim {
-    private static final int NUM_NODES = 10;
+    private static final int NUM_NODES = 25;
     
-    private static float[][] latencySheet;
-    private static float[][] bandwidthSheet;
-    private static float[][] packetlossSheet;
+    private static float[][] latencySheet = new float[NUM_NODES][NUM_NODES];
+    private static float[][] bandwidthSheet = new float[NUM_NODES][NUM_NODES];
+    private static float[][] packetlossSheet = new float[NUM_NODES][NUM_NODES];
 
-    ExcelSim() {
-	latencySheet = new float[NUM_NODES][NUM_NODES];
-	bandwidthSheet = new float[NUM_NODES][NUM_NODES];
-	packetlossSheet = new float[NUM_NODES][NUM_NODES];
-    }
+    private static List<Position> positionSheet = new ArrayList<>();
+    
+    ExcelSim() {}
 
     public static void generateSheets() {
 	for (int y = 0; y < NUM_NODES; ++y) {
@@ -27,12 +27,18 @@ public class ExcelSim {
 		    bandwidthSheet[y][x] = randomFill(1000);
 	    }
 	}
-
+	
 	for (int y = 0; y < NUM_NODES; ++y) {
 	    for (int x = 0; x < NUM_NODES; ++x) {
 		if (x != y)
 		    packetlossSheet[y][x] = randomFill(1);
 	    }
+	}
+
+	for (int y = 0; y < NUM_NODES; ++y) {
+	    positionSheet.add(
+	    	new Position((int)randomFill(100), (int)randomFill(100))
+		);
 	}
     }
    
@@ -42,10 +48,11 @@ public class ExcelSim {
 	return f;
     }
 
+    // randomizes the type of communication to be transmitted
     public static int getCom() {
 	Random random = new Random();
 	int i = random.nextInt(2);
-	return i;
+	return 2; // TEMPORARY
     }
     
     public static int[] getNodes() {
@@ -68,6 +75,11 @@ public class ExcelSim {
 	if (s == 2)
 	    return packetlossSheet[y][x];
 	return -1;
+    }
+
+    // gets the geographical position of a node
+    public static Position getPosition(int node) {
+    	return positionSheet.get(node);
     }
 
     public static int getNumNodes() {
@@ -110,7 +122,17 @@ public class ExcelSim {
 		System.out.format("%5.02f", packetlossSheet[y][x]);
 	   System.out.println();
 	}
-	System.out.println();	
+
+	System.out.format("\n%20s\n", "POSITION SHEET");
+	System.out.format("%5s\n", "Node - Pos(x,y)");
+	
+	for (int i = 0; i < NUM_NODES; ++i) {
+	    System.out.format("%5d", i);
+    	    System.out.format("%3s%.0f,%.0f)", "(", positionSheet.get(i).x, positionSheet.get(i).y);
+	    System.out.println();
+	}
+
+	System.out.println();
     }
-    
 }
+
