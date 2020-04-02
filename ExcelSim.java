@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ExcelSim {
-    private static final int NUM_NODES = 40;
+    private static final int NUM_NODES = 100;
     
     private static float[][] latencySheet = new float[NUM_NODES][NUM_NODES];
     private static float[][] bandwidthSheet = new float[NUM_NODES][NUM_NODES];
@@ -11,9 +11,7 @@ public class ExcelSim {
 
     private static List<Position> positionSheet = new ArrayList<>();
     
-    ExcelSim() {}
-
-    public static void generateSheets() {
+    public static void randomizeSheets() {
 	for (int y = 0; y < NUM_NODES; ++y) {
 	    for (int x = 0; x < NUM_NODES; ++x)	{
 		if (x != y)

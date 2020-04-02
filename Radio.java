@@ -50,5 +50,4 @@ public class Radio {
 
 	return dist < 15;
     }
-    
 }

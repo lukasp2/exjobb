@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class FileWriter {
 
-    private static void write(String filename, List<String> lines, boolean append) {
+    public static void write(String filename, List<String> lines, boolean append) {
 	try {
 	    if (append) {
 		Files.write(Paths.get(filename), lines, StandardCharsets.UTF_8,
@@ -81,14 +81,17 @@ public class FileWriter {
 
 	write("plotter.py", lines, true);
     }
-
-    public static void writeList(List<String> lines) {
-	write("plotter.py", lines, true);
-    }
     
     public static void writeResult(Map<Integer, Integer> steps, ArrayList<Graph.Node> nodes, int goal) {
-	List<String> greenLines = new ArrayList<String>();
-	List<String> yellowLines = new ArrayList<String>();
+	List<String> pathLines = new ArrayList<String>();
+	List<String> neighbourLines = new ArrayList<String>();
+	List<String> lines = new ArrayList<String>();
+
+	if (!steps.containsKey(goal)) {
+	    lines.add("plt.show()");
+	    write("plotter.py", lines, true);
+	    return;
+	}
 	
 	int curr = goal;
 	while (steps.get(curr) != -1) {
@@ -98,16 +101,18 @@ public class FileWriter {
 	    double x2 = nodes.get(curr).position.x;
 	    double y2 = nodes.get(curr).position.y;
 
-	    greenLines.add("\tplt.pause(0.3)");
-	    greenLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'r' )");
-	    yellowLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'y' )");
+	    pathLines.add("\tplt.pause(0.3)");
+	    pathLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'r' )");
+	    neighbourLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'g' )");
 	}
-	greenLines.add("\tplt.pause(0.4)");
-	greenLines.add("\nwhile True:");
 
-	Collections.reverse(greenLines);
+	Collections.reverse(pathLines);
 
-	writeList(greenLines);
-	writeList(yellowLines);
+	lines.add("\nwhile True:");
+	lines.add("\tplt.pause(0.4)");
+	
+	write("plotter.py", lines, true);
+	write("plotter.py", pathLines, true);
+	write("plotter.py", neighbourLines, true);
     }
 }

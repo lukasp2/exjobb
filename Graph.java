@@ -11,11 +11,12 @@ import java.lang.Math;
 public class Graph {
     static ArrayList<Node> nodes = new ArrayList<>();
 
+    // for writing to file
+    static FileWriter fw = new FileWriter();
+    
     // builds graph from input data
     Graph(ExcelSim excelRW, Radio radio) {
 	
-	// for writing to file
-	FileWriter fw = new FileWriter();
 	fw.writeHeader();
 	List<Position> posList = new ArrayList<Position>();
 	
@@ -49,15 +50,19 @@ public class Graph {
     static class Node {    
 	int id;
 	boolean visited = false;
+	int hops = 0;
+	
+	Node previous_node; // FOR FW, CALC PACKETLOSS AND BANDWIDTH
+	
 	List<Node> neighbours = new ArrayList<>();
 	Position position = new Position(0, 0);
 
-	// construct with id of a node
+	// construct with id of a node (used by BFS)
 	Node(int id) {
 	    this.id = id;
 	}
 
-	// construct with geographic position of a node
+	// construct with geographic position of a node (used by A* search)
 	Node(int id, Position position) {
 	    this.id = id;
 	    this.position = position;
@@ -85,29 +90,24 @@ public class Graph {
 	}
 	
 	public static void printResult(int goal) {
-
 	    if (steps.containsKey(goal)) {
-		System.out.println("found path!");
+		int curr = goal;
+		while (steps.get(curr) != -1) {		
+		    System.out.print(curr + " <- ");
+		    curr = steps.get(curr);
+		}
+		System.out.println(curr);
 	    }
 	    else {
-		System.out.println("failed to find a path");
-		return;
+		System.out.println("\nno path was found ...");
 	    }
-	    
-	    int curr = goal;
-	    while (steps.get(curr) != -1) {		
-		System.out.print(curr + " <- ");
-		curr = steps.get(curr);
-	    }
-	    System.out.println(curr);
 
-	    FileWriter fw = new FileWriter();
 	    fw.writeResult(steps, nodes, goal);
 	}
     }
 
     // defines an A* search algorithm
-    public static void aStar(Node start, Node goal) {
+    public static void aStar(Node start, Node goal, int maxhops) {
 	
 	Comparator<Node> nodeDistanceComparator = new Comparator<Node>() {
 		@Override
@@ -131,28 +131,39 @@ public class Graph {
 	path.addStep(start.id, -1);
 
 	start.visited = true;
-        // TODO: hopcounter
+	start.previous_node = start;
 	
 	while (!prioQueue.isEmpty()) {
 	    Node curr = prioQueue.poll();
 
-	    System.out.println("Expanded Node " + curr.id);
+	    fw.writeLine(curr.position.x, curr.position.y,
+			 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
 	    
-	    List<Node> neighbours = curr.getNeighbours();
+	    if (curr.hops < maxhops) {
+		System.out.println("expanded node " + curr.id);
 
-	    if (neighbours.contains(goal)) {
-		path.addStep(goal.id, curr.id);
-		break;
-	    }
-	    
-	    for (int i = 0; i < neighbours.size(); i++) {
-		Node neighbour = neighbours.get(i);
-		
-		if (neighbour != null && !neighbour.visited) {
-		    prioQueue.add(neighbour);
-		    neighbour.visited = true;
-		    path.addStep(neighbour.id, curr.id);
+		List<Node> neighbours = curr.getNeighbours();
+
+		if (neighbours.contains(goal)) {
+		    System.out.println("expanded node " + goal.id + ", found path!");
+		    path.addStep(goal.id, curr.id);
+		    break;
 		}
+	    
+		for (int i = 0; i < neighbours.size(); i++) {
+		    Node neighbour = neighbours.get(i);
+		
+		    if (neighbour != null && !neighbour.visited) {
+			prioQueue.add(neighbour);
+			neighbour.visited = true;
+			path.addStep(neighbour.id, curr.id);
+			neighbour.hops = curr.hops + 1;
+			neighbour.previous_node = curr;
+		    }
+		}
+	    }
+	    else {
+		System.out.println("... could not access node " + curr.id + ": maxhops reached");
 	    }
 	}
 
@@ -160,7 +171,7 @@ public class Graph {
     }
 
     // defines an breadth first search (BFS) algorithm
-    public void bfs(Node start, Node goal) {
+    public void bfs(Node start, Node goal, int maxhops) {
 	Queue<Node> queue = new LinkedList<Node>();
 	queue.add(start);
 
@@ -168,25 +179,39 @@ public class Graph {
 	path.addStep(start.id, -1);
 
 	start.visited = true;
-        // TODO: hopcounter
+	start.previous_node = start;
 	
 	while (!queue.isEmpty()) {
 	    Node curr = queue.remove();
-	    List<Node> neighbours = curr.getNeighbours();
 
-	    if (neighbours.contains(goal)) {
-		path.addStep(goal.id, curr.id);
-		break;
-	    }
-	    
-	    for (int i = 0; i < neighbours.size(); i++) {
-		Node neighbour = neighbours.get(i);
+	    fw.writeLine(curr.position.x, curr.position.y,
+			 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
+
+	    if (curr.hops < maxhops) {
+		System.out.println("expanded node " + curr.id);
 		
-		if (neighbour != null && !neighbour.visited) {
-		    queue.add(neighbour);
-		    neighbour.visited = true;
-		    path.addStep(neighbour.id, curr.id);
+		List<Node> neighbours = curr.getNeighbours();
+
+		if (neighbours.contains(goal)) {
+		    System.out.println("expanded node " + goal.id + ", found path!");
+		    path.addStep(goal.id, curr.id);
+		    break;
 		}
+	    
+		for (int i = 0; i < neighbours.size(); i++) {
+		    Node neighbour = neighbours.get(i);
+		
+		    if (neighbour != null && !neighbour.visited) {
+			queue.add(neighbour);
+			neighbour.visited = true;
+			path.addStep(neighbour.id, curr.id);
+			neighbour.hops = curr.hops + 1;
+			neighbour.previous_node = curr;
+		    }
+		}
+	    }
+	    else {
+		System.out.println("... could not access node " + curr.id + ": maxhops reached");
 	    }
 	}
 
