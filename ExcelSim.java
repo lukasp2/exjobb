@@ -3,13 +3,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ExcelSim {
-    private static final int NUM_NODES = 100;
+    public static final int NUM_NODES = 150;
     
     private static float[][] latencySheet = new float[NUM_NODES][NUM_NODES];
     private static float[][] bandwidthSheet = new float[NUM_NODES][NUM_NODES];
     private static float[][] packetlossSheet = new float[NUM_NODES][NUM_NODES];
 
-    private static List<Position> positionSheet = new ArrayList<>();
+    private static Position[] positionSheet = new Position[NUM_NODES];
     
     public static void randomizeSheets() {
 	for (int y = 0; y < NUM_NODES; ++y) {
@@ -34,9 +34,8 @@ public class ExcelSim {
 	}
 
 	for (int y = 0; y < NUM_NODES; ++y) {
-	    positionSheet.add(
-	    	new Position((int)randomFill(100), (int)randomFill(100))
-		);
+	    //positionSheet.add(new Position((int)randomFill(100), (int)randomFill(100)));
+	    positionSheet[y] = new Position((int)randomFill(100), (int)randomFill(100));
 	}
     }
    
@@ -77,7 +76,7 @@ public class ExcelSim {
 
     // gets the geographical position of a node
     public static Position getPosition(int node) {
-    	return positionSheet.get(node);
+    	return positionSheet[node];
     }
 
     public static int getNumNodes() {
@@ -126,7 +125,7 @@ public class ExcelSim {
 	
 	for (int i = 0; i < NUM_NODES; ++i) {
 	    System.out.format("%5d", i);
-    	    System.out.format("%3s%.0f,%.0f)", "(", positionSheet.get(i).x, positionSheet.get(i).y);
+    	    System.out.format("%3s%.0f,%.0f)", "(", positionSheet[i].x, positionSheet[i].y);
 	    System.out.println();
 	}
 

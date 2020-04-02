@@ -1,5 +1,6 @@
 public class Radio {
-
+    public static int DISTANCE = 23;
+    
     // defines on which sheets in the excel document the different values are
     private static final int LATENCY = 0;
     private static final int BANDWIDTH = 1;
@@ -48,6 +49,6 @@ public class Radio {
 	double y_dist = Math.abs(p1.y - p2.y);
 	double dist = Math.sqrt(Math.pow(x_dist, 2) + Math.pow(y_dist, 2));
 
-	return dist < 15;
+	return dist < DISTANCE;
     }
 }

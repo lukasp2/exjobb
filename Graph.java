@@ -9,15 +9,20 @@ import java.util.Comparator;
 import java.lang.Math;
 
 public class Graph {
-    static ArrayList<Node> nodes = new ArrayList<>();
+    static boolean VERBOSE = false;
+    
+    static ArrayList<Node> nodes;
 
     // for writing to file
     static FileWriter fw = new FileWriter();
+
+    public double branchingFactor = 0; // FOR TESTING
     
     // builds graph from input data
     Graph(ExcelSim excelRW, Radio radio) {
 	
 	fw.writeHeader();
+	nodes = new ArrayList<>();
 	List<Position> posList = new ArrayList<Position>();
 	
 	// create nodes
@@ -37,13 +42,16 @@ public class Graph {
 		if (y != x && radio.Com(excelRW, x, y)) {
 		    Node n1 = nodes.get(y);
 		    Node n2 = nodes.get(x);
-		    
 		    n1.addNeighbour(n2);
 
-		    fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, 'y');
+		    //fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, 'y');
+		    branchingFactor++;
 		}
 	    }
 	}
+
+	branchingFactor /= 2; // gets us the number of connections in the graph
+	branchingFactor /= numNodes; // avg. branch factor
     }
 
     // defines the nodes in the graph
@@ -93,13 +101,13 @@ public class Graph {
 	    if (steps.containsKey(goal)) {
 		int curr = goal;
 		while (steps.get(curr) != -1) {		
-		    System.out.print(curr + " <- ");
+		    if (VERBOSE) { System.out.print(curr + " <- "); }
 		    curr = steps.get(curr);
 		}
-		System.out.println(curr);
+		if (VERBOSE) { System.out.println(curr); }
 	    }
 	    else {
-		System.out.println("\nno path was found ...");
+		if (VERBOSE) { System.out.println("\nno path was found ..."); }
 	    }
 
 	    fw.writeResult(steps, nodes, goal);
@@ -136,16 +144,16 @@ public class Graph {
 	while (!prioQueue.isEmpty()) {
 	    Node curr = prioQueue.poll();
 
-	    fw.writeLine(curr.position.x, curr.position.y,
-			 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
+	    // fw.writeLine(curr.position.x, curr.position.y,
+	    // 		 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
 	    
 	    if (curr.hops < maxhops) {
-		System.out.println("expanded node " + curr.id);
+		if (VERBOSE) { System.out.println("expanded node " + curr.id); }
 
 		List<Node> neighbours = curr.getNeighbours();
 
 		if (neighbours.contains(goal)) {
-		    System.out.println("expanded node " + goal.id + ", found path!");
+		    if (VERBOSE) { System.out.println("expanded node " + goal.id + ", found path!"); }
 		    path.addStep(goal.id, curr.id);
 		    break;
 		}
@@ -163,7 +171,7 @@ public class Graph {
 		}
 	    }
 	    else {
-		System.out.println("... could not access node " + curr.id + ": maxhops reached");
+		if (VERBOSE) { System.out.println("... could not access node " + curr.id + ": maxhops reached"); }
 	    }
 	}
 
@@ -184,16 +192,16 @@ public class Graph {
 	while (!queue.isEmpty()) {
 	    Node curr = queue.remove();
 
-	    fw.writeLine(curr.position.x, curr.position.y,
-			 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
+	    // fw.writeLine(curr.position.x, curr.position.y,
+	    // 		 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
 
 	    if (curr.hops < maxhops) {
-		System.out.println("expanded node " + curr.id);
+		if (VERBOSE) { System.out.println("expanded node " + curr.id); }
 		
 		List<Node> neighbours = curr.getNeighbours();
 
 		if (neighbours.contains(goal)) {
-		    System.out.println("expanded node " + goal.id + ", found path!");
+		    if (VERBOSE) { System.out.println("expanded node " + goal.id + ", found path!"); }
 		    path.addStep(goal.id, curr.id);
 		    break;
 		}
@@ -211,7 +219,7 @@ public class Graph {
 		}
 	    }
 	    else {
-		System.out.println("... could not access node " + curr.id + ": maxhops reached");
+		if (VERBOSE) { System.out.println("... could not access node " + curr.id + ": maxhops reached"); }
 	    }
 	}
 
