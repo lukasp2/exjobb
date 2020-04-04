@@ -9,19 +9,22 @@ import java.util.Comparator;
 import java.lang.Math;
 
 public class Graph {
-    static boolean VERBOSE = false;
+    public static boolean VERBOSE = false;
+    public static boolean PLOT = false;
     
-    static ArrayList<Node> nodes;
+    public static ArrayList<Node> nodes;
 
     // for writing to file
-    static FileWriter fw = new FileWriter();
+    public static FileWriter fw = new FileWriter();
 
-    public double branchingFactor = 0; // FOR TESTING
+    public double branchingFactor = 0; // FOR THE TESTING
     
+    Graph() {}
+
     // builds graph from input data
     Graph(ExcelSim excelRW, Radio radio) {
 	
-	fw.writeHeader();
+	if (PLOT) { fw.writeHeader(); }
 	nodes = new ArrayList<>();
 	List<Position> posList = new ArrayList<Position>();
 	
@@ -33,7 +36,7 @@ public class Graph {
 	    nodes.add(node);
 	    posList.add(nodePos);
 	}
-	fw.writePoints(posList);
+	if (PLOT) { fw.writePoints(posList); }
 
 	List<String> lines = new ArrayList<String>();
 	// create graph neighbours
@@ -44,7 +47,7 @@ public class Graph {
 		    Node n2 = nodes.get(x);
 		    n1.addNeighbour(n2);
 
-		    //fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, 'y');
+		    if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, 'y'); }
 		    branchingFactor++;
 		}
 	    }
@@ -110,12 +113,14 @@ public class Graph {
 		if (VERBOSE) { System.out.println("\nno path was found ..."); }
 	    }
 
-	    fw.writeResult(steps, nodes, goal);
+	    if (PLOT) { fw.writeResult(steps, nodes, goal); }
 	}
     }
 
     // defines an A* search algorithm
-    public static void aStar(Node start, Node goal, int maxhops) {
+    public static void aStar(int start_i, int goal_i, int maxhops) {
+	Node start = nodes.get(start_i);
+	Node goal = nodes.get(goal_i);
 	
 	Comparator<Node> nodeDistanceComparator = new Comparator<Node>() {
 		@Override
@@ -144,8 +149,8 @@ public class Graph {
 	while (!prioQueue.isEmpty()) {
 	    Node curr = prioQueue.poll();
 
-	    // fw.writeLine(curr.position.x, curr.position.y,
-	    // 		 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
+	    if (PLOT) {  fw.writeLine(curr.position.x, curr.position.y,
+	    		 curr.previous_node.position.x, curr.previous_node.position.y, 'g'); }
 	    
 	    if (curr.hops < maxhops) {
 		if (VERBOSE) { System.out.println("expanded node " + curr.id); }
@@ -179,7 +184,10 @@ public class Graph {
     }
 
     // defines an breadth first search (BFS) algorithm
-    public void bfs(Node start, Node goal, int maxhops) {
+    public static void bfs(int start_i, int goal_i, int maxhops) {
+	Node start = nodes.get(start_i);
+	Node goal = nodes.get(goal_i);
+
 	Queue<Node> queue = new LinkedList<Node>();
 	queue.add(start);
 
@@ -192,8 +200,8 @@ public class Graph {
 	while (!queue.isEmpty()) {
 	    Node curr = queue.remove();
 
-	    // fw.writeLine(curr.position.x, curr.position.y,
-	    // 		 curr.previous_node.position.x, curr.previous_node.position.y, 'g');
+	    if (PLOT) { fw.writeLine(curr.position.x, curr.position.y,
+	    		 curr.previous_node.position.x, curr.previous_node.position.y, 'g'); }
 
 	    if (curr.hops < maxhops) {
 		if (VERBOSE) { System.out.println("expanded node " + curr.id); }

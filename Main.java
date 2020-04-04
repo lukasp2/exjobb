@@ -17,7 +17,7 @@ public class Main {
 	Radio radio = new Radio();
 	
 	// randomize communication type (e.g. voice)
-	radio.setCom(excelSim.getCom());
+	// radio.setCom(excelSim.getCom());
 
 	long startTime;	
 	long endTime;	
@@ -25,36 +25,58 @@ public class Main {
 	List<Long> Astarstats = new ArrayList<Long>();
 	List<Long> graphstats = new ArrayList<Long>();
 	List<Double> branchFactors = new ArrayList<Double>();
-	
+
+	DynamicQueue dynamicQueue = new DynamicQueue();
+
+	// Fill the queue with requests
 	int LOOPS = 1000;
 	for (int i = 0; i < LOOPS; ++i) {
+	    int[] tf_node = excelSim.getNodes();
+	    Request request = new Request(tf_node[0], tf_node[1], excelSim.getCom());
+	    dynamicQueue.add(request);
+	}
+	// dynamicQueue.print();
+
+	Graph graph = new Graph();
+
+	int graphRebuilds = 0;
+        // Satisfy requests
+	while (!dynamicQueue.isEmpty()) { 
+	    Request request = dynamicQueue.poll();
+	    radio.setCom(request.getComType());
+
 	    excelSim.randomizeSheets();
 	    //excelSim.printSheets();
-	    
-	    // creates adjecency matrix
+
 	    startTime = System.nanoTime();
-	    Graph graph = new Graph(excelSim, radio);
+
+	    if (dynamicQueue.changedRequestType())
+	    {
+		graph = new Graph(excelSim, radio);
+		graphRebuilds++;
+	    }
+	    
 	    endTime = System.nanoTime();	    
 	    graphstats.add(endTime - startTime);
-	    branchFactors.add(graph.branchingFactor);
 	    //graph.printNeighbours();
 
-	    int[] tf_node = excelSim.getNodes();
+	    branchFactors.add(graph.branchingFactor);
 	    //System.out.println("Seeking path between nodes " + tf_node[0] + " and " + tf_node[1]);
-	
+	       
 	    // performs BFS search in the graph
 	    startTime = System.nanoTime();
-	    graph.bfs(graph.nodes.get(tf_node[0]), graph.nodes.get(tf_node[1]), 4);
+	    graph.bfs(request.getToNode(), request.getFromNode(), 4);
 	    endTime = System.nanoTime();
 	    BFSstats.add(endTime - startTime);
 	    
 	    // performs A* search in the graph
 	    startTime = System.nanoTime();
-	    graph.aStar(graph.nodes.get(tf_node[0]), graph.nodes.get(tf_node[1]), 4);
+	    graph.aStar(request.getToNode(), request.getFromNode(), 4);
 	    endTime = System.nanoTime();
 	    Astarstats.add(endTime - startTime);
-	}
+	} 
 
+	////////// OUTPUT //////////
 	double avgbr = 0;
 	for (double d : branchFactors) {
 	    avgbr += d;
@@ -95,5 +117,7 @@ public class Main {
 
 	double Astaravg = (double)sum / Astarstats.size();
 	System.out.printf("%s%.3f%s\n","\tavg runtime: ", Astaravg/1000000, " ms");
+	
+	System.out.printf("\n%s\n\t%d\n","Graph Rebuilds ", graphRebuilds);
     }
 }

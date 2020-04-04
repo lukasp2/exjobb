@@ -1,5 +1,5 @@
 public class Radio {
-    public static int DISTANCE = 23;
+    public static int DISTANCE = 15;
     
     // defines on which sheets in the excel document the different values are
     private static final int LATENCY = 0;

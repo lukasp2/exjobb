@@ -49,7 +49,7 @@ public class ExcelSim {
     public static int getCom() {
 	Random random = new Random();
 	int i = random.nextInt(2);
-	return 2; // TEMPORARY
+	return i;
     }
     
     public static int[] getNodes() {
