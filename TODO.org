@@ -1,0 +1,4 @@
+
+3. request satisfaction delay as a function of BLOCK_SIZE
+> decide how long delay is acceptable.
+

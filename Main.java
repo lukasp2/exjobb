@@ -8,74 +8,61 @@ import java.lang.Math;
  */
 
 public class Main {
+
+    public static int NUM_REQUESTS = 1;
+    public static int MAX_HOPS = 4;
+    
     public static void main(String args[]) {
 
 	// create the radio functions which will define the graph
 	Radio radio = new Radio();
 
-	// create a dynamic queue for scheduling requests
-	DynamicQueue dynamicQueue = new DynamicQueue();
+	// creates input simulator defining network
+	ExcelSim excelSim = new ExcelSim(200);
 
 	// define graph
 	Graph graph = new Graph();
 
-	// create input simulator defining network
-	ExcelSim excelSim = new ExcelSim(200);
-	    
-	// loops with increasing block size
-        for (int i = 1; i <= 100; ++i)
-	{
-	    dynamicQueue.BLOCK_SIZE = 1;
+	// creates queue for scheduling requests fill with random requests
+	DynamicQueue dynamicQueue = new DynamicQueue(excelSim, NUM_REQUESTS); //dynamicQueue.print();
 
-	    // class for logging statistical data
-	    Logger logs = new Logger();
+	// class for logging statistical data
+	Logger logs = new Logger(excelSim.NUM_NODES, radio.DISTANCE,
+				 dynamicQueue.BLOCK_SIZE, NUM_REQUESTS);
+	
+	// begin satisfy requests
+	while (!dynamicQueue.isEmpty()) { 
+	    Request request = dynamicQueue.poll(); //request.print();
+	    radio.setCom(request.getComType());
 	    
-	    // fill the dynamic queue with random requests
-	    int NUM_REQUESTS = 1000;
-	    dynamicQueue.fill(excelSim, NUM_REQUESTS);
-	    //dynamicQueue.print();
-	    
-	    // satisfy requests
-	    while (!dynamicQueue.isEmpty()) { 
-		Request request = dynamicQueue.poll();
-		//request.print();
-		radio.setCom(request.getComType());
-	    
-		excelSim.randomizeSheets();
-		//excelSim.print();
+	    excelSim.randomizeSheets(); //excelSim.print();
 
-		// Building graph
-		if (dynamicQueue.changedRequestType()) // rebuild if the network changes!!!
-		{
-		    logs.startTime();
-		    graph = new Graph(excelSim, radio);
-		    logs.graphstats.add(System.nanoTime() - logs.startTime);
-		    logs.graphRebuilds++;
-		    // graph.print();
-		}
-	    
-		logs.branchFactors.add(graph.branchingFactor);
-	    
-		// performs BFS search in the graph
-		// logs.startTime();
-		// graph.bfs(request.getToNode(), request.getFromNode(), 4);
-		// logs.BFSstats.add(System.nanoTime() - logs.startTime);
-	    	    
-		// performs A* search in the graph
+	    // Building graph
+	    if (dynamicQueue.changedRequestType()) // also rebuild if the network changes!!!
+	    {
 		logs.startTime();
-		graph.aStar(request.getToNode(), request.getFromNode(), 4);
-		logs.Astarstats.add(System.nanoTime() - logs.startTime);
+		graph = new Graph(excelSim, radio); // graph.print();
+		logs.graphstats.add(System.nanoTime() - logs.startTime);
+		logs.graphRebuilds++;
 	    }
-
-	    logs.NUM_NODES = excelSim.NUM_NODES;
-	    logs.RADIO_DISTANCE = radio.DISTANCE;
-	    logs.BLOCK_SIZE = dynamicQueue.getBlockSize();
-	    logs.NUM_REQUESTS = NUM_REQUESTS;
-	    logs.print();
 	    
-	    //logs.printBFS2();
-	    //logs.printAstar2();
-	    //logs.printBuild();
+	    logs.branchFactors.add(graph.branchingFactor);
+	    
+	    // performs BFS search in the graph
+	    logs.startTime();
+	    graph.bfs(request.getToNode(), request.getFromNode(), MAX_HOPS);
+	    logs.BFSstats.add(System.nanoTime() - logs.startTime);
+	    	    
+	    // performs A* search in the graph
+	    logs.startTime();
+	    graph.aStar(request.getToNode(), request.getFromNode(), MAX_HOPS);
+	    logs.Astarstats.add(System.nanoTime() - logs.startTime);
 	}
+
+	logs.print();
+	    
+	//logs.printBFS2();
+	//logs.printAstar2();
+	//logs.printBuild();
     }
 }

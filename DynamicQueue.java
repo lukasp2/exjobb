@@ -11,6 +11,16 @@ public class DynamicQueue {
     private boolean changedRequestType = true;
     
     private LinkedList<Request> requests = new LinkedList<Request>();
+
+    DynamicQueue() {}
+    
+    DynamicQueue(ExcelSim excelSim, int requests) {
+	for (int i = 0; i < requests; ++i) {
+	    int[] tf_node = excelSim.getNodes();
+	    Request request = new Request(tf_node[0], tf_node[1], excelSim.getCom());
+	    add(request);
+	}
+    }
     
     public void add(Request request) {
 	int countConsecutive = 0;

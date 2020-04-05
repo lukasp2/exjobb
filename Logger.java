@@ -16,6 +16,13 @@ public class Logger {
     public int BLOCK_SIZE = 0;
     public int NUM_NODES = 0;
 
+    Logger(int NUM_NODES, int RADIO_DISTANCE, int BLOCK_SIZE, int NUM_REQUESTS) {
+	this.NUM_NODES = NUM_NODES;
+	this.RADIO_DISTANCE = RADIO_DISTANCE;
+	this.BLOCK_SIZE = BLOCK_SIZE;
+	this.NUM_REQUESTS = NUM_REQUESTS;
+    }
+    
     public void startTime() {
 	startTime = System.nanoTime();
     }
