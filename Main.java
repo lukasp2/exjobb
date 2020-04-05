@@ -10,7 +10,7 @@ import java.lang.Math;
 public class Main {
 
     public static int NUM_REQUESTS = 1;
-    public static int MAX_HOPS = 4;
+    public static int MAX_HOPS = 6;
     
     public static void main(String args[]) {
 
@@ -18,7 +18,7 @@ public class Main {
 	Radio radio = new Radio();
 
 	// creates input simulator defining network
-	ExcelSim excelSim = new ExcelSim(200);
+	ExcelSim excelSim = new ExcelSim(100);
 
 	// define graph
 	Graph graph = new Graph();
@@ -49,9 +49,9 @@ public class Main {
 	    logs.branchFactors.add(graph.branchingFactor);
 	    
 	    // performs BFS search in the graph
-	    logs.startTime();
-	    graph.bfs(request.getToNode(), request.getFromNode(), MAX_HOPS);
-	    logs.BFSstats.add(System.nanoTime() - logs.startTime);
+	    // logs.startTime();
+	    // graph.bfs(request.getToNode(), request.getFromNode(), MAX_HOPS);
+	    // logs.BFSstats.add(System.nanoTime() - logs.startTime);
 	    	    
 	    // performs A* search in the graph
 	    logs.startTime();

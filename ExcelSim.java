@@ -55,7 +55,7 @@ public class ExcelSim {
     public static int getCom() {
 	Random random = new Random();
 	int i = random.nextInt(2);
-	return i;
+	return 2;
     }
     
     public static int[] getNodes() {

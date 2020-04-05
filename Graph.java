@@ -10,7 +10,7 @@ import java.lang.Math;
 
 public class Graph {
     public static boolean VERBOSE = false;
-    public static boolean PLOT = false;
+    public static boolean PLOT = true;
     
     public static ArrayList<Node> nodes;
 
