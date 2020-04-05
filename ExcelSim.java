@@ -83,7 +83,7 @@ public class ExcelSim {
 	return NUM_NODES;
     }
 
-    public static void printSheets() {
+    public static void print() {
 	System.out.format("%20s\n", "LATENCY SHEET");
 	System.out.format("%5s", "Node");
 	for (int i = 0; i < NUM_NODES; ++i) { System.out.format("%5d", i); }

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class DynamicQueue {
 
-    public int BLOCK_SIZE = 10;
+    private int BLOCK_SIZE = 5;
 
     private int lastRequest = -1;
 
@@ -23,19 +23,17 @@ public class DynamicQueue {
 		    countConsecutive++;
 		    i++;
 		}
-
 		if (countConsecutive < BLOCK_SIZE && i < requests.size()) {
 		    requests.add(i, request);
 		    return;
 		}
-		
 		countConsecutive = 0;
 	    }
 	}
-	
 	requests.add(request);
     }
-    
+
+    // removes the first element in the queue and returns it
     public Request poll() {
 	Request thisRequest = requests.poll();
 	
@@ -49,18 +47,34 @@ public class DynamicQueue {
 	
 	return thisRequest;
     }
-    
-    public boolean isEmpty() {
-	return requests.isEmpty();
+
+    // fills the queue with random requests
+    public void fill(ExcelSim excelSim, int requests) {
+	for (int i = 0; i < requests; ++i) {
+	    int[] tf_node = excelSim.getNodes();
+	    Request request = new Request(tf_node[0], tf_node[1], excelSim.getCom());
+	    add(request);
+	}
     }
 
-    public boolean changedRequestType() {
-	return changedRequestType;
-    }
-    
+    // prints all requests in the queue
     public void print() {
 	for (Request r : requests) {
 	    r.print();
 	}
+	System.out.println();
+    }
+    
+    // getters //
+    public boolean changedRequestType() {
+	return changedRequestType;
+    }
+
+    public int getBlockSize() {
+	return BLOCK_SIZE;
+    }
+    
+    public boolean isEmpty() {
+	return requests.isEmpty();
     }
 }

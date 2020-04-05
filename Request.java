@@ -2,7 +2,7 @@ public class Request {
     private int comType;
     private int toNode;
     private int fromNode;
-
+    
     Request(int to_node, int from_node, int comType) {
 	this.toNode = to_node;
 	this.fromNode = from_node;
@@ -22,7 +22,7 @@ public class Request {
     }
 
     public void print() {
-	System.out.println("[" + comType + ": " + toNode + "->" + fromNode + "] ");
+	System.out.println("request: [" + comType + ": " + toNode + "->" + fromNode + "] ");
     }
 }
     

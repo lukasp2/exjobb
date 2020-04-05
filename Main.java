@@ -10,114 +10,61 @@ import java.lang.Math;
 public class Main {
     public static void main(String args[]) {
 
-	// create input simulator
+	// class for logging statistical data
+	Logger logs = new Logger();
+	
+	// create input simulator defining network
 	ExcelSim excelSim = new ExcelSim();
 	
-	// create the radio functions
+	// create the radio functions which will define the graph
 	Radio radio = new Radio();
-	
-	// randomize communication type (e.g. voice)
-	// radio.setCom(excelSim.getCom());
 
-	long startTime;	
-	long endTime;	
-	List<Long> BFSstats = new ArrayList<Long>();
-	List<Long> Astarstats = new ArrayList<Long>();
-	List<Long> graphstats = new ArrayList<Long>();
-	List<Double> branchFactors = new ArrayList<Double>();
-
+	// create a dynamic queue for scheduling requests
 	DynamicQueue dynamicQueue = new DynamicQueue();
 
-	// Fill the queue with requests
-	int LOOPS = 1000;
-	for (int i = 0; i < LOOPS; ++i) {
-	    int[] tf_node = excelSim.getNodes();
-	    Request request = new Request(tf_node[0], tf_node[1], excelSim.getCom());
-	    dynamicQueue.add(request);
-	}
-	// dynamicQueue.print();
-
+	// define graph
 	Graph graph = new Graph();
+	
+	// fill the dynamic queue with random requests
+	int NUM_REQUESTS = 983;
+	dynamicQueue.fill(excelSim, NUM_REQUESTS);
+	//dynamicQueue.print();
 
-	int graphRebuilds = 0;
-        // Satisfy requests
+        // satisfy requests
 	while (!dynamicQueue.isEmpty()) { 
 	    Request request = dynamicQueue.poll();
+	    //request.print();
 	    radio.setCom(request.getComType());
 
 	    excelSim.randomizeSheets();
-	    //excelSim.printSheets();
+	    //excelSim.print();
 
-	    startTime = System.nanoTime();
-
-	    if (dynamicQueue.changedRequestType())
-	    {
+	    // Building graph
+	    logs.startTime();
+	    if (dynamicQueue.changedRequestType()) {
 		graph = new Graph(excelSim, radio);
-		graphRebuilds++;
+		logs.graphRebuilds++;
 	    }
-	    
-	    endTime = System.nanoTime();	    
-	    graphstats.add(endTime - startTime);
-	    //graph.printNeighbours();
+	    logs.graphstats.add(System.nanoTime() - logs.startTime);
+	    //graph.print();
 
-	    branchFactors.add(graph.branchingFactor);
-	    //System.out.println("Seeking path between nodes " + tf_node[0] + " and " + tf_node[1]);
+	    logs.branchFactors.add(graph.branchingFactor);
 	       
 	    // performs BFS search in the graph
-	    startTime = System.nanoTime();
+	    logs.startTime();
 	    graph.bfs(request.getToNode(), request.getFromNode(), 4);
-	    endTime = System.nanoTime();
-	    BFSstats.add(endTime - startTime);
+	    logs.BFSstats.add(System.nanoTime() - logs.startTime);
 	    
 	    // performs A* search in the graph
-	    startTime = System.nanoTime();
+	    logs.startTime();
 	    graph.aStar(request.getToNode(), request.getFromNode(), 4);
-	    endTime = System.nanoTime();
-	    Astarstats.add(endTime - startTime);
+	    logs.Astarstats.add(System.nanoTime() - logs.startTime);
 	} 
 
-	////////// OUTPUT //////////
-	double avgbr = 0;
-	for (double d : branchFactors) {
-	    avgbr += d;
-	}
-	avgbr /= branchFactors.size();
-    
-	System.out.println("graph searches: " + LOOPS);
-	System.out.println("nodes in graph: " + excelSim.NUM_NODES);
-	System.out.println("radio reach: " + radio.DISTANCE);
-	System.out.printf("%s%.2f\n\n", "avg branching factor: ", avgbr);
-
-	System.out.println("Graph build");
-	long sum = 0;
-	for (long d : graphstats) {
-	    sum += d;
-	}
-	System.out.println("\ttot runtime: " + sum/1000000 + " ms");
-
-	double Graphavg = (double)sum / graphstats.size();
-	System.out.printf("%s%.3f%s\n","\tavg runtime: ", Graphavg/1000000, " ms");
-	
-	System.out.println("\nBreadth First Search");
-	sum = 0;
-	for (long d : BFSstats) {
-	    sum += d;
-	}
-	System.out.println("\ttot runtime: " + sum/1000000 + " ms");
-
-	double BFSavg = (double)sum / BFSstats.size();
-	System.out.printf("%s%.3f%s\n","\tavg runtime: ", BFSavg/1000000, " ms");
-
-	System.out.println("\nA* search");
-	sum = 0;
-	for (long d : Astarstats) {
-	    sum += d;
-	}
-	System.out.println("\ttot runtime: " + sum/1000000 + " ms");
-
-	double Astaravg = (double)sum / Astarstats.size();
-	System.out.printf("%s%.3f%s\n","\tavg runtime: ", Astaravg/1000000, " ms");
-	
-	System.out.printf("\n%s\n\t%d\n","Graph Rebuilds ", graphRebuilds);
+	logs.NUM_NODES = excelSim.NUM_NODES;
+	logs.RADIO_DISTANCE = radio.DISTANCE;
+	logs.BLOCK_SIZE = dynamicQueue.getBlockSize();
+	logs.NUM_REQUESTS = NUM_REQUESTS;
+	logs.print();
     }
 }

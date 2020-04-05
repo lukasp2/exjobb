@@ -17,7 +17,7 @@ public class Graph {
     // for writing to file
     public static FileWriter fw = new FileWriter();
 
-    public double branchingFactor = 0; // FOR THE TESTING
+    public double branchingFactor = 0; // FOR TESTING
     
     Graph() {}
 
@@ -234,7 +234,7 @@ public class Graph {
 	path.printResult(goal.id);
     }
     
-    public static void printNeighbours() {
+    public static void print() {
 	System.out.format("%10s\n", "Graph Adjecency List");
 	for (int i = 0; i < nodes.size(); ++i) {
 	    System.out.print("Node " + nodes.get(i).id + " | ");
