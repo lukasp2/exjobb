@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class DynamicQueue {
 
-    private int BLOCK_SIZE = 5;
+    public int BLOCK_SIZE = 5;
 
     private int lastRequest = -1;
 

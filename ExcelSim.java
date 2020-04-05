@@ -3,13 +3,19 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ExcelSim {
-    public static final int NUM_NODES = 150;
-    
-    private static float[][] latencySheet = new float[NUM_NODES][NUM_NODES];
-    private static float[][] bandwidthSheet = new float[NUM_NODES][NUM_NODES];
-    private static float[][] packetlossSheet = new float[NUM_NODES][NUM_NODES];
+    public static int NUM_NODES;
+    private static float[][] latencySheet;
+    private static float[][] bandwidthSheet;
+    private static float[][] packetlossSheet;
+    private static Position[] positionSheet;
 
-    private static Position[] positionSheet = new Position[NUM_NODES];
+    ExcelSim(int NUM_NODES) {
+	this.NUM_NODES = NUM_NODES;    
+	latencySheet = new float[NUM_NODES][NUM_NODES];
+	bandwidthSheet = new float[NUM_NODES][NUM_NODES];
+	packetlossSheet = new float[NUM_NODES][NUM_NODES];
+	positionSheet = new Position[NUM_NODES];
+    }
     
     public static void randomizeSheets() {
 	for (int y = 0; y < NUM_NODES; ++y) {
@@ -60,7 +66,7 @@ public class ExcelSim {
 	
 	if (nodes[0] == nodes[1])
 	    nodes[1] = (nodes[1] + 1) % NUM_NODES;
-	
+
 	return nodes;
     }
 
