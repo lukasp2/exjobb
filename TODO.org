@@ -1,4 +1,25 @@
+* feedback
+** titel
+Jämförelse med olika heuristiker för A* istället för en jämförelse mellan A* och BFS. 
 
+Om möjligt definiera gärna vad du menar med graf. 
+
+(Jag gissar att vi har att göra med riktad och viktad graf).
+Det gör också diskussionen kring BFS optimalitet delvis felaktig (Det är snarare Djinkstras algoritm som är det optimala i det fallet)
+
+https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm
+
+Något fick mig att tänka på ovan. Det kanske bara är snurr 
+
+** other
+vandra -> traversera
+en federat -> ett
+källa i figurer
+
+
+* graphs
 3. request satisfaction delay as a function of BLOCK_SIZE
 > decide how long delay is acceptable.
+
+
 
