@@ -8,6 +8,11 @@ public class ExcelSim {
     private static float[][] bandwidthSheet;
     private static float[][] packetlossSheet;
     private static Position[] positionSheet;
+    
+    // defines on which sheets in the excel document the different values are
+    public static final int LATENCY = 0;
+    public static final int BANDWIDTH = 1;
+    public static final int PACKETLOSS = 2;
 
     ExcelSim(int NUM_NODES) {
 	this.NUM_NODES = NUM_NODES;    
@@ -40,22 +45,21 @@ public class ExcelSim {
 	}
 
 	for (int y = 0; y < NUM_NODES; ++y) {
-	    //positionSheet.add(new Position((int)randomFill(100), (int)randomFill(100)));
 	    positionSheet[y] = new Position((int)randomFill(100), (int)randomFill(100));
 	}
     }
-   
+    
     public static float randomFill(int k) {
 	Random random = new Random();
-	float f = k * random.nextFloat(); 
+	float f = k * random.nextFloat();
 	return f;
     }
-
+    
     // randomizes the type of communication to be transmitted
     public static int getCom() {
 	Random random = new Random();
 	int i = random.nextInt(2);
-	return 2;
+	return 0;
     }
     
     public static int[] getNodes() {

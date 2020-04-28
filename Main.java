@@ -52,7 +52,7 @@ public class Main {
 	    // logs.startTime();
 	    // graph.bfs(request.getToNode(), request.getFromNode(), MAX_HOPS);
 	    // logs.BFSstats.add(System.nanoTime() - logs.startTime);
-	    	    
+
 	    // performs A* search in the graph
 	    logs.startTime();
 	    graph.aStar(request.getToNode(), request.getFromNode(), MAX_HOPS);

@@ -1,11 +1,6 @@
 public class Radio {
     public static int DISTANCE = 15;
     
-    // defines on which sheets in the excel document the different values are
-    private static final int LATENCY = 0;
-    private static final int BANDWIDTH = 1;
-    private static final int PACKETLOSS = 2;
-    
     // defines which communication type is currently used in the graph
     private static int comType;
 
@@ -13,37 +8,37 @@ public class Radio {
 	comType = i;
     }
 
-    public static boolean Com(ExcelSim excelRW, int A, int B) {
+    public static boolean Com(ExcelSim xmlRW, int A, int B) {
 	switch (comType) {
 	case 0:
-	    return voiceCom(excelRW, A, B);
+	    return voiceCom(xmlRW, A, B);
 	case 1:
-	    return dataCom(excelRW, A, B);
+	    return dataCom(xmlRW, A, B);
 	case 2:
-	    return distCom(excelRW, A, B);
+	    return distCom(xmlRW, A, B);
 	}
 	return false;
     }
     
     // return the possibility of voice communication between node A and node B
-    public static boolean voiceCom(ExcelSim excelRW, int A, int B) {
-	return excelRW.readCell(A, B, LATENCY) < 50
-	    && excelRW.readCell(A, B, BANDWIDTH) > 500
-	    && excelRW.readCell(A, B, PACKETLOSS) < 0.7;
+    public static boolean voiceCom(ExcelSim xmlRW, int A, int B) {
+	return xmlRW.readCell(A, B, xmlRW.LATENCY) < 20
+	    && xmlRW.readCell(A, B, xmlRW.BANDWIDTH) > 600
+	    && xmlRW.readCell(A, B, xmlRW.PACKETLOSS) < 0.2;
     }
     
     // return the possibility of data communication between node A and node B
-    public static boolean dataCom(ExcelSim excelRW, int A, int B) {
-	return excelRW.readCell(A, B, LATENCY) < 1000
-	    && excelRW.readCell(A, B, BANDWIDTH) > 0.01
-	    && excelRW.readCell(A, B, PACKETLOSS) < 0.3;
+    public static boolean dataCom(ExcelSim xmlRW, int A, int B) {
+	return xmlRW.readCell(A, B, xmlRW.LATENCY) < 70
+	    && xmlRW.readCell(A, B, xmlRW.BANDWIDTH) > 300
+	    && xmlRW.readCell(A, B, xmlRW.PACKETLOSS) < 0.3;
     }
 
     // return the possibility of communication between node A and node B
     // purely based on distance
-    public static boolean distCom(ExcelSim excelRW, int A, int B) {
-	Position p1 = excelRW.getPosition(A);
-	Position p2 = excelRW.getPosition(B);
+    public static boolean distCom(ExcelSim xmlRW, int A, int B) {
+	Position p1 = xmlRW.getPosition(A);
+	Position p2 = xmlRW.getPosition(B);
 
 	double x_dist = Math.abs(p1.x - p2.x);
 	double y_dist = Math.abs(p1.y - p2.y);

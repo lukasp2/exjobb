@@ -20,18 +20,22 @@ public class Graph {
     public double branchingFactor = 0; // FOR TESTING
     
     Graph() {}
-
+    
+    public static ExcelSim xmlRW;
+    
     // builds graph from input data
-    Graph(ExcelSim excelRW, Radio radio) {
+    Graph(ExcelSim xmlRW, Radio radio) {
 	
 	if (PLOT) { fw.writeHeader(); }
 	nodes = new ArrayList<>();
 	List<Position> posList = new ArrayList<Position>();
 	
+	this.xmlRW = xmlRW;
+	
 	// create nodes
-	int numNodes = excelRW.getNumNodes();
+	int numNodes = xmlRW.getNumNodes();
 	for (int i = 0; i < numNodes; ++i) {
-	    Position nodePos = excelRW.getPosition(i);
+	    Position nodePos = xmlRW.getPosition(i);
 	    Node node = new Node(i, nodePos);
 	    nodes.add(node);
 	    posList.add(nodePos);
@@ -42,7 +46,7 @@ public class Graph {
 	// create graph neighbours
 	for (int y = 0; y < numNodes; ++y) {
 	    for (int x = 0; x < numNodes; ++x) {
-		if (y != x && radio.Com(excelRW, x, y)) {
+		if (y != x && radio.Com(xmlRW, x, y)) {
 		    Node n1 = nodes.get(y);
 		    Node n2 = nodes.get(x);
 		    n1.addNeighbour(n2);
@@ -53,7 +57,6 @@ public class Graph {
 	    }
 	}
 
-	branchingFactor /= 2; // gets us the number of connections in the graph
 	branchingFactor /= numNodes; // avg. branch factor
     }
 
@@ -121,7 +124,8 @@ public class Graph {
     public static void aStar(int start_i, int goal_i, int maxhops) {
 	Node start = nodes.get(start_i);
 	Node goal = nodes.get(goal_i);
-	
+
+	// heuristic based on distance to the goal
 	Comparator<Node> nodeDistanceComparator = new Comparator<Node>() {
 		@Override
 		public int compare(Node n1, Node n2) {
@@ -137,7 +141,25 @@ public class Graph {
 		}
 	    };
 	
-	PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeDistanceComparator);
+	// heuristic based on -latency * bandwidth * (1-packetloss)
+	Comparator<Node> connectionComparator = new Comparator<Node>() {
+		@Override
+		public int compare(Node n1, Node n2) {
+		    double n1conn = -xmlRW.readCell(n1.id, goal.id, xmlRW.LATENCY)
+		    * xmlRW.readCell(n1.id, goal.id, xmlRW.BANDWIDTH)
+		    * (1 - xmlRW.readCell(n1.id, goal.id, xmlRW.PACKETLOSS));
+		    
+		    double n2conn = -xmlRW.readCell(n2.id, goal.id, xmlRW.LATENCY)
+		    * xmlRW.readCell(n2.id, goal.id, xmlRW.BANDWIDTH)
+		    * (1 - xmlRW.readCell(n2.id, goal.id, xmlRW.PACKETLOSS));
+		    
+		    return (int)(n1conn - n2conn);
+		}
+	    };
+
+	PriorityQueue<Node> prioQueue = new PriorityQueue<>(connectionComparator);
+	// PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeDistanceComparator);
+	
 	prioQueue.add(start);
 
 	Path path = new Path();
