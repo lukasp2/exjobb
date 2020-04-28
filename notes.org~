@@ -1,0 +1,19 @@
+* feedback
+** Titel: Jämförelse med olika heuristiker för A* istället för en jämförelse mellan A* och BFS. 
+En möjlig heuristik är välja nästa båge att expandera som har störst värde på:
+-latency * bandbredd * (1 - packetloss) TILL DESTINATIONEN
+
+eller bara packetloss te.x.
+
+** Metod: Grafsökning: UML
+
+* graphs
+3. request satisfaction delay as a function of BLOCK_SIZE
+> decide how long delay is acceptable.
+
+* ideer för prestanda
+byt grafsökningsalgoritm beroende på grafens struktur
+* vidare arbete
+** hitta bästa vägen
+kräver att vi har någon funktion som jämför två vägar och avgör hur attributerna ska jämföras.
+

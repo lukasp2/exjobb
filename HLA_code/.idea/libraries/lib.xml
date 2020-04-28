@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/rti_driver.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/rti_driver_libs.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/rti_driver_dongle.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

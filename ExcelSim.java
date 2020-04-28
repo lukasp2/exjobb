@@ -11,7 +11,6 @@ public class ExcelSim {
     private static float[][] latencySheet;
     private static float[][] bandwidthSheet;
     private static float[][] packetlossSheet;
-
     private static Position[] positionSheet;
     
     // defines on which sheets in the excel document the different values are
@@ -19,7 +18,6 @@ public class ExcelSim {
     public static final int BANDWIDTH = 1;
     public static final int PACKETLOSS = 2;
 
-    private static Position[] positionSheet; // lat - long
     private static double[][] signalQuality; // graded 0 - 11 
     
     ExcelSim(int NUM_NODES) {
