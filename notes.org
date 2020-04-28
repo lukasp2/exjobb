@@ -33,8 +33,10 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 - /opt/Pitch/prti1516e/lib
 - /opt/JDKit/jdk.13.0.2
 
-4. use pitchrti to run simulation
+3.4 kryssa ned ruta, i den inbyggda filutforskaren högerklicka src->New->Java Class
+3.5 write code, right click the PathFinder().simulate() call in the main method to run.
 
+4. Open pitchrti1516e.
 
 (5. how to use pitch recorder)
 
