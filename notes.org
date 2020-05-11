@@ -1,12 +1,3 @@
-* feedback
-** Titel: Jämförelse med olika heuristiker för A* istället för en jämförelse mellan A* och BFS. 
-En möjlig heuristik är välja nästa båge att expandera som har störst värde på:
--latency * bandbredd * (1 - packetloss) TILL DESTINATIONEN
-
-eller bara packetloss te.x.
-
-** Metod: Grafsökning: UML
-
 * graphs
 3. request satisfaction delay as a function of BLOCK_SIZE
 > decide how long delay is acceptable.
@@ -18,14 +9,14 @@ byt grafsökningsalgoritm beroende på grafens struktur
 kräver att vi har någon funktion som jämför två vägar och avgör hur attributerna ska jämföras.
 
 * howto
-** How to create, add, run and us a FOM
+** How to create, add, run and use a FOM
 1. start VisualOMT and devleop the FOM, save the module.
 
 2.   Open Pitch Dev Studio.
 2.1: Add the .xml file under interaction/object classes
 2.2: click "Java Code Generate" and load it into a directory "HLA_code"
 
-3:   Open IntelliJ
+3:   Open idea (IntelliJ)
 3.1: load the directory HLA_code.
 3.2: go to File->Project Structure->Modules
 3.3: click the '+' to the far right and select JARs or dirs and add the following:
@@ -39,5 +30,33 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 4. Open pitchrti1516e.
 
 (5. how to use pitch recorder)
+* sparad LaTeX kod
+** ist för UML:
+\begin{enumerate}
+    \item Main.java \\
+        Innehåller ett huvudprogram. Programmet startas och ser till att grafen uppdateras så fort en ny inmatning kommer in från RTI:n. Används av Graph.java för att bygga upp grafen med hjälp av grannmatriser, och av DynamicQueue.java för att schemalägga förfrågningar.
+    \item Graph.java \\
+        Bygger upp grafen och utför en grafsökningarna. 
+    \item Radio.java \\
+        I denna klass är det definierat för varje typ av kommunikation vad som krävs av förbindelserna för att kommunikationen ska kunna föras över nätverket. Används av Graph.java för att bygga upp rätt graf för en viss typ av kommunikation.
+    \item DynamicQueue.java \\
+        Schemalägger förfrågningar. Används av Graph.java för att hämta förfrågningarna.
+\end{enumerate}{}
 
+* todo
+** TODO Teori: Illustrera några exempelgrafer och visar hur sökningen med de olika heurestikerna skulle fungera på dessa. 
+** TODO Metod: beskriv heuristiker
+* pass
+yPitch%123
+lukas123
 
+** Mattermost
+username: lukas.pohlman
+password: yPitch%123
+
+* qs
+varför avslutas simulationen i prti1516e direkt efter att vi startat den?
+
+används .vomt filer?
+
+skickar jag med hela arrayen nu?

@@ -1,7 +1,0 @@
-plotted with
-> x = {2 .. 200}
-> requests per iteration = 100
-> radio reach = 15
-> block size = 1
-
-
