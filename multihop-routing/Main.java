@@ -32,14 +32,18 @@ public class Main {
 	
 	// begin satisfy requests
 	while (!dynamicQueue.isEmpty()) { 
-	    Request request = dynamicQueue.poll(); //request.print();
-	    radio.setCom(request.getComType());
+
+	    // lock 
+	    Request request = dynamicQueue.poll(); // request.print();
 	    
 	    excelSim.randomizeSheets(); //excelSim.print();
 
 	    // Building graph
-	    if (dynamicQueue.changedRequestType()) // also rebuild if the network changes!!!
+	    if (dynamicQueue.changedRequestType()) // also rebuild if the NETWORK CHAGNES!!!
 	    {
+		// unlock
+		radio.setCom(request.getComType());
+			    
 		logs.startTime();
 		graph = new Graph(excelSim, radio); // graph.print();
 		logs.graphstats.add(System.nanoTime() - logs.startTime);
