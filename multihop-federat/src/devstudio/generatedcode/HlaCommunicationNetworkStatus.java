@@ -138,4 +138,12 @@ public interface HlaCommunicationNetworkStatus extends HlaCommunicationNetworkSt
     */
     HlaFederateId getProducingFederate();
 
+   /**
+    * Get the HlaFederateId for the federate that last updated the given attribute
+    *
+    * @param attribute the attribute to get the last producing federate for
+    *
+    * @return The federate id for the federate that last updated the attribute
+    */
+    HlaFederateId getLastProducingFederate(Attribute attribute);
 }

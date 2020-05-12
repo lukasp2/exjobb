@@ -113,7 +113,6 @@ public class ConnectionSimulator {
             e.printStackTrace();
         }
 
-
         initialUpdater.setCommunicationConnectivity(networkConnectivityStructs.toArray(new NetworkConnectivityStruct[0]));
 
         initialUpdater.sendUpdate();

@@ -10,6 +10,8 @@ package devstudio.generatedcode.impl;
  * Use is subject to license terms.
  */
 
+import devstudio.generatedcode.impl.encoders.NetworkConnectivityStructArrayEncoder;
+import devstudio.generatedcode.impl.encoders.UuidArrayOfHLAbyte16Encoder;
 import devstudio.generatedcode.*;
 import devstudio.generatedcode.exceptions.*;
 import devstudio.generatedcode.impl.fed.AbstractObjectClassManager;
@@ -58,6 +60,14 @@ final class HlaCommunicationNetworkStatusManagerImpl extends AbstractObjectClass
     */
    protected final Object _encodersLock = new Object();
    protected final Object _decodersLock = new Object();
+   /* @GuardedBy("_encodersLock") */
+   protected final UuidArrayOfHLAbyte16Encoder _uuidArrayOfHLAbyte16EncoderEncoder = new UuidArrayOfHLAbyte16Encoder();
+   /* @GuardedBy("_decodersLock") */
+   protected final UuidArrayOfHLAbyte16Encoder _uuidArrayOfHLAbyte16EncoderDecoder = new UuidArrayOfHLAbyte16Encoder();
+   /* @GuardedBy("_encodersLock") */
+   protected final NetworkConnectivityStructArrayEncoder _networkConnectivityStructArrayEncoderEncoder = new NetworkConnectivityStructArrayEncoder();
+   /* @GuardedBy("_decodersLock") */
+   protected final NetworkConnectivityStructArrayEncoder _networkConnectivityStructArrayEncoderDecoder = new NetworkConnectivityStructArrayEncoder();
 
    HlaCommunicationNetworkStatusManagerImpl(HlaWorldImpl world, ObjectManager objectManager) {
       _objectManager = objectManager;

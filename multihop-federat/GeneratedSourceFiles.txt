@@ -31,6 +31,7 @@ src/devstudio/generatedcode/datatypes/DeadReckoningAlgorithmEnum.java
 src/devstudio/generatedcode/datatypes/HlaEnumDataType.java
 src/devstudio/generatedcode/datatypes/AccelerationVectorStruct.java
 src/devstudio/generatedcode/datatypes/AngularVelocityVectorStruct.java
+src/devstudio/generatedcode/datatypes/NetworkConnectivityStruct.java
 src/devstudio/generatedcode/datatypes/OrientationStruct.java
 src/devstudio/generatedcode/datatypes/SpatialFPStruct.java
 src/devstudio/generatedcode/datatypes/SpatialFVStruct.java
@@ -74,9 +75,11 @@ src/devstudio/generatedcode/exceptions/HlaSaveInProgressException.java
 src/devstudio/generatedcode/exceptions/HlaRestoreInProgressException.java
 src/devstudio/generatedcode/exceptions/package-info.java
 src/devstudio/generatedcode/impl/encoders/DeadReckoningAlgorithmEnumEncoder.java
+src/devstudio/generatedcode/impl/encoders/NetworkConnectivityStructArrayEncoder.java
 src/devstudio/generatedcode/impl/encoders/UuidArrayOfHLAbyte16Encoder.java
 src/devstudio/generatedcode/impl/encoders/AccelerationVectorStructEncoder.java
 src/devstudio/generatedcode/impl/encoders/AngularVelocityVectorStructEncoder.java
+src/devstudio/generatedcode/impl/encoders/NetworkConnectivityStructEncoder.java
 src/devstudio/generatedcode/impl/encoders/OrientationStructEncoder.java
 src/devstudio/generatedcode/impl/encoders/SpatialFPStructEncoder.java
 src/devstudio/generatedcode/impl/encoders/SpatialFVStructEncoder.java
@@ -88,6 +91,7 @@ src/devstudio/generatedcode/impl/encoders/WorldLocationStructEncoder.java
 src/devstudio/generatedcode/impl/encoders/SpatialVariantStructEncoder.java
 src/devstudio/generatedcode/impl/encoders/BaseEncoder.java
 src/devstudio/generatedcode/impl/encoders/AbstractEnum8Encoder.java
+src/devstudio/generatedcode/impl/encoders/AbstractVariableArrayEncoder.java
 src/devstudio/generatedcode/impl/encoders/AbstractFixedArrayEncoder.java
 src/devstudio/generatedcode/impl/encoders/AbstractFixedRecordEncoder.java
 src/devstudio/generatedcode/impl/encoders/AbstractVariantRecordEncoder.java

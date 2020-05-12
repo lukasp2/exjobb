@@ -10,6 +10,7 @@ package devstudio.generatedcode.impl;
  * Use is subject to license terms.
  */
 
+import devstudio.generatedcode.datatypes.NetworkConnectivityStruct;
 import devstudio.generatedcode.HlaCommunicationNetworkStatusUpdater;
 import devstudio.generatedcode.HlaCommunicationNetworkStatusListener;
 import devstudio.generatedcode.HlaLogicalTime;
@@ -28,12 +29,36 @@ final class HlaCommunicationNetworkStatusUpdaterImpl implements HlaCommunication
    private final AtomicBoolean _updateSent = new AtomicBoolean(false);
    private final Object _attributesLock = new Object();
 
+   /* @GuardedBy("_attributesLock") */
+   private final AttributeValue<byte[/* 16 */]> _communicationNetworkId = new AttributeValue<byte[/* 16 */]>();
+   /* @GuardedBy("_attributesLock") */
+   private final AttributeValue<NetworkConnectivityStruct[]> _communicationConnectivity = new AttributeValue<NetworkConnectivityStruct[]>();
 
    private final HlaCommunicationNetworkStatusImpl _instance;
 
 
    HlaCommunicationNetworkStatusUpdaterImpl(HlaCommunicationNetworkStatusImpl instance) {
       _instance = instance;
+   }
+
+   public HlaCommunicationNetworkStatusUpdaterImpl setCommunicationNetworkId(byte[/* 16 */] value) {
+      if (value == null) {
+         throw new NullPointerException();
+      }
+      synchronized (_attributesLock) {
+         _communicationNetworkId.setValueFromUser(value);
+      }
+      return this;
+   }
+
+   public HlaCommunicationNetworkStatusUpdaterImpl setCommunicationConnectivity(NetworkConnectivityStruct[] value) {
+      if (value == null) {
+         throw new NullPointerException();
+      }
+      synchronized (_attributesLock) {
+         _communicationConnectivity.setValueFromUser(value);
+      }
+      return this;
    }
 
 
@@ -70,6 +95,12 @@ final class HlaCommunicationNetworkStatusUpdaterImpl implements HlaCommunication
       EnumSet<HlaCommunicationNetworkStatusAttributes.Attribute> sendAttributes = EnumSet.noneOf(HlaCommunicationNetworkStatusAttributes.Attribute.class);
 
       synchronized (_attributesLock) {
+         if (_communicationNetworkId.hasValue()) {
+            attributeUpdates.put(HlaCommunicationNetworkStatusAttributes.Attribute.COMMUNICATION_NETWORK_ID, _communicationNetworkId.getValue());
+         }
+         if (_communicationConnectivity.hasValue()) {
+            attributeUpdates.put(HlaCommunicationNetworkStatusAttributes.Attribute.COMMUNICATION_CONNECTIVITY, _communicationConnectivity.getValue());
+         }
       }
 
       _instance.applyUpdate(attributeUpdates, sendAttributes, timestamp, logicalTime);

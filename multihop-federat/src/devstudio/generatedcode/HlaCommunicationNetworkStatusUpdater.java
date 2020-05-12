@@ -10,6 +10,7 @@ package devstudio.generatedcode;
  * Use is subject to license terms.
  */
 
+import devstudio.generatedcode.datatypes.NetworkConnectivityStruct;
 import devstudio.generatedcode.exceptions.*;
 
 
@@ -20,6 +21,31 @@ import devstudio.generatedcode.exceptions.*;
  * see <a href="http://jcip.net/annotations/doc/net/jcip/annotations/package-summary.html">jcip.net</a>.
  */
 public interface HlaCommunicationNetworkStatusUpdater {
+
+   /**
+    * Set the communicationNetworkId for this update.
+    * <br>Description from the FOM: <i>Identifies the communicationn network.</i>
+    * <br>Description of the data type from the FOM: <i>16 bytes in the UUID. 
+A universally unique identifier (UUID), standardized by the Open Software Foundation (OSF) as part of the Distributed Computing Environment (DCE). 
+A UUID is a 16-byte (128-bit) number. In its canonical form, a UUID is represented by 32 hexadecimal digits, displayed in five groups separated by hyphens, in the form 8-4-4-4-12 for a total of 36 characters (32 digits and four hyphens). For example: 
+550e8400-e29b-41d4-a716-446655440000</i>
+    *
+    * @param communicationNetworkId the new communicationNetworkId
+    *
+    * @return this updater
+    */
+    HlaCommunicationNetworkStatusUpdater setCommunicationNetworkId(byte[/* 16 */] communicationNetworkId);
+
+   /**
+    * Set the communicationConnectivity for this update.
+    * <br>Description from the FOM: <i>N/A</i>
+    * <br>Description of the data type from the FOM: <i>N/A</i>
+    *
+    * @param communicationConnectivity the new communicationConnectivity
+    *
+    * @return this updater
+    */
+    HlaCommunicationNetworkStatusUpdater setCommunicationConnectivity(NetworkConnectivityStruct[] communicationConnectivity);
 
    /**
     * Send all the attributes.
