@@ -20,9 +20,9 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 3.1: load the directory HLA_code.
 3.2: go to File->Project Structure->Modules
 3.3: click the '+' to the far right and select JARs or dirs and add the following:
-- /home/lukas/Desktop/multihop-routing/HLA_code/lib/rti_driver.jar
-- /opt/Pitch/prti1516e/lib
-- /opt/JDKit/jdk.13.0.2
+- /home/lukas/Desktop/multihop-routing/[module name]/lib/rti_driver.jar
+- /opt/Pitch/prti1516e/lib/prti1516e.jar
+- /opt/JDKit/jdk.13.0.2 (may already be there)
 
 3.4 kryssa ned ruta, i den inbyggda filutforskaren högerklicka src->New->Java Class
 3.5 write code, right click the PathFinder().simulate() call in the main method to run.
@@ -55,8 +55,10 @@ username: lukas.pohlman
 password: yPitch%123
 
 * qs
-varför avslutas simulationen i prti1516e direkt efter att vi startat den?
-
-används .vomt filer?
+Hur används .vomt filer efter att jag sparat ett projekt i VisualOMT? I Dev studio importeras ju endast .xml filer?
 
 skickar jag med hela arrayen nu?
+
+om man inte ska göra någon ny FOM modul så behöver man inte besöka visualOMT, utan man kan bara importera rätt XML filer i Dev Studio. Hur vet man vilka XML filer man ska importera? I ConnSimulation2 så ligger det fler XML filer än vad jag kan minnas att vi importerade.
+
+Vad gör man i Object/Interaction Classes i Dev. Studio?  

@@ -43,8 +43,11 @@ public class DynamicQueue {
 	requests.add(request);
     }
 
-    // removes the first element in the queue and returns it
+    // Removes the first element in the queue and returns it.
+    // multiple threads may poll simultaneously, hence it is neccessary for it to be thread-safe.
     public Request poll() {
+
+	// lock
 	Request thisRequest = requests.poll();
 	
 	if (thisRequest.getComType() != lastRequest) {
@@ -54,6 +57,7 @@ public class DynamicQueue {
 	else {
 	    changedRequestType = false;
 	}
+	// unlock
 	
 	return thisRequest;
     }

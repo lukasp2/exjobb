@@ -8,9 +8,6 @@ import java.util.*;
 import java.io.File;  // file class
 import java.io.FileNotFoundException;  // handle errors
 
-/**
- * Simple Pitch Developer Studio Federate
- */
 public class ConnectionSimulator {
     private final HlaWorld _hlaWorld;
     
@@ -116,7 +113,7 @@ public class ConnectionSimulator {
             e.printStackTrace();
         }
 
-        // fix !!??
+
         initialUpdater.setCommunicationConnectivity(networkConnectivityStructs.toArray(new NetworkConnectivityStruct[0]));
 
         initialUpdater.sendUpdate();
