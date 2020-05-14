@@ -1,54 +1,67 @@
-import devstudio.generatedcode.*;
-import devstudio.generatedcode.exceptions.*;
-import devstudio.generatedcode.datatypes.*;
-import se.pitch.rpr2.util.convert.GeodeticLocation;
-import se.pitch.rpr2.util.datatypes.WorldLocation;
-
 import java.util.*;
-import java.io.File;  // file class
-import java.io.FileNotFoundException;  // handle errors
 
 public class MultihopSimulator {
-    private final HlaWorld _hlaWorld;
 
-    public MultihopSimulator() {
-        _hlaWorld = HlaWorld.Factory.create(new HlaSettings() {});
-        _hlaWorld.getHlaNETNGroundVehicleManager().addHlaNETNGroundVehicleDefaultInstanceValueListener(_gvListener);
-        _hlaWorld.getHlaCommunicationNetworkStatusManager().addHlaCommunicationNetworkStatusDefaultInstanceListener(_cnListener);
+    public MultihopSimulator() { }
+
+    private static final Radio radio = new Radio();
+
+    private Graph graph = new Graph();
+
+    private final int filQueueTimer = 5000;
+
+    // fill the queue with all possible requests
+    public void fillQueue(Network nw, DynamicQueue dynamicQueue) {
+        // TODO: only perform fill if timer is 0, then reset timer to original value.
+
+        for ( int fromNode : nw.getConnections().keySet()) {
+            for ( int toNode : nw.getConnections().get(fromNode).keySet()) {
+                dynamicQueue.addRequest(new Request(fromNode, toNode, nw.getCom()));
+            }
+        }
     }
 
-    private final HlaNETNGroundVehicleValueListener _gvListener = new HlaNETNGroundVehicleValueListener.Adapter() {
-        @Override
-        public void spatialUpdated(HlaNETNGroundVehicle nETNGroundVehicle, SpatialVariantStruct spatial, boolean validOldSpatial, SpatialVariantStruct oldSpatial, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime)
-        {
-            UUID uuid = UuidAdapter.getUUIDFromBytes(nETNGroundVehicle.getHlaNETNGroundVehicleAttributes().getUniqueID());
+    public void serveQueue(Network nw, DynamicQueue dynamicQueue) {
+        // class for logging statistical data
+        Logger logs = new Logger(nw.getNumNodes(), radio.DISTANCE, dynamicQueue.BLOCK_SIZE, 1);
 
-            GeodeticLocation loc1 = GeodeticLocation.createGeodeticLocationFromXYZ(spatial.spatialFPW.worldLocation.x, spatial.spatialFPW.worldLocation.y, spatial.spatialFPW.worldLocation.z);
-            double latitude = loc1.getLatitude();
-            double longitude = loc1.getLongitude();
+        System.out.println("Ready to start!");
 
-            System.out.println("uuid: " + uuid + ", [lat: " + latitude + ", long: " + longitude + "]");
-        }
-    };
-
-    private final HlaCommunicationNetworkStatusListener _cnListener = new HlaCommunicationNetworkStatusListener.Adapter() {
-        @Override
-        public void attributesUpdated(HlaCommunicationNetworkStatus communicationNetworkStatus, Set<HlaCommunicationNetworkStatusAttributes.Attribute> attributes, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
-            System.out.println("NW updated");
-        }
-    };
-
-    public void simulate() throws HlaBaseException, InterruptedException {
-        HlaLogicalTime currentTime = _hlaWorld.connect();
-
+        // begin satisfy requests
         while (true) {
-            Thread.sleep(100000);
+            // lock
+            Request request = dynamicQueue.poll(); // request.print();
+
+            System.out.print("serving "); request.print();
+
+            // dynamicQueue.print();
+
+            // Building graph
+            if (dynamicQueue.changedRequestType()) // also rebuild if the NETWORK CHANGES!!!
+            {
+                // unlock
+                radio.setCom(request.getComType());
+
+                logs.startTime();
+                graph = new Graph(nw, radio); // graph.print();
+                logs.graphstats.add(System.nanoTime() - logs.startTime);
+                logs.graphRebuilds++;
+            }
+
+            logs.branchFactors.add(graph.branchingFactor);
+
+            // performs A* search in the graph
+            logs.startTime();
+            graph.aStar(request.getToNode(), request.getFromNode(), radio.MAX_HOPS);
+            logs.Astarstats.add(System.nanoTime() - logs.startTime);
         }
 
-        //_hlaWorld.disconnect();
-    }
+        // logs.print();
 
-    public static void main(String[] args) throws HlaBaseException, InterruptedException {
-        new MultihopSimulator().simulate();
+        // logs.printBFS2();
+        // logs.printAstar2();
+        // logs.printBuild();
+
+        // _hlaWorld.disconnect();
     }
 }

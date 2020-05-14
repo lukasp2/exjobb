@@ -45,7 +45,14 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 
 * todo
 ** TODO Teori: Illustrera några exempelgrafer och visar hur sökningen med de olika heurestikerna skulle fungera på dessa. 
-** TODO Metod: beskriv heuristiker
+** TODO se till att federaterna kan startas när som helst.
+sätt timer på bruteforce så att den bara bygger om var 10:e sek lr ngt.
+** TODO Implementera req. respnse
+** TODO bitBucket.
+** TODO passa kö och nätverk som referens till MultihopSimulator.java
+alltså inte en kopia. när Main.java uppdaterar dem så ska Mul.Simulator.java ha den nyaste versionen av dem.
+** TODO transactionID i FOM:en
+
 * pass
 yPitch%123
 lukas123
