@@ -10,39 +10,39 @@ public class Radio {
 	comType = i;
     }
 
-    public boolean Com(Network xmlRW, int A, int B) {
+    public boolean Com(Network nw, int fromNode, int toNode) {
 		switch (comType) {
 			case 0:
-				return voiceCom(xmlRW, A, B);
+				return voiceCom(nw, fromNode, toNode);
 			case 1:
-				return dataCom(xmlRW, A, B);
+				return dataCom(nw, fromNode, toNode);
 			case 2:
-				return distCom(xmlRW, A, B);
+				return distCom(nw, fromNode, toNode);
 		}
 		return false;
     }
     
     // return the possibility of voice communication between node A and node B
-    public boolean voiceCom(Network nw, int A, int B) {
-    	return nw.getConnection(A, B) > 5;
-		/*return nw.readCell(A, B, nw.LATENCY) < 20
-			&& nw.readCell(A, B, nw.BANDWIDTH) > 600
-			&& nw.readCell(A, B, nw.PACKETLOSS) < 0.2;*/
+    public boolean voiceCom(Network nw, int fromNode, int toNode) {
+    	return nw.getConnection(fromNode, toNode) > 5;
+		/*return nw.readCell(fromNode, toNode, nw.LATENCY) < 20
+			&& nw.readCell(fromNode, toNode, nw.BANDWIDTH) > 600
+			&& nw.readCell(fromNode, toNode, nw.PACKETLOSS) < 0.2;*/
     }
     
     // return the possibility of data communication between node A and node B
-    public boolean dataCom(Network nw, int A, int B) {
-		return nw.getConnection(A, B) > 3;
-		/*return nw.readCell(A, B, nw.LATENCY) < 70
-			&& nw.readCell(A, B, nw.BANDWIDTH) > 300
-			&& nw.readCell(A, B, nw.PACKETLOSS) < 0.3;*/
+    public boolean dataCom(Network nw, int fromNode, int toNode) {
+		return nw.getConnection(fromNode, toNode) > 3;
+		/*return nw.readCell(fromNode, toNode, nw.LATENCY) < 70
+			&& nw.readCell(fromNode, toNode, nw.BANDWIDTH) > 300
+			&& nw.readCell(fromNode, toNode, nw.PACKETLOSS) < 0.3;*/
     }
 
     // return the possibility of communication between node A and node B
     // purely based on distance
-    public boolean distCom(Network nw, int A, int B) {
-		Position p1 = nw.getPosition(A);
-		Position p2 = nw.getPosition(B);
+    public boolean distCom(Network nw, int fromNode, int toNode) {
+		Position p1 = nw.getPosition(fromNode);
+		Position p2 = nw.getPosition(toNode);
 
 		double x_dist = Math.abs(p1.x - p2.x);
 		double y_dist = Math.abs(p1.y - p2.y);

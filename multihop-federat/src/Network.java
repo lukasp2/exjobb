@@ -12,8 +12,11 @@ public class Network {
 		return connections;
 	}
 
+	public boolean isUpdated = false;
+
 	public void addNode(int id, double latitude, double longitude) {
 		nodePositions.put(id, new Position(latitude, longitude));
+		isUpdated = true;
 	}
 
 	// gets the geographical position of a node

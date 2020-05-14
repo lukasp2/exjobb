@@ -9,8 +9,8 @@ import java.util.Comparator;
 import java.lang.Math;
 
 public class Graph {
-    public static boolean VERBOSE = false;
-    public static boolean PLOT = false;
+    public final boolean VERBOSE = false;
+    public final boolean PLOT = false;
     
     public ArrayList<Node> nodes;
 

@@ -4,6 +4,7 @@ import devstudio.generatedcode.datatypes.*;
 import se.pitch.rpr2.util.convert.GeodeticLocation;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
 
@@ -63,7 +64,7 @@ public class Main {
             }
 
             System.out.println("network has been (re)built");
-
+            nw.isUpdated = true;
             nw.print();
         }
     };
@@ -83,9 +84,11 @@ public class Main {
         // creates a thread which fills the queue every ~5 secs (only for brute force)
         new QueueFillerThread(nw, dynamicQueue);
 
+        ReentrantLock requestLock = new ReentrantLock();
+
         // creates two threads to serve the queue
-        new MultihopSimulator(nw, dynamicQueue);
-        //new MultihopSimulator(nw, dynamicQueue);
+        new MultihopSimulator("thread 1", nw, dynamicQueue, requestLock);
+        new MultihopSimulator("thread 2", nw, dynamicQueue, requestLock);
 
         _hlaWorld.disconnect();
     }
