@@ -7,13 +7,13 @@ import java.util.*;
 
 public class Main {
 
-    private Network nw = new Network();
+    public Network nw = new Network();
 
     // tools to map each uuid to an integer for convenience
     public Map<UUID, Integer> nodeIDs = new HashMap<UUID, Integer>();
     private int nextNodeID = 0;
 
-    private DynamicQueue dynamicQueue = new DynamicQueue();
+    public DynamicQueue dynamicQueue = new DynamicQueue();
 
     private final HlaWorld _hlaWorld;
 
@@ -75,14 +75,17 @@ public class Main {
     public void simulate() throws HlaBaseException, InterruptedException {
         HlaLogicalTime currentTime = _hlaWorld.connect();
 
-        MultihopSimulator multihopSimulator = new MultihopSimulator();
+        System.out.println("Simulator ready!");
 
-        // we need to spawn a separate thread to fill the brute force queue every ~5 secs here.
-        multihopSimulator.fillQueue(nw, dynamicQueue);
+        // this is a placeholder for the thread to be created below which will reload the queue every ~5sec.
+        Thread.sleep(5000);
 
-        // then create threads to serve the queue here
-        multihopSimulator.serveQueue(nw, dynamicQueue);
-        // threads
+        // creates a thread which fills the queue every ~5 secs (only for brute force)
+        new QueueFillerThread(nw, dynamicQueue);
+
+        // creates two threads to serve the queue
+        new MultihopSimulator(nw, dynamicQueue);
+        //new MultihopSimulator(nw, dynamicQueue);
 
         _hlaWorld.disconnect();
     }

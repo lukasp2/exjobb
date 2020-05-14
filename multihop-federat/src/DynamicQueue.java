@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DynamicQueue {
 
@@ -14,7 +15,8 @@ public class DynamicQueue {
     private ReentrantLock requestLock = new ReentrantLock();
 	private Semaphore sema = new Semaphore(0, false);
 
-    private volatile LinkedList<Request> requests = new LinkedList<Request>();
+	// I removed volatile:
+    private LinkedList<Request> requests = new LinkedList<Request>();
 
     DynamicQueue() {}
 
@@ -23,7 +25,6 @@ public class DynamicQueue {
 
 		queueLock.lock();
 		for (int i = 0; i < requests.size(); i++) {
-			// if someone polls right here, chaos ensues ..
 			if (requests.get(i).getComType() == request.getComType()) {
 				while (i < requests.size()
 					   && requests.get(i).getComType() == request.getComType()

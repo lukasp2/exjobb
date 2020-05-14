@@ -44,14 +44,16 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 \end{enumerate}{}
 
 * todo
-** TODO Teori: Illustrera några exempelgrafer och visar hur sökningen med de olika heurestikerna skulle fungera på dessa. 
+** TODO passa kö och nätverk som referens till MultihopSimulator.java
+alltså inte en kopia. när Main.java uppdaterar dem så ska Mul.Simulator.java ha den nyaste versionen av dem.
+** TODO tråda lösning
 ** TODO se till att federaterna kan startas när som helst.
 sätt timer på bruteforce så att den bara bygger om var 10:e sek lr ngt.
 ** TODO Implementera req. respnse
-** TODO bitBucket.
-** TODO passa kö och nätverk som referens till MultihopSimulator.java
-alltså inte en kopia. när Main.java uppdaterar dem så ska Mul.Simulator.java ha den nyaste versionen av dem.
+** DONE DynamicQueue bör ej bygga på en volatile LinkedList
+implementera med någon typ av trådsäker variant ist.
 ** TODO transactionID i FOM:en
+** TODO bitBucket.
 
 * pass
 yPitch%123

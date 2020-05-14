@@ -1,6 +1,0 @@
-plotted with
-> x = {1 .. 27}
-> requests per iteration = 1000
-> radio reach = 15
-> nodes = 200
-
