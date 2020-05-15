@@ -12,21 +12,25 @@ public class Graph {
     public final boolean VERBOSE = false;
     public final boolean PLOT = false;
     
-    public ArrayList<Node> nodes = new ArrayList<>();
+    public final ArrayList<Node> nodes = new ArrayList<>();
+
+	private final Radio radio = new Radio();
 
     // for writing to file
     public FileWriter fw = new FileWriter();
 
     public double branchingFactor = 0; // FOR TESTING
     
-    Graph() {}
+    Graph() { }
     
     public Network nw;
     
     // builds graph from input data
-    Graph(Network nw, Radio radio) {
+    Graph(Network nw, int requestType) {
 
-		this.nw = nw;
+		radio.setCom(requestType);
+
+    	this.nw = nw;
 
 		if (PLOT) { fw.writeHeader(); }
 		List<Position> posList = new ArrayList<>();
@@ -120,16 +124,20 @@ public class Graph {
     }
 
     // defines an A* search algorithm
-    public void aStar(int start_i, int goal_i, int maxhops) {
+    public void aStar(Request request) {
+    	int start_i = request.getFromNode();
+    	int goal_i = request.getToNode();
+
+    	int maxhops = radio.getMaxHops(request.getRequestType());
+
     	System.out.println("start: " + start_i + ", goal: " + goal_i + ". Nodes size " + nodes.size() );
     	for(Node node : nodes) {
     		System.out.print(node.id + " ");
 		}
 
 		System.out.println();
-
-		Node start = nodes.get(start_i);
-		Node goal = nodes.get(goal_i);
+		Node start = nodes.get(request.getFromNode());
+		Node goal = nodes.get(request.getToNode());
 
 		// heuristic based on distance to the goal
 		Comparator<Node> nodeDistanceComparator = (n1, n2) -> {

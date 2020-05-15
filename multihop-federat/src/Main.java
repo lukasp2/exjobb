@@ -72,22 +72,35 @@ public class Main {
         }
     };
 
-    /*
-    * Listener of requests: dynamicQueue.addRequest(new Request(fromNode, toNode, requestType));
-    * */
+    private final HlaInteractionListener _rrListener = new HlaInteractionListener() {
+        @Override
+        public void requestPath(boolean local, HlaInteractionManager.HlaRequestPathParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
+            /*
+            int fromNode = parameters.getFromNode();
+            int toNode = parameters.getToNode();
+            short comType = parameters.getComType();
+
+            dynamicQueue.addRequest(new Request(fromNode, toNode, comType));
+            */
+        }
+
+        @Override
+        public void responsePath(boolean local, HlaInteractionManager.HlaResponsePathParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
+
+        }
+    };
 
     public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 
         System.out.println("Simulator ready!");
 
-        //Thread.sleep(5000);
+        // threads to serve the queue
+        Thread t1 = new Thread(new MultihopSimulator("thread 1", nw, dynamicQueue));
+        t1.start();
 
-        ReentrantLock requestLock = new ReentrantLock();
-
-        // creates two threads to serve the queue
-        new MultihopSimulator("thread 1", nw, dynamicQueue, requestLock);
-        new MultihopSimulator("thread 2", nw, dynamicQueue, requestLock);
+        MultihopSimulator t2 = new MultihopSimulator("thread 2", nw, dynamicQueue);
+        t2.run();
 
         _hlaWorld.disconnect();
     }
@@ -96,4 +109,3 @@ public class Main {
         new Main().simulate();
     }
 }
-

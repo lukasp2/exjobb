@@ -11,7 +11,7 @@ package devstudio.generatedcode.impl;
  */
 
 /*
- * Generated 2020-05-12 17:01:48 (+0200) by lukas using Pitch Developer Studio 5.0.3
+ * Generated 2020-05-15 12:31:41 (+0200) by lukas using Pitch Developer Studio 5.0.3
  */
 
 import devstudio.generatedcode.*;

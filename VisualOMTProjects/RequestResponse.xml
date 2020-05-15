@@ -5,11 +5,11 @@
         <type>FOM</type>
         <version>1.0</version>
         <securityClassification>unclassified</securityClassification>
-        <purpose/>
-        <applicationDomain/>
+        <purpose></purpose>
+        <applicationDomain></applicationDomain>
         <description>Description of New Module</description>
-        <useLimitation/>
-        <other/>
+        <useLimitation></useLimitation>
+        <other></other>
     </modelIdentification>
     <objects>
         <objectClass>
@@ -21,23 +21,23 @@
             <name>HLAinteractionRoot</name>
             <interactionClass>
                 <name>Request</name>
-                <sharing>Neither</sharing>
+                <sharing>PublishSubscribe</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
                 <semantics></semantics>
                 <parameter>
                     <name>fromNode</name>
-                    <dataType>UUID</dataType>
+                    <dataType>HLAopaqueData</dataType>
                     <semantics></semantics>
                 </parameter>
                 <parameter>
                     <name>toNode</name>
-                    <dataType>UUID</dataType>
+                    <dataType>HLAopaqueData</dataType>
                     <semantics></semantics>
                 </parameter>
                 <parameter>
                     <name>comType</name>
-                    <dataType>HLAinteger16BE</dataType>
+                    <dataType>HLAinteger32BE</dataType>
                     <semantics></semantics>
                 </parameter>
                 <parameter>
@@ -48,14 +48,14 @@
             </interactionClass>
             <interactionClass>
                 <name>Response</name>
-                <sharing>Neither</sharing>
+                <sharing>PublishSubscribe</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
                 <semantics></semantics>
                 <parameter>
                     <name>Path</name>
                     <dataType>HLAopaqueData</dataType>
-                    <semantics></semantics>
+                    <semantics>A list of nodes to be travesed</semantics>
                 </parameter>
                 <parameter>
                     <name>transactionID</name>

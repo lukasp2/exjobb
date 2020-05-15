@@ -9,7 +9,7 @@ public class Request {
         this.comType = comType;
     }
 
-    public int getComType() {
+    public int getRequestType() {
 	return comType;
     }
     

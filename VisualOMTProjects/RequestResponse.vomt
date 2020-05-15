@@ -44,7 +44,7 @@
    <void method="add">
     <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule" id="PersistentProjectHelper$PersistentModule1">
      <string>RequestResponse</string>
-     <string>RequestResponse.xml</string>
+     <string>/home/lukas/Desktop/exjobb/network-federat/PathFinder.xml</string>
      <boolean>false</boolean>
      <boolean>false</boolean>
      <boolean>true</boolean>
@@ -57,9 +57,9 @@
      <boolean>false</boolean>
      <boolean>false</boolean>
      <object class="java.awt.Color">
-      <int>177</int>
-      <int>221</int>
-      <int>250</int>
+      <int>255</int>
+      <int>255</int>
+      <int>179</int>
       <int>255</int>
      </object>
     </object>
@@ -78,10 +78,10 @@
       <string>INTERACTION_CLASS_TABLE</string>
      </object>
      <object idref="PersistentProjectHelper$PersistentModule1"/>
-     <int>0</int>
-     <int>0</int>
-     <int>1678</int>
-     <int>786</int>
+     <int>5</int>
+     <int>169</int>
+     <int>1668</int>
+     <int>400</int>
      <object class="java.util.LinkedHashSet"/>
      <object class="java.util.LinkedHashSet"/>
     </object>

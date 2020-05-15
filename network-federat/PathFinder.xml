@@ -20,37 +20,47 @@
         <interactionClass>
             <name>HLAinteractionRoot</name>
             <interactionClass>
-                <name>RequestPath</name>
+                <name>Request</name>
                 <sharing>Neither</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
                 <semantics>specifies which communication type to be sent over the network</semantics>
                 <parameter>
                     <name>fromNode</name>
-                    <dataType>HLAinteger64BE</dataType>
+                    <dataType>HLAopaqueData</dataType>
                     <semantics></semantics>
                 </parameter>
                 <parameter>
                     <name>toNode</name>
-                    <dataType>HLAinteger64BE</dataType>
+                    <dataType>HLAopaqueData</dataType>
                     <semantics></semantics>
                 </parameter>
                 <parameter>
                     <name>comType</name>
-                    <dataType>HLAinteger16BE</dataType>
+                    <dataType>HLAinteger32BE</dataType>
+                    <semantics></semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>HLAinteger64BE</dataType>
                     <semantics></semantics>
                 </parameter>
             </interactionClass>
             <interactionClass>
-                <name>ResponsePath</name>
-                <sharing>Neither</sharing>
+                <name>Response</name>
+                <sharing>PublishSubscribe</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
                 <semantics></semantics>
                 <parameter>
-                    <name>nodeArray</name>
+                    <name>Path</name>
                     <dataType>HLAopaqueData</dataType>
                     <semantics>Array of the nodes to be traversed in the network</semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>HLAinteger64BE</dataType>
+                    <semantics></semantics>
                 </parameter>
             </interactionClass>
         </interactionClass>

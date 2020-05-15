@@ -1,15 +1,10 @@
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DynamicQueue {
 
     public int BLOCK_SIZE = 20;
-
-    private int lastRequest = -1;
-
-    private boolean changedRequestType = true;
 
     private final ReentrantLock queueLock = new ReentrantLock();
     private final ReentrantLock requestLock = new ReentrantLock();
@@ -25,9 +20,9 @@ public class DynamicQueue {
 
 		queueLock.lock();
 		for (int i = 0; i < requests.size(); i++) {
-			if (requests.get(i).getComType() == request.getComType()) {
+			if (requests.get(i).getRequestType() == request.getRequestType()) {
 				while (i < requests.size()
-					   && requests.get(i).getComType() == request.getComType()
+					   && requests.get(i).getRequestType() == request.getRequestType()
 					   && countConsecutive < BLOCK_SIZE) {
 					countConsecutive++;
 					i++;
@@ -49,7 +44,7 @@ public class DynamicQueue {
     // Removes the first element in the queue and returns it.
     public Request poll() {
 
-    	// lock here so that two threads don't .aquire() for the same request.
+    	// "lock here so that two threads don't .aquire() for the same request."
     	//requestLock.lock();
 		try { sema.acquire(); } catch (InterruptedException ie) { System.out.println("DynQueue semaphore crashed!"); }
 
@@ -58,14 +53,6 @@ public class DynamicQueue {
 		Request newRequest = requests.poll();
 		queueLock.unlock();
 		//requestLock.unlock();
-
-		if (newRequest.getComType() != lastRequest) {
-			changedRequestType = true;
-			lastRequest = newRequest.getComType();
-		}
-		else {
-			changedRequestType = false;
-		}
 
 		return newRequest;
     }
@@ -89,10 +76,6 @@ public class DynamicQueue {
 		System.out.println();
     }
 
-    public boolean changedRequestType() {
-		return changedRequestType;
-    }
-    
     public boolean isEmpty() {
 		return requests.isEmpty();
     }

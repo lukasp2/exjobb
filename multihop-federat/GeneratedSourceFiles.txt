@@ -26,6 +26,7 @@ src/devstudio/generatedcode/HlaTuning.java
 src/devstudio/generatedcode/HlaInteractionManager.java
 src/devstudio/generatedcode/HlaSaveRestoreManager.java
 src/devstudio/generatedcode/HlaSaveRestoreListener.java
+src/devstudio/generatedcode/HlaInteractionListener.java
 src/devstudio/generatedcode/package-info.java
 src/devstudio/generatedcode/datatypes/DeadReckoningAlgorithmEnum.java
 src/devstudio/generatedcode/datatypes/HlaEnumDataType.java

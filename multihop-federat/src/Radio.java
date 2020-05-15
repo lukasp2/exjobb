@@ -10,6 +10,18 @@ public class Radio {
 	comType = i;
     }
 
+    public int getMaxHops(int requestType) {
+		switch (comType) {
+			case 0:
+				return 6;
+			case 1:
+				return 6;
+			case 2:
+				return 6;
+		}
+		return -1;
+	}
+
     public boolean Com(Network nw, int fromNode, int toNode) {
 		switch (comType) {
 			case 0:
