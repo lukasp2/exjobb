@@ -11,7 +11,7 @@ public class Main {
     public Network nw = new Network();
 
     // tools to map each uuid to an integer for convenience
-    public Map<UUID, Integer> nodeIDs = new HashMap<UUID, Integer>();
+    public Map<UUID, Integer> nodeIDs = new HashMap<>();
     private int nextNodeID = 0;
 
     public DynamicQueue dynamicQueue = new DynamicQueue();
@@ -64,25 +64,24 @@ public class Main {
             }
 
             System.out.println("network has been (re)built");
-            nw.isUpdated = true;
+
+            // new thread which fills the queue with all possible requests (for brute force)
+            new QueueFillerThread(nw, dynamicQueue);
+
             nw.print();
         }
     };
 
     /*
-    * Listener of requests does: dynamicQueue.addRequest(new Request(fromNode, toNode, requestType));
+    * Listener of requests: dynamicQueue.addRequest(new Request(fromNode, toNode, requestType));
     * */
 
     public void simulate() throws HlaBaseException, InterruptedException {
-        HlaLogicalTime currentTime = _hlaWorld.connect();
+        _hlaWorld.connect();
 
         System.out.println("Simulator ready!");
 
-        // this is a placeholder for the thread to be created below which will reload the queue every ~5sec.
-        Thread.sleep(5000);
-
-        // creates a thread which fills the queue every ~5 secs (only for brute force)
-        new QueueFillerThread(nw, dynamicQueue);
+        //Thread.sleep(5000);
 
         ReentrantLock requestLock = new ReentrantLock();
 

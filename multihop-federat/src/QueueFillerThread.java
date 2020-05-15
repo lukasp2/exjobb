@@ -15,24 +15,14 @@ public class QueueFillerThread implements Runnable {
 
     // fill the queue with all possible requests
     public void run() {
-        while (true) {
-            if (nw.isUpdated) {
-                for (int fromNode : nw.getConnections().keySet()) {
-                    for (int toNode : nw.getConnections().get(fromNode).keySet()) {
-                        dynamicQueue.addRequest(new Request(fromNode, toNode, nw.getCom()));
-                    }
-                }
-                System.out.println("Filled queue:");
-                dynamicQueue.print();
 
-                nw.isUpdated = false;
-            }
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        for (int fromNode : nw.getConnections().keySet()) {
+            for (int toNode : nw.getConnections().get(fromNode).keySet()) {
+                dynamicQueue.addRequest(new Request(fromNode, toNode, nw.getCom()));
             }
         }
+
+        System.out.println("Filled queue:");
+        dynamicQueue.print();
     }
 }

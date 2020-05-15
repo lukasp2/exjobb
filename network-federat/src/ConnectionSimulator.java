@@ -117,6 +117,8 @@ public class ConnectionSimulator {
 
         initialUpdater.sendUpdate();
 
+        //Thread.sleep(10000);
+
         _hlaWorld.disconnect();
     }
 

@@ -11,9 +11,9 @@ public class DynamicQueue {
 
     private boolean changedRequestType = true;
 
-    private ReentrantLock queueLock = new ReentrantLock();
-    private ReentrantLock requestLock = new ReentrantLock();
-	private Semaphore sema = new Semaphore(0, false);
+    private final ReentrantLock queueLock = new ReentrantLock();
+    private final ReentrantLock requestLock = new ReentrantLock();
+	private final Semaphore sema = new Semaphore(0, false);
 
 	// I removed volatile:
     private LinkedList<Request> requests = new LinkedList<Request>();
@@ -50,14 +50,14 @@ public class DynamicQueue {
     public Request poll() {
 
     	// lock here so that two threads don't .aquire() for the same request.
-    	requestLock.lock();
+    	//requestLock.lock();
 		try { sema.acquire(); } catch (InterruptedException ie) { System.out.println("DynQueue semaphore crashed!"); }
 
 		// lock here so we don't addRequest and poll in parallel.
 		queueLock.lock();
 		Request newRequest = requests.poll();
 		queueLock.unlock();
-		requestLock.unlock();
+		//requestLock.unlock();
 
 		if (newRequest.getComType() != lastRequest) {
 			changedRequestType = true;
@@ -81,19 +81,16 @@ public class DynamicQueue {
 
     // prints all requests in the queue
     public void print() {
+    	queueLock.lock();
 		for (Request r : requests) {
 			r.print();
 		}
+		queueLock.unlock();
 		System.out.println();
     }
-    
-    // getters //
+
     public boolean changedRequestType() {
 		return changedRequestType;
-    }
-
-    public int getBlockSize() {
-		return BLOCK_SIZE;
     }
     
     public boolean isEmpty() {
