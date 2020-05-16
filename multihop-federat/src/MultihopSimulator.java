@@ -1,30 +1,35 @@
-import devstudio.generatedcode.HlaInteractionListener;
-import devstudio.generatedcode.HlaInteractionManager;
-import devstudio.generatedcode.HlaLogicalTime;
-import devstudio.generatedcode.HlaTimeStamp;
+import devstudio.generatedcode.*;
 import devstudio.generatedcode.exceptions.*;
+import devstudio.generatedcode.impl.utils.MinMax;
+import internal.prti1516e.com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
-    public MultihopSimulator(String name, Network nw, DynamicQueue dynamicQueue, ReentrantLock printLock) {
-        // stores network and dynamic queue as references.
+    public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw, DynamicQueue dynamicQueue, BiMap<UUID, Integer> nodeIDs, ReentrantLock printLock) {
+        HlaInteractionManager.HlaResponseInteraction _hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
+        this.name = name;
         this.nw = nw;
         this.dynamicQueue = dynamicQueue;
-        this.name = name;
+        this.nodeIDs = nodeIDs;
         this.printLock = printLock;
 
         Thread t = new Thread(this);
         t.start();
     }
 
+    HlaInteractionManager.HlaResponseInteraction _hlaRI;
+
     public Network nw;
+
     public DynamicQueue dynamicQueue;
 
     public ReentrantLock printLock;
+
+    public BiMap<UUID, Integer> nodeIDs;
 
     private int prevRequestType = -1;
 
@@ -32,12 +37,10 @@ public class MultihopSimulator implements Runnable {
 
     private Graph graph = new Graph();
 
-    // serves the queue
     public void run() {
         // for logging statistical data
         // Logger logs = new Logger(nw.getNumNodes(), radio.DISTANCE, dynamicQueue.BLOCK_SIZE, 1);
 
-        // begin satisfy requests
         while (true) {
             Request request = dynamicQueue.poll(); // request.print();
 
@@ -64,7 +67,11 @@ public class MultihopSimulator implements Runnable {
             ArrayList<Integer> res = graph.aStar(request);
             // logs.Astarstats.add(System.nanoTime() - logs.startTime);
 
-            Main.sendResponse(res, request);
+            try {
+                sendResponse(res, request);
+            } catch (HlaInternalException | HlaRtiException | HlaNotConnectedException | HlaFomException e) {
+                e.printStackTrace();
+            }
         }
 
         // logs.print();
@@ -72,5 +79,17 @@ public class MultihopSimulator implements Runnable {
         // logs.printBFS2();
         // logs.printAstar2();
         // logs.printBuild();
+    }
+
+    public void sendResponse(ArrayList<Integer> path, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
+
+        ArrayList<byte[]> a = new ArrayList<>();
+        for (int i : path) {
+            a.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(i)));
+        }
+
+        _hlaRI.setPath(a.toArray(new byte[0][0]));
+        _hlaRI.setTransactionID(request.getTransactionID());
+        _hlaRI.sendInteraction();
     }
 }

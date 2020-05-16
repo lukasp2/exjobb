@@ -1,6 +1,8 @@
 import devstudio.generatedcode.*;
 import devstudio.generatedcode.exceptions.*;
 import devstudio.generatedcode.datatypes.*;
+import internal.prti1516e.com.google.common.collect.BiMap;
+import internal.prti1516e.com.google.common.collect.HashBiMap;
 import se.pitch.rpr2.util.convert.GeodeticLocation;
 
 import java.util.*;
@@ -8,15 +10,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
 
-    public Network nw = new Network();
+    private final HlaWorld _hlaWorld;
 
-    // tools to map each uuid to an integer for convenience
-    public Map<UUID, Integer> nodeIDs = new HashMap<>();
-    private int nextNodeID = 0;
+    public Network nw = new Network();
 
     public DynamicQueue dynamicQueue = new DynamicQueue();
 
-    private final HlaWorld _hlaWorld;
+    public BiMap<UUID, Integer> nodeIDs = HashBiMap.create();
+    private int nextNodeID = 0;
 
     public Main() {
         _hlaWorld = HlaWorld.Factory.create(new HlaSettings() {});
@@ -82,7 +83,9 @@ public class Main {
             long transactionID = parameters.getTransactionID();
 
             if (nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
-                dynamicQueue.addRequest(new Request(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), comType, transactionID));
+                Request r = new Request(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), comType, transactionID);
+                dynamicQueue.addRequest(r);
+                System.out.println("A request was recieved: "); r.print();
             }
             else {
                 System.out.println("A request for a path between unknown node(s) was received. Ignoring request.");
@@ -94,25 +97,7 @@ public class Main {
         }
     };
 
-    public static void sendResponse(ArrayList<Integer> path, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
-        // translate array list integers to byte[] using map in Main and Uuid.Adapter
-
-        HlaInteractionManager.HlaResponseInteraction him = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
-
-        ArrayList<byte[]> a = new ArrayList<>();
-
-        for (int i : path) {
-            byte[] bytenode = UuidAdapter.getArrayBytesFromUUID(nodeIDs.get(i));
-            a.add(bytenode);
-        }
-
-        him.setPath(a.toArray());
-        him.setTransactionID(request.getTransactionID());
-
-        him.sendInteraction();
-    }
-
-    public void simulate() throws HlaBaseException, InterruptedException {
+    public void simulate() throws HlaBaseException {
         _hlaWorld.connect();
 
         System.out.println("Simulator ready!");
@@ -121,16 +106,16 @@ public class Main {
         ReentrantLock printLock = new ReentrantLock();
 
         // threads to serve the queue
-        Thread t1 = new Thread(new MultihopSimulator("thread 1", nw, dynamicQueue, printLock));
+        Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread 1", nw, dynamicQueue, nodeIDs, printLock));
         t1.start();
 
-        MultihopSimulator t2 = new MultihopSimulator("thread 2", nw, dynamicQueue, printLock);
+        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread 2", nw, dynamicQueue, printLock);
         t2.run();
 
         _hlaWorld.disconnect();
     }
 
-    public static void main(String[] args) throws HlaBaseException, InterruptedException {
+    public static void main(String[] args) throws HlaBaseException {
         new Main().simulate();
     }
 }
