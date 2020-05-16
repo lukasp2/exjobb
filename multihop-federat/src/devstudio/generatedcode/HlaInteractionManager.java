@@ -394,7 +394,7 @@ public interface HlaInteractionManager {
        *
        * @throws HlaValueNotSetException if value was not set
        */
-       public byte[] getPath() throws HlaValueNotSetException;
+       public byte[][] getPath() throws HlaValueNotSetException;
 
       /**
        * Returns the value of the path parameter, or <code>defaultValue</code> if value was not set.
@@ -406,7 +406,7 @@ public interface HlaInteractionManager {
        *
        * @return the path or <code>defaultValue</code> if not set
        */
-       public byte[] getPath(byte[] defaultValue);
+       public byte[][] getPath(byte[][] defaultValue);
 
       /**
        * Returns true if a valid value for transactionID is available.
@@ -481,7 +481,7 @@ public interface HlaInteractionManager {
       * @return the updated interaction
       *
       */
-      public HlaResponseInteraction setPath(byte[] path);
+      public HlaResponseInteraction setPath(byte[][] path);
 
      /**
       * Sets the value for transactionID.
@@ -717,7 +717,7 @@ public interface HlaInteractionManager {
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
    void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException,
             HlaSaveInProgressException, HlaRestoreInProgressException;
@@ -741,7 +741,7 @@ public interface HlaInteractionManager {
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
    void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID,
       HlaTimeStamp timeStamp
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException,
@@ -767,7 +767,7 @@ public interface HlaInteractionManager {
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
    void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID,
       HlaLogicalTime logicalTime
    ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException,
@@ -794,7 +794,7 @@ public interface HlaInteractionManager {
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
    void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID,
       HlaTimeStamp timeStamp,
       HlaLogicalTime logicalTime

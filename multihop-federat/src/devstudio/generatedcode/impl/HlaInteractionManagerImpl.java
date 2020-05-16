@@ -11,6 +11,7 @@ package devstudio.generatedcode.impl;
  */
 
 import devstudio.generatedcode.impl.encoders.BaseEncoder;
+import devstudio.generatedcode.impl.encoders.NodeArrayEncoder;
 import se.pitch.encoders1516.HLAinteger32BE;
 import se.pitch.encoders1516.HLAinteger64BE;
 import se.pitch.encoders1516.HLAopaqueData;
@@ -39,6 +40,9 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    /* @GuardedBy("this") */
    private final HLAinteger64BE _hLAinteger64BEEncoder = BaseEncoder.createHLAinteger64BE();
    private final HLAinteger64BE _hLAinteger64BEDecoder = BaseEncoder.createHLAinteger64BE();
+   /* @GuardedBy("this") */
+   private final NodeArrayEncoder _nodeArrayEncoderEncoder = new NodeArrayEncoder();
+   private final NodeArrayEncoder _nodeArrayEncoderDecoder = new NodeArrayEncoder();
 
    private static final class HlaRequestParametersImpl implements HlaRequestParameters {
       private final ParameterValue<byte[]> _fromNode;
@@ -262,18 +266,18 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    }
 
    private static final class HlaResponseParametersImpl implements HlaResponseParameters {
-      private final ParameterValue<byte[]> _path;
+      private final ParameterValue<byte[][]> _path;
       private final ParameterValue<Long> _transactionID;
       private final HlaFederateId _producingFederate;
       private final boolean _isWithinInterest;
 
       private HlaResponseParametersImpl(
-         ParameterValue<byte[]> path,
+         ParameterValue<byte[][]> path,
          ParameterValue<Long> transactionID,
          HlaFederateId producingFederate,
          boolean isWithinInterest
       ) {
-         _path = new ParameterValue<byte[]>(path);
+         _path = new ParameterValue<byte[][]>(path);
          _transactionID = new ParameterValue<Long>(transactionID);
          _producingFederate = producingFederate;
          _isWithinInterest = isWithinInterest;
@@ -283,14 +287,14 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
          return _path.hasValue();
       }
 
-      public byte[] getPath() throws HlaValueNotSetException {
+      public byte[][] getPath() throws HlaValueNotSetException {
          if (_path.hasValue()) {
             return _path.getValue();
          }
          throw new HlaValueNotSetException("Parameter 'path' not set");
       }
 
-      public byte[] getPath(byte[] defaultValue) {
+      public byte[][] getPath(byte[][] defaultValue) {
          if (_path.hasValue()) {
             return _path.getValue();
          }
@@ -341,12 +345,12 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    public class HlaResponseInteractionImpl implements HlaResponseInteraction {
       private final Object _lock = new Object();
       /* @GuardedBy("_lock") */
-      private final ParameterValue<byte[]> _path;
+      private final ParameterValue<byte[][]> _path;
       /* @GuardedBy("_lock") */
       private final ParameterValue<Long> _transactionID;
 
       private HlaResponseInteractionImpl() {
-         _path = new ParameterValue<byte[]>();
+         _path = new ParameterValue<byte[][]>();
          _transactionID = new ParameterValue<Long>();
       }
 
@@ -365,7 +369,7 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
          return build(HlaInteractionManagerImpl.this._hlaWorld.getFederateId());
       }
 
-      public HlaResponseInteractionImpl setPath(byte[] value) {
+      public HlaResponseInteractionImpl setPath(byte[][] value) {
          if (value == null) {
             throw new NullPointerException();
          }
@@ -605,7 +609,7 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
 
 
    public void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
       HlaResponseInteractionImpl interaction = getHlaResponseInteraction();
@@ -615,7 +619,7 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    }
 
    public void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID,
       HlaTimeStamp timeStamp
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
@@ -626,7 +630,7 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    }
 
    public void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID,
       HlaLogicalTime logicalTime
    ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
@@ -637,7 +641,7 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    }
 
    public void sendResponse(
-      byte[] path,
+      byte[][] path,
       long transactionID,
       HlaTimeStamp timeStamp,
       HlaLogicalTime logicalTime
@@ -683,9 +687,9 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
       synchronized (this) {
          if (parameters.hasPath()) {
             try {
-               _hLAopaqueDataEncoder.setValue(parameters.getPath());
+               _nodeArrayEncoderEncoder.setValue(parameters.getPath());
                nameValueMap.put("Path",
-                                _hLAopaqueDataEncoder.toByteArray(),
+                                _nodeArrayEncoderEncoder.toByteArray(),
                                 false);
             } catch (Throwable t) {
                _hlaWorld.postException(new HlaDecodeException("Failed to encode Path", t));
@@ -908,13 +912,13 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
       interactionData = parameters.get("Path");
       if (interactionData != null) {
          try {
-            _hLAopaqueDataDecoder.decode(interactionData);
-            interaction.setPath(_hLAopaqueDataDecoder.getValue());
+            _nodeArrayEncoderDecoder.decode(interactionData);
+            interaction.setPath(_nodeArrayEncoderDecoder.getValue());
 
-            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _hLAopaqueDataDecoder.getEncodedLength() != interactionData.length) {
+            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _nodeArrayEncoderDecoder.getEncodedLength() != interactionData.length) {
                _hlaWorld.postException(
                   new HlaDecodeException("Failed to decode Path. " +
-                                         "Invalid data length " + interactionData.length + ", expected " + _hLAopaqueDataDecoder.getEncodedLength(),
+                                         "Invalid data length " + interactionData.length + ", expected " + _nodeArrayEncoderDecoder.getEncodedLength(),
                                          interactionData));
             }
          } catch (Throwable t) {

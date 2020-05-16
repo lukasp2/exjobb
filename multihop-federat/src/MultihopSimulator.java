@@ -4,6 +4,7 @@ import devstudio.generatedcode.impl.utils.MinMax;
 import internal.prti1516e.com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -88,8 +89,23 @@ public class MultihopSimulator implements Runnable {
             a.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(i)));
         }
 
-        _hlaRI.setPath(a.toArray(new byte[0][0]));
+
+        byte[][] b = new byte[a.size()][16];
+        b = a.toArray(b);
+
+        printLock.lock();
+        System.out.println("name: " + name);
+        for (byte[] k : b) {
+            System.out.println(Arrays.toString(k));
+        }
+
+        if (b == null) {
+            System.out.println("b is null");
+        }
+
+        _hlaRI.setPath(b);
         _hlaRI.setTransactionID(request.getTransactionID());
         _hlaRI.sendInteraction();
+        printLock.unlock();
     }
 }

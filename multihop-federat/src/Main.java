@@ -109,7 +109,7 @@ public class Main {
         Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread 1", nw, dynamicQueue, nodeIDs, printLock));
         t1.start();
 
-        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread 2", nw, dynamicQueue, printLock);
+        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread 2", nw, dynamicQueue, nodeIDs, printLock);
         t2.run();
 
         _hlaWorld.disconnect();

@@ -18,7 +18,7 @@ public class QueueFillerThread implements Runnable {
 
         for (int fromNode : nw.getConnections().keySet()) {
             for (int toNode : nw.getConnections().get(fromNode).keySet()) {
-                dynamicQueue.addRequest(new Request(fromNode, toNode, nw.getCom()));
+                dynamicQueue.addRequest(new Request(fromNode, toNode, nw.getCom(), 1));
             }
         }
 

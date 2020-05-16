@@ -54,7 +54,7 @@
                 <semantics></semantics>
                 <parameter>
                     <name>Path</name>
-                    <dataType>HLAopaqueData</dataType>
+                    <dataType>NodeArray</dataType>
                     <semantics>A list of nodes to be travesed</semantics>
                 </parameter>
                 <parameter>
@@ -81,7 +81,15 @@
     <dataTypes>
         <simpleDataTypes/>
         <enumeratedDataTypes/>
-        <arrayDataTypes/>
+        <arrayDataTypes>
+            <arrayData>
+                <name>NodeArray</name>
+                <dataType>HLAopaqueData</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics></semantics>
+            </arrayData>
+        </arrayDataTypes>
         <fixedRecordDataTypes/>
         <variantRecordDataTypes/>
     </dataTypes>

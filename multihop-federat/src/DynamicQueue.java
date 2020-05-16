@@ -57,15 +57,6 @@ public class DynamicQueue {
 		return newRequest;
     }
 
-    // fills the queue with random requests
-    public void fill(Network network, int requests) {
-		for (int i = 0; i < requests; ++i) {
-			int[] tf_node = network.getNodes();
-			Request request = new Request(tf_node[0], tf_node[1], network.getCom());
-			addRequest(request);
-		}
-    }
-
     // prints all requests in the queue
     public void print() {
     	queueLock.lock();
