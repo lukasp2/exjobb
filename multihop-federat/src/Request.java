@@ -23,6 +23,8 @@ public class Request {
 	return fromNode;
     }
 
+    public long getTransactionID() { return transactionID; }
+
     public void print() {
 	System.out.println("request: [" + comType + ": " + toNode + "->" + fromNode + "] ");
     }

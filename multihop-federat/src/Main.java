@@ -94,6 +94,24 @@ public class Main {
         }
     };
 
+    public static void sendResponse(ArrayList<Integer> path, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
+        // translate array list integers to byte[] using map in Main and Uuid.Adapter
+
+        HlaInteractionManager.HlaResponseInteraction him = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
+
+        ArrayList<byte[]> a = new ArrayList<>();
+
+        for (int i : path) {
+            byte[] bytenode = UuidAdapter.getArrayBytesFromUUID(nodeIDs.get(i));
+            a.add(bytenode);
+        }
+
+        him.setPath(a.toArray());
+        him.setTransactionID(request.getTransactionID());
+
+        him.sendInteraction();
+    }
+
     public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 

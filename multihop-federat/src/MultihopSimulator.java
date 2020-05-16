@@ -1,6 +1,11 @@
+import devstudio.generatedcode.HlaInteractionListener;
 import devstudio.generatedcode.HlaInteractionManager;
+import devstudio.generatedcode.HlaLogicalTime;
+import devstudio.generatedcode.HlaTimeStamp;
+import devstudio.generatedcode.exceptions.*;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
@@ -56,15 +61,10 @@ public class MultihopSimulator implements Runnable {
 
             // performs A* search in the graph
             // logs.startTime();
-
             ArrayList<Integer> res = graph.aStar(request);
             // logs.Astarstats.add(System.nanoTime() - logs.startTime);
 
-            // translate array list integers to byte[] using map in Main and Uuid.Adapter
-
-            HlaInteractionManager.HlaResponseInteraction.setPath();
-            HlaInteractionManager.HlaResponseInteraction.setTransactionID();
-            HlaInteractionManager.HlaResponseInteraction.sendUpdate();
+            Main.sendResponse(res, request);
         }
 
         // logs.print();
