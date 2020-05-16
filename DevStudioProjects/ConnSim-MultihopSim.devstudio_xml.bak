@@ -21484,6 +21484,18 @@ Orlando, FL 32878-1238, USA
       </objectClass>
     </objectClass>
   </objects>
+  <interactions>
+    <interactionClass name="HLAinteractionRoot" isLocal="false" isRemote="false" srcName="HLAinteractionRoot">
+      <interactionClass name="RequestPath" isLocal="true" isRemote="true" srcName="RequestPath">
+        <parameter name="fromNode" srcName="fromNode" />
+        <parameter name="toNode" srcName="toNode" />
+        <parameter name="comType" srcName="comType" />
+      </interactionClass>
+      <interactionClass name="ResponsePath" isLocal="true" isRemote="true" srcName="ResponsePath">
+        <parameter name="nodeArray" srcName="nodeArray" />
+      </interactionClass>
+    </interactionClass>
+  </interactions>
   <dataTypes>
     <fixedRecordDataTypes>
       <fixedRecordData name="AccelerationVectorStruct" srcName="AccelerationVectorStruct" />

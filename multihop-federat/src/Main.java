@@ -36,9 +36,11 @@ public class Main {
 
             if (!nodeIDs.containsKey(uuid)) {
                 nodeIDs.put(uuid, nextNodeID++);
+                System.out.println("Node " + nodeIDs.get(uuid) + " ADDED (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
             }
-
-            System.out.println("Node added with id: " + nodeIDs.get(uuid) + ", uuid: " + uuid + ", [lat: " + latitude + ", long: " + longitude + "]");
+            else {
+                System.out.println("Node " + nodeIDs.get(uuid) + " UPDATED (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
+            }
 
             nw.addNode(nodeIDs.get(uuid), latitude, longitude);
         }
@@ -67,26 +69,28 @@ public class Main {
 
             // new thread which fills the queue with all possible requests (for brute force)
             new QueueFillerThread(nw, dynamicQueue);
-
-            nw.print();
         }
     };
 
     private final HlaInteractionListener _rrListener = new HlaInteractionListener() {
         @Override
-        public void requestPath(boolean local, HlaInteractionManager.HlaRequestPathParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
-            /*
-            int fromNode = parameters.getFromNode();
-            int toNode = parameters.getToNode();
-            short comType = parameters.getComType();
+        public void request(boolean local, HlaInteractionManager.HlaRequestParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
 
-            dynamicQueue.addRequest(new Request(fromNode, toNode, comType));
-            */
+            UUID fromUuid = UuidAdapter.getUUIDFromBytes(parameters.getFromNode());
+            UUID toUuid = UuidAdapter.getUUIDFromBytes(parameters.getToNode());
+            int comType = parameters.getComType();
+            long transactionID = parameters.getTransactionID();
+
+            if (nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
+                dynamicQueue.addRequest(new Request(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), comType, transactionID));
+            }
+            else {
+                System.out.println("A request for a path between unknown node(s) was received. Ignoring request.");
+            }
         }
 
         @Override
-        public void responsePath(boolean local, HlaInteractionManager.HlaResponsePathParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
-
+        public void response(boolean local, HlaInteractionManager.HlaResponseParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
         }
     };
 
@@ -95,11 +99,14 @@ public class Main {
 
         System.out.println("Simulator ready!");
 
+        // this lock is only for printing, it can be removed later on
+        ReentrantLock printLock = new ReentrantLock();
+
         // threads to serve the queue
-        Thread t1 = new Thread(new MultihopSimulator("thread 1", nw, dynamicQueue));
+        Thread t1 = new Thread(new MultihopSimulator("thread 1", nw, dynamicQueue, printLock));
         t1.start();
 
-        MultihopSimulator t2 = new MultihopSimulator("thread 2", nw, dynamicQueue);
+        MultihopSimulator t2 = new MultihopSimulator("thread 2", nw, dynamicQueue, printLock);
         t2.run();
 
         _hlaWorld.disconnect();

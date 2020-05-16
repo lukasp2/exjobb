@@ -2423,72 +2423,6 @@ If not assigned by the ORBAT specification or similar, shall a value be assigned
     </dataTypes>
     <notes/>
 </objectModel>]]></fom>
-  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/ConnectionSimulation2/PathFinder.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelIdentification>
-        <name>New Module</name>
-        <type>FOM</type>
-        <version>1.0</version>
-        <securityClassification>unclassified</securityClassification>
-        <purpose></purpose>
-        <applicationDomain></applicationDomain>
-        <description>Description of New Module</description>
-        <useLimitation></useLimitation>
-        <other></other>
-    </modelIdentification>
-    <objects>
-        <objectClass>
-            <name>HLAobjectRoot</name>
-        </objectClass>
-    </objects>
-    <interactions>
-        <interactionClass>
-            <name>HLAinteractionRoot</name>
-            <interactionClass>
-                <name>RequestPath</name>
-                <sharing>Neither</sharing>
-                <transportation>HLAreliable</transportation>
-                <order>Receive</order>
-                <semantics>specifies which communication type to be sent over the network</semantics>
-                <parameter>
-                    <name>fromNode</name>
-                    <dataType>HLAinteger64BE</dataType>
-                    <semantics></semantics>
-                </parameter>
-                <parameter>
-                    <name>toNode</name>
-                    <dataType>HLAinteger64BE</dataType>
-                    <semantics></semantics>
-                </parameter>
-                <parameter>
-                    <name>comType</name>
-                    <dataType>HLAinteger16BE</dataType>
-                    <semantics></semantics>
-                </parameter>
-            </interactionClass>
-            <interactionClass>
-                <name>ResponsePath</name>
-                <sharing>Neither</sharing>
-                <transportation>HLAreliable</transportation>
-                <order>Receive</order>
-                <semantics></semantics>
-                <parameter>
-                    <name>nodeArray</name>
-                    <dataType>HLAopaqueData</dataType>
-                    <semantics>Array of the nodes to be traversed in the network</semantics>
-                </parameter>
-            </interactionClass>
-        </interactionClass>
-    </interactions>
-    <dataTypes>
-        <simpleDataTypes/>
-        <enumeratedDataTypes/>
-        <arrayDataTypes/>
-        <fixedRecordDataTypes/>
-        <variantRecordDataTypes/>
-    </dataTypes>
-    <notes/>
-</objectModel>]]></fom>
   <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/ConnectionSimulation2/RPR-Base_v2.0.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelIdentification>
@@ -21462,6 +21396,95 @@ Orlando, FL 32878-1238, USA
         <automaticResignAction resignAction="CancelThenDeleteThenDivest"/>
     </switches>
 </objectModel>]]></fom>
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/VisualOMTProjects/RequestResponse.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>New Module</name>
+        <type>FOM</type>
+        <version>1.0</version>
+        <securityClassification>unclassified</securityClassification>
+        <purpose></purpose>
+        <applicationDomain></applicationDomain>
+        <description>Description of New Module</description>
+        <useLimitation></useLimitation>
+        <other></other>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+            <interactionClass>
+                <name>Request</name>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>Receive</order>
+                <semantics></semantics>
+                <parameter>
+                    <name>fromNode</name>
+                    <dataType>HLAopaqueData</dataType>
+                    <semantics></semantics>
+                </parameter>
+                <parameter>
+                    <name>toNode</name>
+                    <dataType>HLAopaqueData</dataType>
+                    <semantics></semantics>
+                </parameter>
+                <parameter>
+                    <name>comType</name>
+                    <dataType>HLAinteger32BE</dataType>
+                    <semantics></semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>HLAinteger64BE</dataType>
+                    <semantics></semantics>
+                </parameter>
+            </interactionClass>
+            <interactionClass>
+                <name>Response</name>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>Receive</order>
+                <semantics></semantics>
+                <parameter>
+                    <name>Path</name>
+                    <dataType>HLAopaqueData</dataType>
+                    <semantics>A list of nodes to be travesed</semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>HLAinteger64BE</dataType>
+                    <semantics></semantics>
+                </parameter>
+            </interactionClass>
+        </interactionClass>
+    </interactions>
+    <switches>
+        <autoProvide isEnabled="false"/>
+        <conveyRegionDesignatorSets isEnabled="false"/>
+        <conveyProducingFederate isEnabled="false"/>
+        <attributeScopeAdvisory isEnabled="false"/>
+        <attributeRelevanceAdvisory isEnabled="false"/>
+        <objectClassRelevanceAdvisory isEnabled="false"/>
+        <interactionRelevanceAdvisory isEnabled="false"/>
+        <serviceReporting isEnabled="false"/>
+        <exceptionReporting isEnabled="false"/>
+        <delaySubscriptionEvaluation isEnabled="false"/>
+        <automaticResignAction resignAction="CancelThenDeleteThenDivest"/>
+    </switches>
+    <dataTypes>
+        <simpleDataTypes/>
+        <enumeratedDataTypes/>
+        <arrayDataTypes/>
+        <fixedRecordDataTypes/>
+        <variantRecordDataTypes/>
+    </dataTypes>
+    <notes/>
+</objectModel>]]></fom>
   <objects>
     <objectClass name="HLAobjectRoot" srcName="HLAobjectRoot" sharing="NEITHER" isLocal="false" isRemote="false">
       <objectClass name="Communication" srcName="Communication" sharing="NEITHER" isLocal="false" isRemote="false">
@@ -21486,13 +21509,15 @@ Orlando, FL 32878-1238, USA
   </objects>
   <interactions>
     <interactionClass name="HLAinteractionRoot" isLocal="false" isRemote="false" srcName="HLAinteractionRoot">
-      <interactionClass name="RequestPath" isLocal="true" isRemote="true" srcName="RequestPath">
+      <interactionClass name="Request" isLocal="true" isRemote="true" srcName="Request">
         <parameter name="fromNode" srcName="fromNode" />
         <parameter name="toNode" srcName="toNode" />
         <parameter name="comType" srcName="comType" />
+        <parameter name="transactionID" srcName="transactionID" />
       </interactionClass>
-      <interactionClass name="ResponsePath" isLocal="true" isRemote="true" srcName="ResponsePath">
-        <parameter name="nodeArray" srcName="nodeArray" />
+      <interactionClass name="Response" isLocal="true" isRemote="true" srcName="Response">
+        <parameter name="Path" srcName="path" />
+        <parameter name="transactionID" srcName="transactionID" />
       </interactionClass>
     </interactionClass>
   </interactions>

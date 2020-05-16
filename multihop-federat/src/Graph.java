@@ -1,11 +1,4 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.PriorityQueue;
-import java.util.Comparator;
+import java.util.*;
 import java.lang.Math;
 
 public class Graph {
@@ -95,48 +88,34 @@ public class Graph {
 
     // defines the graph traversal path
     class Path {
-		private final Map<Integer, Integer> steps;
-
-		Path() {
-			steps = new HashMap<>();
-		}
+		Path() { }
+		private final Map<Integer, Integer> steps = new HashMap<>();
 
 		public void addStep(int me, int prev) {
 			steps.put(me, prev);
 		}
 
-		public void printResult(int goal) {
-			if (steps.containsKey(goal)) {
+		public ArrayList<Integer> getPath(int goal) {
+			ArrayList<Integer> path = new ArrayList<Integer>();
+
 			int curr = goal;
 			while (steps.get(curr) != -1) {
-				if (VERBOSE) { System.out.print(curr + " <- "); }
+				path.add(curr);
 				curr = steps.get(curr);
 			}
-			if (VERBOSE) { System.out.println(curr); }
-			}
-			else {
-					if (VERBOSE) {
-				System.out.println("\nno path was found ..."); }
-			}
+			path.add(curr);
 
 			if (PLOT) { fw.writeResult(steps, nodes, goal); }
+
+			return path;
 		}
     }
 
     // defines an A* search algorithm
-    public void aStar(Request request) {
-    	int start_i = request.getFromNode();
-    	int goal_i = request.getToNode();
+    public ArrayList<Integer> aStar(Request request) {
+		int maxhops = radio.getMaxHops(request.getRequestType());
 
-    	int maxhops = radio.getMaxHops(request.getRequestType());
-
-    	System.out.println("start: " + start_i + ", goal: " + goal_i + ". Nodes size " + nodes.size() );
-    	for(Node node : nodes) {
-    		System.out.print(node.id + " ");
-		}
-
-		System.out.println();
-		Node start = nodes.get(request.getFromNode());
+		Node fromNode = nodes.get(request.getFromNode());
 		Node goal = nodes.get(request.getToNode());
 
 		// heuristic based on distance to the goal
@@ -152,35 +131,15 @@ public class Graph {
 			return (int) (n1ddist - n2ddist);
 		};
 
-		// heuristic based on -latency * bandwidth * (1-packetloss)
-			/*
-		Comparator<Node> connectionComparator = new Comparator<Node>() {
-			@Override
-			public int compare(Node n1, Node n2) {
-				double n1conn = -xmlRW.readCell(n1.id, goal.id, xmlRW.LATENCY)
-				* xmlRW.readCell(n1.id, goal.id, xmlRW.BANDWIDTH)
-				* (1 - xmlRW.readCell(n1.id, goal.id, xmlRW.PACKETLOSS));
-
-				double n2conn = -xmlRW.readCell(n2.id, goal.id, xmlRW.LATENCY)
-				* xmlRW.readCell(n2.id, goal.id, xmlRW.BANDWIDTH)
-				* (1 - xmlRW.readCell(n2.id, goal.id, xmlRW.PACKETLOSS));
-
-				return (int)(n1conn - n2conn);
-			}
-			};
-
-			PriorityQueue<Node> prioQueue = new PriorityQueue<>(connectionComparator);
-		*/
-
 		PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeDistanceComparator);
 
-		prioQueue.add(start);
+		prioQueue.add(fromNode);
 
 		Path path = new Path();
-		path.addStep(start.id, -1);
+		path.addStep(fromNode.id, -1);
 
-		start.visited = true;
-		start.previous_node = start;
+		fromNode.visited = true;
+		fromNode.previous_node = fromNode;
 
 		while (!prioQueue.isEmpty()) {
 			Node curr = prioQueue.poll();
@@ -214,7 +173,7 @@ public class Graph {
 			}
 		}
 
-		path.printResult(goal.id);
+		return path.getPath(goal.id);
     }
 
     // defines an breadth first search (BFS) algorithm
@@ -263,11 +222,11 @@ public class Graph {
 			}
 		}
 
-		path.printResult(goal.id);
+		path.getPath(goal.id);
     }
     
     public void print() {
-		System.out.format("%10s\n", "Graph Adjecency List");
+		System.out.format("%10s\n", "Graph Adjacency List");
 		for (Node node : nodes) {
 			System.out.print("Node " + node.id + " | ");
 			for (int k = 0; k < node.neighbours.size(); ++k) {

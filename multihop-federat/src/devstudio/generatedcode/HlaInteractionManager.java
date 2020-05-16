@@ -30,15 +30,15 @@ public interface HlaInteractionManager {
     *
     * <table summary="All interactions">
     * <tr><td><b>Enum constant</b></td><td><b>Java name</b></td><td><b>FOM name</b></td></tr>
-    * <tr><td>REQUEST_PATH</td><td>RequestPath</td><td><code>HLAinteractionRoot.RequestPath</code></td></tr>
-    * <tr><td>RESPONSE_PATH</td><td>ResponsePath</td><td><code>HLAinteractionRoot.ResponsePath</code></td></tr>
+    * <tr><td>REQUEST</td><td>Request</td><td><code>HLAinteractionRoot.Request</code></td></tr>
+    * <tr><td>RESPONSE</td><td>Response</td><td><code>HLAinteractionRoot.Response</code></td></tr>
     * </table>
     */
    enum Interaction {
-      /** RequestPath (FOM name <code>HLAinteractionRoot.RequestPath</code>) */
-      REQUEST_PATH("HLAinteractionRoot.RequestPath"),
-      /** ResponsePath (FOM name <code>HLAinteractionRoot.ResponsePath</code>) */
-      RESPONSE_PATH("HLAinteractionRoot.ResponsePath");
+      /** Request (FOM name <code>HLAinteractionRoot.Request</code>) */
+      REQUEST("HLAinteractionRoot.Request"),
+      /** Response (FOM name <code>HLAinteractionRoot.Response</code>) */
+      RESPONSE("HLAinteractionRoot.Response");
 
       private static final Map<String, Interaction> NAMES;
 
@@ -77,13 +77,13 @@ public interface HlaInteractionManager {
    }
 
    /**
-    * Interface for getting HLAinteractionRoot.RequestPath parameters
+    * Interface for getting HLAinteractionRoot.Request parameters
     * <p>
     * This class is <code>Immutable</code> (and therefore <code>ThreadSafe</code>)
  * as defined by <i>Java Concurrency in Practice</i>,
  * see <a href="http://jcip.net/annotations/doc/net/jcip/annotations/package-summary.html">jcip.net</a>.
     */
-    public interface HlaRequestPathParameters {
+    public interface HlaRequestParameters {
 
       /**
        * Returns true if a valid value for fromNode is available.
@@ -98,25 +98,25 @@ public interface HlaInteractionManager {
        * Returns the value of the fromNode parameter.
        *
        * <br>Description from the FOM: <i></i>
-       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       * <br>Description of the data type from the FOM: <i></i>
        *
        * @return the fromNode
        *
        * @throws HlaValueNotSetException if value was not set
        */
-       public long getFromNode() throws HlaValueNotSetException;
+       public byte[] getFromNode() throws HlaValueNotSetException;
 
       /**
        * Returns the value of the fromNode parameter, or <code>defaultValue</code> if value was not set.
        *
        * <br>Description from the FOM: <i></i>
-       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       * <br>Description of the data type from the FOM: <i></i>
        *
        * @param defaultValue default value
        *
        * @return the fromNode or <code>defaultValue</code> if not set
        */
-       public long getFromNode(long defaultValue);
+       public byte[] getFromNode(byte[] defaultValue);
 
       /**
        * Returns true if a valid value for toNode is available.
@@ -131,25 +131,25 @@ public interface HlaInteractionManager {
        * Returns the value of the toNode parameter.
        *
        * <br>Description from the FOM: <i></i>
-       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       * <br>Description of the data type from the FOM: <i></i>
        *
        * @return the toNode
        *
        * @throws HlaValueNotSetException if value was not set
        */
-       public long getToNode() throws HlaValueNotSetException;
+       public byte[] getToNode() throws HlaValueNotSetException;
 
       /**
        * Returns the value of the toNode parameter, or <code>defaultValue</code> if value was not set.
        *
        * <br>Description from the FOM: <i></i>
-       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       * <br>Description of the data type from the FOM: <i></i>
        *
        * @param defaultValue default value
        *
        * @return the toNode or <code>defaultValue</code> if not set
        */
-       public long getToNode(long defaultValue);
+       public byte[] getToNode(byte[] defaultValue);
 
       /**
        * Returns true if a valid value for comType is available.
@@ -164,25 +164,58 @@ public interface HlaInteractionManager {
        * Returns the value of the comType parameter.
        *
        * <br>Description from the FOM: <i></i>
-       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^15, 2^15 - 1]</i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^31, 2^31 - 1]</i>
        *
        * @return the comType
        *
        * @throws HlaValueNotSetException if value was not set
        */
-       public short getComType() throws HlaValueNotSetException;
+       public int getComType() throws HlaValueNotSetException;
 
       /**
        * Returns the value of the comType parameter, or <code>defaultValue</code> if value was not set.
        *
        * <br>Description from the FOM: <i></i>
-       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^15, 2^15 - 1]</i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^31, 2^31 - 1]</i>
        *
        * @param defaultValue default value
        *
        * @return the comType or <code>defaultValue</code> if not set
        */
-       public short getComType(short defaultValue);
+       public int getComType(int defaultValue);
+
+      /**
+       * Returns true if a valid value for transactionID is available.
+       *
+       * <br>Description from the FOM: <i></i>
+       *
+       * @return true if transactionID is valid
+       */
+       public boolean hasTransactionID();
+
+      /**
+       * Returns the value of the transactionID parameter.
+       *
+       * <br>Description from the FOM: <i></i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       *
+       * @return the transactionID
+       *
+       * @throws HlaValueNotSetException if value was not set
+       */
+       public long getTransactionID() throws HlaValueNotSetException;
+
+      /**
+       * Returns the value of the transactionID parameter, or <code>defaultValue</code> if value was not set.
+       *
+       * <br>Description from the FOM: <i></i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       *
+       * @param defaultValue default value
+       *
+       * @return the transactionID or <code>defaultValue</code> if not set
+       */
+       public long getTransactionID(long defaultValue);
 
       /**
        * Get the HlaFederateId for the federate that sent this interaction.
@@ -207,51 +240,63 @@ public interface HlaInteractionManager {
     }
 
   /**
-   *  Interface for creating a HlaRequestPathInteraction
+   *  Interface for creating a HlaRequestInteraction
    * <p>
    * This class is <code>ThreadSafe</code> as defined by <i>Java Concurrency in Practice</i>,
  * see <a href="http://jcip.net/annotations/doc/net/jcip/annotations/package-summary.html">jcip.net</a>.
    */
-   public interface HlaRequestPathInteraction {
+   public interface HlaRequestInteraction {
 
      /**
       * Sets the value for fromNode.
       * <br>Description from the FOM: <i></i>
-      * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+      * <br>Description of the data type from the FOM: <i></i>
       *
       * @param fromNode value to set
       *
       * @return the updated interaction
       *
       */
-      public HlaRequestPathInteraction setFromNode(Long fromNode);
+      public HlaRequestInteraction setFromNode(byte[] fromNode);
 
      /**
       * Sets the value for toNode.
       * <br>Description from the FOM: <i></i>
-      * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+      * <br>Description of the data type from the FOM: <i></i>
       *
       * @param toNode value to set
       *
       * @return the updated interaction
       *
       */
-      public HlaRequestPathInteraction setToNode(Long toNode);
+      public HlaRequestInteraction setToNode(byte[] toNode);
 
      /**
       * Sets the value for comType.
       * <br>Description from the FOM: <i></i>
-      * <br>Description of the data type from the FOM: <i>Integer in the range [-2^15, 2^15 - 1]</i>
+      * <br>Description of the data type from the FOM: <i>Integer in the range [-2^31, 2^31 - 1]</i>
       *
       * @param comType value to set
       *
       * @return the updated interaction
       *
       */
-      public HlaRequestPathInteraction setComType(Short comType);
+      public HlaRequestInteraction setComType(Integer comType);
 
      /**
-      * Send the HlaRequestPathInteraction
+      * Sets the value for transactionID.
+      * <br>Description from the FOM: <i></i>
+      * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+      *
+      * @param transactionID value to set
+      *
+      * @return the updated interaction
+      *
+      */
+      public HlaRequestInteraction setTransactionID(Long transactionID);
+
+     /**
+      * Send the HlaRequestInteraction
       *
       * @throws HlaNotConnectedException if the federate is not connected
       * @throws HlaFomException if the FOM is invalid
@@ -264,7 +309,7 @@ public interface HlaInteractionManager {
                                            HlaSaveInProgressException, HlaRestoreInProgressException;
 
      /**
-      * Send the HlaRequestPathInteraction with a specified timestamp
+      * Send the HlaRequestInteraction with a specified timestamp
       *
       * @param timeStamp timestamp to send for this interaction
       *
@@ -279,7 +324,7 @@ public interface HlaInteractionManager {
                                                                        HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException;
 
      /**
-      * Send the HlaRequestPathInteraction with a specified logical time.
+      * Send the HlaRequestInteraction with a specified logical time.
       *
       * @param logicalTime logical time to send for this interaction
       *
@@ -296,7 +341,7 @@ public interface HlaInteractionManager {
                                                                            HlaRestoreInProgressException;
 
      /**
-      * Send the HlaRequestPathInteraction with a specified timestamp and logical time.
+      * Send the HlaRequestInteraction with a specified timestamp and logical time.
       *
       * @param timeStamp timestamp to send for this interaction
       * @param logicalTime logical time to send for this interaction
@@ -315,53 +360,86 @@ public interface HlaInteractionManager {
    }
 
   /**
-   * Get a HlaRequestPathInteraction
+   * Get a HlaRequestInteraction
    *
    * @return An interaction
    */
-   HlaRequestPathInteraction getHlaRequestPathInteraction();
+   HlaRequestInteraction getHlaRequestInteraction();
 
    /**
-    * Interface for getting HLAinteractionRoot.ResponsePath parameters
+    * Interface for getting HLAinteractionRoot.Response parameters
     * <p>
     * This class is <code>Immutable</code> (and therefore <code>ThreadSafe</code>)
  * as defined by <i>Java Concurrency in Practice</i>,
  * see <a href="http://jcip.net/annotations/doc/net/jcip/annotations/package-summary.html">jcip.net</a>.
     */
-    public interface HlaResponsePathParameters {
+    public interface HlaResponseParameters {
 
       /**
-       * Returns true if a valid value for nodeArray is available.
+       * Returns true if a valid value for path is available.
        *
-       * <br>Description from the FOM: <i>Array of the nodes to be traversed in the network</i>
+       * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
        *
-       * @return true if nodeArray is valid
+       * @return true if path is valid
        */
-       public boolean hasNodeArray();
+       public boolean hasPath();
 
       /**
-       * Returns the value of the nodeArray parameter.
+       * Returns the value of the path parameter.
        *
-       * <br>Description from the FOM: <i>Array of the nodes to be traversed in the network</i>
+       * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
        * <br>Description of the data type from the FOM: <i></i>
        *
-       * @return the nodeArray
+       * @return the path
        *
        * @throws HlaValueNotSetException if value was not set
        */
-       public byte[] getNodeArray() throws HlaValueNotSetException;
+       public byte[] getPath() throws HlaValueNotSetException;
 
       /**
-       * Returns the value of the nodeArray parameter, or <code>defaultValue</code> if value was not set.
+       * Returns the value of the path parameter, or <code>defaultValue</code> if value was not set.
        *
-       * <br>Description from the FOM: <i>Array of the nodes to be traversed in the network</i>
+       * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
        * <br>Description of the data type from the FOM: <i></i>
        *
        * @param defaultValue default value
        *
-       * @return the nodeArray or <code>defaultValue</code> if not set
+       * @return the path or <code>defaultValue</code> if not set
        */
-       public byte[] getNodeArray(byte[] defaultValue);
+       public byte[] getPath(byte[] defaultValue);
+
+      /**
+       * Returns true if a valid value for transactionID is available.
+       *
+       * <br>Description from the FOM: <i></i>
+       *
+       * @return true if transactionID is valid
+       */
+       public boolean hasTransactionID();
+
+      /**
+       * Returns the value of the transactionID parameter.
+       *
+       * <br>Description from the FOM: <i></i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       *
+       * @return the transactionID
+       *
+       * @throws HlaValueNotSetException if value was not set
+       */
+       public long getTransactionID() throws HlaValueNotSetException;
+
+      /**
+       * Returns the value of the transactionID parameter, or <code>defaultValue</code> if value was not set.
+       *
+       * <br>Description from the FOM: <i></i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       *
+       * @param defaultValue default value
+       *
+       * @return the transactionID or <code>defaultValue</code> if not set
+       */
+       public long getTransactionID(long defaultValue);
 
       /**
        * Get the HlaFederateId for the federate that sent this interaction.
@@ -386,27 +464,39 @@ public interface HlaInteractionManager {
     }
 
   /**
-   *  Interface for creating a HlaResponsePathInteraction
+   *  Interface for creating a HlaResponseInteraction
    * <p>
    * This class is <code>ThreadSafe</code> as defined by <i>Java Concurrency in Practice</i>,
  * see <a href="http://jcip.net/annotations/doc/net/jcip/annotations/package-summary.html">jcip.net</a>.
    */
-   public interface HlaResponsePathInteraction {
+   public interface HlaResponseInteraction {
 
      /**
-      * Sets the value for nodeArray.
-      * <br>Description from the FOM: <i>Array of the nodes to be traversed in the network</i>
+      * Sets the value for path.
+      * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
       * <br>Description of the data type from the FOM: <i></i>
       *
-      * @param nodeArray value to set
+      * @param path value to set
       *
       * @return the updated interaction
       *
       */
-      public HlaResponsePathInteraction setNodeArray(byte[] nodeArray);
+      public HlaResponseInteraction setPath(byte[] path);
 
      /**
-      * Send the HlaResponsePathInteraction
+      * Sets the value for transactionID.
+      * <br>Description from the FOM: <i></i>
+      * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+      *
+      * @param transactionID value to set
+      *
+      * @return the updated interaction
+      *
+      */
+      public HlaResponseInteraction setTransactionID(Long transactionID);
+
+     /**
+      * Send the HlaResponseInteraction
       *
       * @throws HlaNotConnectedException if the federate is not connected
       * @throws HlaFomException if the FOM is invalid
@@ -419,7 +509,7 @@ public interface HlaInteractionManager {
                                            HlaSaveInProgressException, HlaRestoreInProgressException;
 
      /**
-      * Send the HlaResponsePathInteraction with a specified timestamp
+      * Send the HlaResponseInteraction with a specified timestamp
       *
       * @param timeStamp timestamp to send for this interaction
       *
@@ -434,7 +524,7 @@ public interface HlaInteractionManager {
                                                                        HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException;
 
      /**
-      * Send the HlaResponsePathInteraction with a specified logical time.
+      * Send the HlaResponseInteraction with a specified logical time.
       *
       * @param logicalTime logical time to send for this interaction
       *
@@ -451,7 +541,7 @@ public interface HlaInteractionManager {
                                                                            HlaRestoreInProgressException;
 
      /**
-      * Send the HlaResponsePathInteraction with a specified timestamp and logical time.
+      * Send the HlaResponseInteraction with a specified timestamp and logical time.
       *
       * @param timeStamp timestamp to send for this interaction
       * @param logicalTime logical time to send for this interaction
@@ -470,24 +560,27 @@ public interface HlaInteractionManager {
    }
 
   /**
-   * Get a HlaResponsePathInteraction
+   * Get a HlaResponseInteraction
    *
    * @return An interaction
    */
-   HlaResponsePathInteraction getHlaResponsePathInteraction();
+   HlaResponseInteraction getHlaResponseInteraction();
 
    /**
-    * Sends the <code>HLAinteractionRoot.RequestPath</code> interaction.
+    * Sends the <code>HLAinteractionRoot.Request</code> interaction.
     *
     * @param fromNode   represents the <code>fromNode</code> from the FOM.
     * <br>Description from the FOM: <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+    * <br>Description of the data type from the FOM: <i></i>
     * @param toNode   represents the <code>toNode</code> from the FOM.
     * <br>Description from the FOM: <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+    * <br>Description of the data type from the FOM: <i></i>
     * @param comType   represents the <code>comType</code> from the FOM.
     * <br>Description from the FOM: <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^15, 2^15 - 1]</i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^31, 2^31 - 1]</i>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM: <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
     *
     * @throws HlaNotConnectedException if the federate is not connected
     * @throws HlaFomException if the FOM is invalid
@@ -496,25 +589,29 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendRequestPath(
-      long fromNode,
-      long toNode,
-      short comType
+   void sendRequest(
+      byte[] fromNode,
+      byte[] toNode,
+      int comType,
+      long transactionID
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException,
             HlaSaveInProgressException, HlaRestoreInProgressException;
 
    /**
-    * Sends the <code>HLAinteractionRoot.RequestPath</code> interaction with a specified timestamp.
+    * Sends the <code>HLAinteractionRoot.Request</code> interaction with a specified timestamp.
     *
     * @param fromNode   represents the <code>fromNode</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i></i><br>
     * @param toNode   represents the <code>toNode</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i></i><br>
     * @param comType   represents the <code>comType</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^15, 2^15 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^31, 2^31 - 1]</i><br>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
     * @param timeStamp timestamp to send for this interaction
     *
     * @throws HlaNotConnectedException if the federate is not connected
@@ -524,26 +621,30 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendRequestPath(
-      long fromNode,
-      long toNode,
-      short comType,
+   void sendRequest(
+      byte[] fromNode,
+      byte[] toNode,
+      int comType,
+      long transactionID,
       HlaTimeStamp timeStamp
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException,
             HlaSaveInProgressException, HlaRestoreInProgressException;
 
    /**
-    * Sends the <code>HLAinteractionRoot.RequestPath</code> interaction with a specified logical time.
+    * Sends the <code>HLAinteractionRoot.Request</code> interaction with a specified logical time.
     *
     * @param fromNode   represents the <code>fromNode</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i></i><br>
     * @param toNode   represents the <code>toNode</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i></i><br>
     * @param comType   represents the <code>comType</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^15, 2^15 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^31, 2^31 - 1]</i><br>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
     * @param logicalTime logical time to send for this interaction
     *
     * @throws HlaNotConnectedException if the federate is not connected
@@ -554,26 +655,30 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendRequestPath(
-      long fromNode,
-      long toNode,
-      short comType,
+   void sendRequest(
+      byte[] fromNode,
+      byte[] toNode,
+      int comType,
+      long transactionID,
       HlaLogicalTime logicalTime
    ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException,
             HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException;
 
    /**
-    * Sends the <code>HLAinteractionRoot.RequestPath</code> interaction with a specified timestamp and logical time.
+    * Sends the <code>HLAinteractionRoot.Request</code> interaction with a specified timestamp and logical time.
     *
     * @param fromNode   represents the <code>fromNode</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i></i><br>
     * @param toNode   represents the <code>toNode</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i></i><br>
     * @param comType   represents the <code>comType</code> from the FOM.
     * <br>Description from the FOM <i></i>
-    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^15, 2^15 - 1]</i><br>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^31, 2^31 - 1]</i><br>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
     * @param timeStamp timestamp to send for this interaction
     * @param logicalTime logical time to send for this interaction
     *
@@ -585,20 +690,24 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendRequestPath(
-      long fromNode,
-      long toNode,
-      short comType,
+   void sendRequest(
+      byte[] fromNode,
+      byte[] toNode,
+      int comType,
+      long transactionID,
       HlaTimeStamp timeStamp,
       HlaLogicalTime logicalTime
    ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException,
             HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException;
    /**
-    * Sends the <code>HLAinteractionRoot.ResponsePath</code> interaction.
+    * Sends the <code>HLAinteractionRoot.Response</code> interaction.
     *
-    * @param nodeArray   represents the <code>nodeArray</code> from the FOM.
-    * <br>Description from the FOM: <i>Array of the nodes to be traversed in the network</i>
+    * @param path   represents the <code>Path</code> from the FOM.
+    * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
     * <br>Description of the data type from the FOM: <i></i>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM: <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
     *
     * @throws HlaNotConnectedException if the federate is not connected
     * @throws HlaFomException if the FOM is invalid
@@ -607,17 +716,21 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendResponsePath(
-      byte[] nodeArray
+   void sendResponse(
+      byte[] path,
+      long transactionID
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException,
             HlaSaveInProgressException, HlaRestoreInProgressException;
 
    /**
-    * Sends the <code>HLAinteractionRoot.ResponsePath</code> interaction with a specified timestamp.
+    * Sends the <code>HLAinteractionRoot.Response</code> interaction with a specified timestamp.
     *
-    * @param nodeArray   represents the <code>nodeArray</code> from the FOM.
-    * <br>Description from the FOM <i>Array of the nodes to be traversed in the network</i>
+    * @param path   represents the <code>Path</code> from the FOM.
+    * <br>Description from the FOM <i>A list of nodes to be travesed</i>
     * <br>Description of the data type from the FOM: <i></i><br>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
     * @param timeStamp timestamp to send for this interaction
     *
     * @throws HlaNotConnectedException if the federate is not connected
@@ -627,18 +740,22 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendResponsePath(
-      byte[] nodeArray,
+   void sendResponse(
+      byte[] path,
+      long transactionID,
       HlaTimeStamp timeStamp
    ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException,
             HlaSaveInProgressException, HlaRestoreInProgressException;
 
    /**
-    * Sends the <code>HLAinteractionRoot.ResponsePath</code> interaction with a specified logical time.
+    * Sends the <code>HLAinteractionRoot.Response</code> interaction with a specified logical time.
     *
-    * @param nodeArray   represents the <code>nodeArray</code> from the FOM.
-    * <br>Description from the FOM <i>Array of the nodes to be traversed in the network</i>
+    * @param path   represents the <code>Path</code> from the FOM.
+    * <br>Description from the FOM <i>A list of nodes to be travesed</i>
     * <br>Description of the data type from the FOM: <i></i><br>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
     * @param logicalTime logical time to send for this interaction
     *
     * @throws HlaNotConnectedException if the federate is not connected
@@ -649,18 +766,22 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendResponsePath(
-      byte[] nodeArray,
+   void sendResponse(
+      byte[] path,
+      long transactionID,
       HlaLogicalTime logicalTime
    ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException,
             HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException;
 
    /**
-    * Sends the <code>HLAinteractionRoot.ResponsePath</code> interaction with a specified timestamp and logical time.
+    * Sends the <code>HLAinteractionRoot.Response</code> interaction with a specified timestamp and logical time.
     *
-    * @param nodeArray   represents the <code>nodeArray</code> from the FOM.
-    * <br>Description from the FOM <i>Array of the nodes to be traversed in the network</i>
+    * @param path   represents the <code>Path</code> from the FOM.
+    * <br>Description from the FOM <i>A list of nodes to be travesed</i>
     * <br>Description of the data type from the FOM: <i></i><br>
+    * @param transactionID   represents the <code>transactionID</code> from the FOM.
+    * <br>Description from the FOM <i></i>
+    * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i><br>
     * @param timeStamp timestamp to send for this interaction
     * @param logicalTime logical time to send for this interaction
     *
@@ -672,8 +793,9 @@ public interface HlaInteractionManager {
     * @throws HlaSaveInProgressException if a federation save is in progress
     * @throws HlaRestoreInProgressException if a federation restore is in progress
     */
-   void sendResponsePath(
-      byte[] nodeArray,
+   void sendResponse(
+      byte[] path,
+      long transactionID,
       HlaTimeStamp timeStamp,
       HlaLogicalTime logicalTime
    ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException,

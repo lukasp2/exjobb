@@ -117,7 +117,8 @@ public class ConnectionSimulator {
 
         initialUpdater.sendUpdate();
 
-        //Thread.sleep(10000);
+        // prevent disconnecting from federation prematurely
+        Thread.sleep(1000);
 
         _hlaWorld.disconnect();
     }

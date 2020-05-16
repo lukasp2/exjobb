@@ -18,7 +18,7 @@ package devstudio.generatedcode;
 public interface HlaInteractionListener {
 
    /**
-    * This method is invoked when an HLA <code>HLAinteractionRoot.RequestPath</code> interaction is received,
+    * This method is invoked when an HLA <code>HLAinteractionRoot.Request</code> interaction is received,
     * (or is sent locally).
     *
     * @param local <code>true</code> if the interaction was sent locally <code>false</code> otherwise
@@ -26,15 +26,15 @@ public interface HlaInteractionListener {
     * @param timeStamp the time when the interaction was sent
     * @param logicalTime the logical time when the interaction was sent
     */
-   void requestPath(
+   void request(
       boolean local,
-      HlaInteractionManager.HlaRequestPathParameters parameters,
+      HlaInteractionManager.HlaRequestParameters parameters,
       HlaTimeStamp timeStamp,
       HlaLogicalTime logicalTime
    );
 
    /**
-    * This method is invoked when an HLA <code>HLAinteractionRoot.ResponsePath</code> interaction is received,
+    * This method is invoked when an HLA <code>HLAinteractionRoot.Response</code> interaction is received,
     * (or is sent locally).
     *
     * @param local <code>true</code> if the interaction was sent locally <code>false</code> otherwise
@@ -42,9 +42,9 @@ public interface HlaInteractionListener {
     * @param timeStamp the time when the interaction was sent
     * @param logicalTime the logical time when the interaction was sent
     */
-   void responsePath(
+   void response(
       boolean local,
-      HlaInteractionManager.HlaResponsePathParameters parameters,
+      HlaInteractionManager.HlaResponseParameters parameters,
       HlaTimeStamp timeStamp,
       HlaLogicalTime logicalTime
    );
@@ -55,16 +55,16 @@ public interface HlaInteractionListener {
     * It might be used as a base class for a listener.
     */
    public abstract static class Adapter implements HlaInteractionListener {
-      public void requestPath(
+      public void request(
          boolean local,
-         HlaInteractionManager.HlaRequestPathParameters parameters,
+         HlaInteractionManager.HlaRequestParameters parameters,
          HlaTimeStamp timeStamp,
          HlaLogicalTime logicalTime
        ) {}
 
-      public void responsePath(
+      public void response(
          boolean local,
-         HlaInteractionManager.HlaResponsePathParameters parameters,
+         HlaInteractionManager.HlaResponseParameters parameters,
          HlaTimeStamp timeStamp,
          HlaLogicalTime logicalTime
        ) {}

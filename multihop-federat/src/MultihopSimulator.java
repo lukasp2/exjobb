@@ -1,12 +1,16 @@
+import devstudio.generatedcode.HlaInteractionManager;
+
+import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
-    public MultihopSimulator(String name, Network nw, DynamicQueue dynamicQueue) {
+    public MultihopSimulator(String name, Network nw, DynamicQueue dynamicQueue, ReentrantLock printLock) {
         // stores network and dynamic queue as references.
         this.nw = nw;
         this.dynamicQueue = dynamicQueue;
         this.name = name;
+        this.printLock = printLock;
 
         Thread t = new Thread(this);
         t.start();
@@ -14,6 +18,8 @@ public class MultihopSimulator implements Runnable {
 
     public Network nw;
     public DynamicQueue dynamicQueue;
+
+    public ReentrantLock printLock;
 
     private int prevRequestType = -1;
 
@@ -30,17 +36,20 @@ public class MultihopSimulator implements Runnable {
         while (true) {
             Request request = dynamicQueue.poll(); // request.print();
 
-            System.out.print(name + " serving "); request.print();
+            printLock.lock();
+            System.out.print(name + " picked up "); request.print();
+            //System.out.println();
+            printLock.unlock();
 
             // Building graph
             if (request.getRequestType() != prevRequestType) // also rebuild immediately if the network changes?
             {
-                prevRequestType = request.getRequestType();
-
                 //logs.startTime();
                 graph = new Graph(nw, request.getRequestType()); // graph.print();
                 //logs.graphstats.add(System.nanoTime() - logs.startTime);
                 //logs.graphRebuilds++;
+
+                prevRequestType = request.getRequestType();
             }
 
             //logs.branchFactors.add(graph.branchingFactor);
@@ -48,8 +57,14 @@ public class MultihopSimulator implements Runnable {
             // performs A* search in the graph
             // logs.startTime();
 
-            graph.aStar(request);
+            ArrayList<Integer> res = graph.aStar(request);
             // logs.Astarstats.add(System.nanoTime() - logs.startTime);
+
+            // translate array list integers to byte[] using map in Main and Uuid.Adapter
+
+            HlaInteractionManager.HlaResponseInteraction.setPath();
+            HlaInteractionManager.HlaResponseInteraction.setTransactionID();
+            HlaInteractionManager.HlaResponseInteraction.sendUpdate();
         }
 
         // logs.print();
@@ -57,7 +72,5 @@ public class MultihopSimulator implements Runnable {
         // logs.printBFS2();
         // logs.printAstar2();
         // logs.printBuild();
-
-        // _hlaWorld.disconnect();
     }
 }
