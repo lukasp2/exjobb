@@ -21509,13 +21509,13 @@ Orlando, FL 32878-1238, USA
   </objects>
   <interactions>
     <interactionClass name="HLAinteractionRoot" isLocal="false" isRemote="false" srcName="HLAinteractionRoot">
-      <interactionClass name="Request" isLocal="true" isRemote="true" srcName="Request">
+      <interactionClass name="Request" isLocal="false" isRemote="true" srcName="Request">
         <parameter name="fromNode" srcName="fromNode" />
         <parameter name="toNode" srcName="toNode" />
         <parameter name="comType" srcName="comType" />
         <parameter name="transactionID" srcName="transactionID" />
       </interactionClass>
-      <interactionClass name="Response" isLocal="true" isRemote="true" srcName="Response">
+      <interactionClass name="Response" isLocal="true" isRemote="false" srcName="Response">
         <parameter name="Path" srcName="path" />
         <parameter name="transactionID" srcName="transactionID" />
       </interactionClass>

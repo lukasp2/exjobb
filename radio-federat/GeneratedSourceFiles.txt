@@ -51,7 +51,9 @@ src/devstudio/generatedcode/exceptions/HlaRestoreFederateException.java
 src/devstudio/generatedcode/exceptions/HlaSaveInProgressException.java
 src/devstudio/generatedcode/exceptions/HlaRestoreInProgressException.java
 src/devstudio/generatedcode/exceptions/package-info.java
+src/devstudio/generatedcode/impl/encoders/NodeArrayEncoder.java
 src/devstudio/generatedcode/impl/encoders/BaseEncoder.java
+src/devstudio/generatedcode/impl/encoders/AbstractVariableArrayEncoder.java
 src/devstudio/generatedcode/impl/HlaFederateIdImpl.java
 src/devstudio/generatedcode/impl/HlaLogicalTimeImpl.java
 src/devstudio/generatedcode/impl/NotificationQueue.java

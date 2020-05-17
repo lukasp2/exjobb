@@ -21,11 +21,8 @@ public class ConnectionSimulator {
     }
 
     // called when file DATAFILE is read and a new ID is found.
-    public void createObject(Scanner scanner, byte[] id) throws HlaNotConnectedException, HlaRtiException, HlaInternalException, HlaAttributeNotOwnedException {
+    public void createObject(Scanner scanner, byte[] id, double latitude, double longitude) throws HlaNotConnectedException, HlaRtiException, HlaInternalException, HlaAttributeNotOwnedException {
         visitedIDs.put(UuidAdapter.getUUIDFromBytes(id), true);
-
-        double latitude = getDoubleFromFile(scanner);
-        double longitude = getDoubleFromFile(scanner);
 
         GeodeticLocation loc1 = GeodeticLocation.createGeodeticLocation(latitude, longitude, 1000.0);
         WorldLocation xyz = GeodeticLocation.createWorldLocation(loc1);
@@ -52,10 +49,9 @@ public class ConnectionSimulator {
         int ID = scanner.nextInt();
         if (!uuidMap.containsKey(ID)) {
             uuidMap.put(ID, UuidAdapter.getUUIDFromInt(ID));
-
         }
         System.out.print(ID + "\t\t");
-        
+
         return UuidAdapter.getBytesFromUUID(uuidMap.get(ID));
     }
 
@@ -82,23 +78,23 @@ public class ConnectionSimulator {
         ArrayList<NetworkConnectivityStruct> networkConnectivityStructs = new ArrayList<NetworkConnectivityStruct>();
 
         try {
-            File myObj = new File("DATAFILE.txt");
+            File myObj = new File("DATAFILE2.txt");
             Scanner scanner = new Scanner(myObj);
             scanner.useLocale(Locale.US);
 
             System.out.println("from \tto \t\tquality \tlat \t\t\t\tlong");
             while (scanner.hasNext()) {
-                byte[] fromUuidArr = getBytesFromMap(scanner);
-                byte[] toUuidArr = getBytesFromMap(scanner);
-                double signalQuality = getDoubleFromFile(scanner);
+                byte[] fromUuidArr = UuidAdapter.getBytesFromUUID(scanner.next());
+                byte[] toUuidArr = UuidAdapter.getBytesFromUUID(scanner.next());
+                double signalQuality = scanner.nextDouble();
+                double pos_x = scanner.nextDouble();
+                double pos_y = scanner.nextDouble();
+
+                System.out.print(UuidAdapter.getUUIDFromBytes(fromUuidArr).toString() + "\t\t" + UuidAdapter.getUUIDFromBytes(toUuidArr).toString()  + "\t\t" + signalQuality + "\t\t" + pos_x + "\t\t" + pos_y);
 
                 // if new uuid: create new object, else trash the position values
                 if (!visitedIDs.containsKey(UuidAdapter.getUUIDFromBytes(fromUuidArr))) {
-                    createObject(scanner, fromUuidArr);
-                }
-                else {
-                    getDoubleFromFile(scanner);
-                    getDoubleFromFile(scanner);
+                    createObject(scanner, fromUuidArr, pos_x, pos_y);
                 }
 
                 networkConnectivityStructs.add(NetworkConnectivityStruct.create(toUuidArr, fromUuidArr, (float)signalQuality));

@@ -14,13 +14,13 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 
 2.   Open Pitch Dev Studio.
 2.1: Add the .xml file under interaction/object classes
-2.2: click "Java Code Generate" and load it into a directory "HLA_code"
+2.2: click "Java Code Generate" and load it into a directory "MyFederate"
 
 3:   Open idea (IntelliJ)
 3.1: load the directory HLA_code.
 3.2: go to File->Project Structure->Modules
 3.3: click the '+' to the far right and select JARs or dirs and add the following:
-- /home/lukas/Desktop/multihop-routing/[module name]/lib/rti_driver.jar
+- /home/lukas/Desktop/exjobb/[module name]/lib/rti_driver.jar
 - /opt/Pitch/prti1516e/lib/prti1516e.jar
 - /opt/JDKit/jdk.13.0.2 (may already be there)
 

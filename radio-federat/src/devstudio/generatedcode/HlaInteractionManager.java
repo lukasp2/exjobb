@@ -31,11 +31,14 @@ public interface HlaInteractionManager {
     * <table summary="All interactions">
     * <tr><td><b>Enum constant</b></td><td><b>Java name</b></td><td><b>FOM name</b></td></tr>
     * <tr><td>REQUEST</td><td>Request</td><td><code>HLAinteractionRoot.Request</code></td></tr>
+    * <tr><td>RESPONSE</td><td>Response</td><td><code>HLAinteractionRoot.Response</code></td></tr>
     * </table>
     */
    enum Interaction {
       /** Request (FOM name <code>HLAinteractionRoot.Request</code>) */
-      REQUEST("HLAinteractionRoot.Request");
+      REQUEST("HLAinteractionRoot.Request"),
+      /** Response (FOM name <code>HLAinteractionRoot.Response</code>) */
+      RESPONSE("HLAinteractionRoot.Response");
 
       private static final Map<String, Interaction> NAMES;
 
@@ -362,6 +365,103 @@ public interface HlaInteractionManager {
    * @return An interaction
    */
    HlaRequestInteraction getHlaRequestInteraction();
+
+   /**
+    * Interface for getting HLAinteractionRoot.Response parameters
+    * <p>
+    * This class is <code>Immutable</code> (and therefore <code>ThreadSafe</code>)
+ * as defined by <i>Java Concurrency in Practice</i>,
+ * see <a href="http://jcip.net/annotations/doc/net/jcip/annotations/package-summary.html">jcip.net</a>.
+    */
+    public interface HlaResponseParameters {
+
+      /**
+       * Returns true if a valid value for path is available.
+       *
+       * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
+       *
+       * @return true if path is valid
+       */
+       public boolean hasPath();
+
+      /**
+       * Returns the value of the path parameter.
+       *
+       * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
+       * <br>Description of the data type from the FOM: <i></i>
+       *
+       * @return the path
+       *
+       * @throws HlaValueNotSetException if value was not set
+       */
+       public byte[][] getPath() throws HlaValueNotSetException;
+
+      /**
+       * Returns the value of the path parameter, or <code>defaultValue</code> if value was not set.
+       *
+       * <br>Description from the FOM: <i>A list of nodes to be travesed</i>
+       * <br>Description of the data type from the FOM: <i></i>
+       *
+       * @param defaultValue default value
+       *
+       * @return the path or <code>defaultValue</code> if not set
+       */
+       public byte[][] getPath(byte[][] defaultValue);
+
+      /**
+       * Returns true if a valid value for transactionID is available.
+       *
+       * <br>Description from the FOM: <i></i>
+       *
+       * @return true if transactionID is valid
+       */
+       public boolean hasTransactionID();
+
+      /**
+       * Returns the value of the transactionID parameter.
+       *
+       * <br>Description from the FOM: <i></i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       *
+       * @return the transactionID
+       *
+       * @throws HlaValueNotSetException if value was not set
+       */
+       public long getTransactionID() throws HlaValueNotSetException;
+
+      /**
+       * Returns the value of the transactionID parameter, or <code>defaultValue</code> if value was not set.
+       *
+       * <br>Description from the FOM: <i></i>
+       * <br>Description of the data type from the FOM: <i>Integer in the range [-2^63, 2^63 - 1]</i>
+       *
+       * @param defaultValue default value
+       *
+       * @return the transactionID or <code>defaultValue</code> if not set
+       */
+       public long getTransactionID(long defaultValue);
+
+      /**
+       * Get the HlaFederateId for the federate that sent this interaction.
+       *
+       * @return The federate id for the federate that sent this interaction
+       */
+       public HlaFederateId getProducingFederate();
+
+      /**
+       * Check if the parameters are within the interest defined for this interaction.
+       *
+       * @return true if the parameters are within interest
+       */
+       public boolean isWithinInterest();
+
+      /**
+       * Get a string representation of the interaction parameters.
+       *
+       * @return A string representation of the interaction parameters.
+       */
+       public String toString();
+    }
 
    /**
     * Sends the <code>HLAinteractionRoot.Request</code> interaction.

@@ -1,0 +1,15 @@
+[2020-05-17 12:45:33.590 (+0200)] INFO: Pitch Recorder v.2.3.0 (build 144 @ 191113 08:50:56), started on debian [Linux v.4.19.0-9-amd64]
+[2020-05-17 12:45:33.591 (+0200)] INFO: Log saved to file RecorderLog/RecorderLog-200517-124533.587.log
+[2020-05-17 12:45:33.612 (+0200)] INFO: Graphical User Interface enabled
+[2020-05-17 12:45:33.698 (+0200)] INFO: Driver SQL Server 2005/2000 (jTDS) version 1.2 loaded
+[2020-05-17 12:45:33.699 (+0200)] INFO: Driver In Memory (Hsqldb) version 1.8 loaded
+[2020-05-17 12:45:33.699 (+0200)] INFO: Driver Local File (Hsqldb) version 1.8 loaded
+[2020-05-17 12:45:33.699 (+0200)] INFO: Driver Hsqldb version 1.8 loaded
+[2020-05-17 12:45:36.664 (+0200)] INFO: License: LP Internal Development 2020
+[2020-05-17 12:45:36.664 (+0200)] INFO: License expires: 2020-08-31
+[2020-05-17 12:45:36.664 (+0200)] INFO: License Edition: Professional Edition
+[2020-05-17 12:45:36.664 (+0200)] INFO: Runtime Mode License: False
+[2020-05-17 12:45:36.664 (+0200)] INFO: Embedded Federate License: True
+[2020-05-17 12:46:08.949 (+0200)] INFO: No Data Stream available
+[2020-05-17 12:46:10.335 (+0200)] INFO: No Data Stream available
+[2020-05-17 12:46:42.037 (+0200)] INFO: Shutting down
