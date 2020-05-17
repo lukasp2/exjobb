@@ -417,20 +417,6 @@ public interface HlaWorld {
    void enableNotifications();
 
    /**
-    * Get the CommunicationNetworkStatus manager.
-    *
-    * @return the CommunicationNetworkStatus manager
-    */
-   HlaCommunicationNetworkStatusManager getHlaCommunicationNetworkStatusManager();
-
-   /**
-    * Get the NETNGroundVehicle manager.
-    *
-    * @return the NETNGroundVehicle manager
-    */
-   HlaNETNGroundVehicleManager getHlaNETNGroundVehicleManager();
-
-   /**
     * Get the interaction manager.
     *
     * @return the interaction manager

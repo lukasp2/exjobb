@@ -127,8 +127,8 @@ public class HlaSettings {
    protected String _federationName = getSetting(FEDERATION_NAME_KEY, "Federation");
    protected String _fedUrl = getSetting(FED_URL_KEY, getSetting(FOM_URL_KEY, ""));
    protected String _classicFomUrl = getSetting(CLASSIC_FOM_URL_KEY, getSetting(FOM_URL_KEY, ""));
-   protected String _evolvedFomUrl = getSetting(EVOLVED_FOM_URL_KEY, getSetting(FOM_URL_KEY, "NETN-Base_v1.0.2.xml"));
-   protected String[] _additionalFomUrls = getSettings(ADDITIONAL_FOM_URLS_KEY, "NETN-COM.xml;NETN-Physical_v1.1.1.2.xml;PathFinder.xml;RPR-Base_v2.0.xml;RPR-Enumerations_v2.0.xml;RPR-Foundation_v2.0.xml;RPR-Physical_v2.0.xml;RPR-Switches_v2.0.xml");
+   protected String _evolvedFomUrl = getSetting(EVOLVED_FOM_URL_KEY, getSetting(FOM_URL_KEY, "RequestResponse.xml"));
+   protected String[] _additionalFomUrls = getSettings(ADDITIONAL_FOM_URLS_KEY, "");
    protected boolean _createFederation = getSetting(CREATE_FEDERATION_KEY, true);
    protected boolean _destroyFederation = getSetting(DESTROY_FEDERATION_KEY, true);
    protected String _rtiDriverProfile = getSetting(RTI_DRIVER_PROFILE_KEY, "");

@@ -181,8 +181,6 @@ For each object class in the federation that you will support, a number of class
 generated. You have chosen to support the following classes:
 
 <ol>
-    <li>HlaCommunicationNetworkStatus (<a href="javadoc/devstudio/generatedcode/HlaCommunicationNetworkStatus.html">link</a>)</li>
-    <li>HlaNETNGroundVehicle (<a href="javadoc/devstudio/generatedcode/HlaNETNGroundVehicle.html">link</a>)</li>
 </ol>
 
 
@@ -191,7 +189,56 @@ generated. You have chosen to support the following classes:
 If you have chosen to direct some interaction to a particular object class, please read more
 about these in the corresponding object class descriptions (below).
 
+<h3>Receiving Global Interaction</h3>
 
+To receive global interactions you need to implement the <code>HlaInteractionListener</code> interface, or
+create a subclass of the <code>HlaInteractionListener.Adapter</code>, and attach it as a listener to
+<code>HlaInteractionManager</code> using the <code>addHlaInteractionListener</code> method. You should then implement
+the handling methods that you need from the <code>HlaInteractionListener</code> in your implementation. If
+you for example have a globally handled interaction called <code>loadScenario</code>
+you need to provide the following code.
+
+<blockquote><pre>
+HlaInteractionListener myInteractionListener = new HlaInteractionListener.Adapter() {
+   public void loadScenario(boolean local,
+                            HlaInteractionManager.HlaLoadScenarioParameters parameters,
+                            HlaTimeStamp timeStamp, HlaLogicalTime logicalTime) {
+      // Add implementation to handle interaction
+   }
+};
+hlaWorld.getHlaInteractionManager().addHlaInteractionListener(myInteractionListener);
+</pre></blockquote>
+
+The following global interactions are supported as calls to your interaction listener:
+
+<blockquote><pre>
+request(boolean local, HlaInteractionManager.HlaRequestParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime)
+response(boolean local, HlaInteractionManager.HlaResponseParameters parameters, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime)
+</pre></blockquote>
+
+<h3>Sending Global Interactions</h3>
+
+To send a global interaction you need to use the <code>HlaInteractionManager</code> to obtain an interaction
+object, set the desired parameter values and finally call the <code>sendInteraction</code> method. If you for example have a
+globally handled interaction called <code>loadScenario</code>, with two parameters called name and data, you can send that interaction as follows:
+
+<blockquote><pre>
+HlaInteractionManager.HlaLoadScenarioInteraction loadScenario = hlaWorld.getHlaInteractionManager().getHlaLoadScenarioInteraction();
+loadScenario.setName("Alpha");
+loadScenario.setData(135);
+loadScenario.sendInteraction();
+</pre></blockquote>
+
+The following global interactions are available in your interaction manager:
+
+<blockquote><pre>
+HlaInteractionManager.HlaRequestInteraction request = hlaWorld.getHlaInteractionManager().getHlaRequestInteraction();
+HlaInteractionManager.HlaResponseInteraction response = hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
+</pre></blockquote>
+
+Note that you should not modify the generated code. Read more about the
+<code>HlaInteractionManager</code> and <code>HlaInteractionListener</code> in the Javadoc
+(<a href="javadoc/devstudio/generatedcode/HlaInteractionListener.html">link</a>).
 
 
 <h2>Working with Object Classes</h2>
@@ -232,204 +279,6 @@ class MyAircraftValueListener extends HlaAircraftValueListener.Adapter {
 </pre></blockquote>
 
 All the classes and interfaces are described in more detail below.
-
-
-
-<h3>CommunicationNetworkStatus Class</h3>
-
-
-<h4>Working with CommunicationNetworkStatus Instances</h4>
-
-To work with CommunicationNetworkStatus you first need to get the <code>HlaCommunicationNetworkStatusManager</code> instance which is
-available through the <code>HlaWorld.getHlaCommunicationNetworkStatusManager</code> method.
-<p>
-
-To work with object instances you may use the <code>HlaCommunicationNetworkStatusManager</code> methods to get a
-list of instances.
-
-<blockquote><pre>
-HlaCommunicationNetworkStatusManager.getHlaCommunicationNetworkStatus()
-HlaCommunicationNetworkStatusManager.getLocalHlaCommunicationNetworkStatus()
-</pre></blockquote>
-
-You may also use the following methods to find a particular instance:
-
-<blockquote><pre>
-HlaCommunicationNetworkStatusManager.getCommunicationNetworkStatusByHlaInstanceName(String instanceName)
-HlaCommunicationNetworkStatusManager.getCommunicationNetworkStatusByHlaInstanceHandle(byte[] encodedInstanceHandle)
-</pre></blockquote>
-
-The two last functions uses the <i>HLA instance name</i> and <i>HLA instance handle</i> from the HLA
-federation.
-<p>
-
-For each CommunicationNetworkStatus attribute you may use the get function to retrieve the parameter values.
-The following attributes are supported:
-
-<blockquote><pre>
-</pre></blockquote>
-
-To make sure that you get a consistent view of the attributes of an object you may also get a
-snapshot of an instance using the call <code>HlaCommunicationNetworkStatus.getHlaCommunicationNetworkStatusAttributes</code> which supports the
-same set of <code>has</code> and <code>get</code> methods as above.
-
-
-<h4>Getting Update Notifications</h4>
-
-If you want to get notifications when an instance is updated you simply create a subclass of the observer
-<code>HlaCommunicationNetworkStatusValueListener.Adapter</code> and register it as a listener for that instance. You may then
-choose to implement some of the following methods:
-
-<blockquote><pre>
-</pre></blockquote>
-
-You may also implement the <code>HlaCommunicationNetworkStatusValueListener</code> interface directly.
-<p>
-
-As an alternative you may use the <code>HlaCommunicationNetworkStatusListener</code> that is called each time a group of
-attributes are updated, instead of once for each attribute.
-
-<blockquote><pre>
-HlaCommunicationNetworkStatusListener.attributesUpdated(HlaCommunicationNetworkStatus communicationNetworkStatus, Set&lt;HlaCommunicationNetworkStatusAttributes.Attribute&gt; attributes, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime)
-</pre></blockquote>
-
-
-
-
-
-<h4>Working with Local Instances</h4>
-
-To create a local instance of CommunicationNetworkStatus:
-
-<blockquote><pre>
-HlaCommunicationNetworkStatusManager.createLocalHlaCommunicationNetworkStatus(
-)
-</pre></blockquote>
-
-If you want to define the <i>HLA instance name</i> in the federation you can use
-
-<blockquote><pre>
-HlaCommunicationNetworkStatusManager.createLocalHlaCommunicationNetworkStatus(
-    String hlaInstanceName
-)
-</pre></blockquote>
-
-This will fail (throw an exception) if the name is invalid or already in use. Instance names starting with HLA are invalid.
-<p>
-
-To update the attribute values of a local instance you can use the <code>HlaCommunicationNetworkStatusUpdater</code> as follows:
-
-<blockquote><pre>
-HlaCommunicationNetworkStatusUpdater updater = myInstance.getHlaCommunicationNetworkStatusUpdater();
-
-updater.set<i>AttributeName</i>(<i>new attribute value</i>);
-updater.set<i>AttributeName</i>(<i>new attribute value</i>);
-
-updater.sendUpdate();
-</pre></blockquote>
-
-Note that the update is not sent until the <code>sendUpdate</code> method is called. You have to create a new updater before each
-update since an updater can not be reused.
-
-
-
-
-<h3>NETNGroundVehicle Class</h3>
-
-
-<h4>Working with NETNGroundVehicle Instances</h4>
-
-To work with NETNGroundVehicle you first need to get the <code>HlaNETNGroundVehicleManager</code> instance which is
-available through the <code>HlaWorld.getHlaNETNGroundVehicleManager</code> method.
-<p>
-
-To work with object instances you may use the <code>HlaNETNGroundVehicleManager</code> methods to get a
-list of instances.
-
-<blockquote><pre>
-HlaNETNGroundVehicleManager.getHlaNETNGroundVehicles()
-HlaNETNGroundVehicleManager.getLocalHlaNETNGroundVehicles()
-</pre></blockquote>
-
-You may also use the following methods to find a particular instance:
-
-<blockquote><pre>
-HlaNETNGroundVehicleManager.getNETNGroundVehicleByHlaInstanceName(String instanceName)
-HlaNETNGroundVehicleManager.getNETNGroundVehicleByHlaInstanceHandle(byte[] encodedInstanceHandle)
-</pre></blockquote>
-
-The two last functions uses the <i>HLA instance name</i> and <i>HLA instance handle</i> from the HLA
-federation.
-<p>
-
-For each NETNGroundVehicle attribute you may use the get function to retrieve the parameter values.
-The following attributes are supported:
-
-<blockquote><pre>
-</pre></blockquote>
-
-To make sure that you get a consistent view of the attributes of an object you may also get a
-snapshot of an instance using the call <code>HlaNETNGroundVehicle.getHlaNETNGroundVehicleAttributes</code> which supports the
-same set of <code>has</code> and <code>get</code> methods as above.
-
-
-<h4>Getting Update Notifications</h4>
-
-If you want to get notifications when an instance is updated you simply create a subclass of the observer
-<code>HlaNETNGroundVehicleValueListener.Adapter</code> and register it as a listener for that instance. You may then
-choose to implement some of the following methods:
-
-<blockquote><pre>
-</pre></blockquote>
-
-You may also implement the <code>HlaNETNGroundVehicleValueListener</code> interface directly.
-<p>
-
-As an alternative you may use the <code>HlaNETNGroundVehicleListener</code> that is called each time a group of
-attributes are updated, instead of once for each attribute.
-
-<blockquote><pre>
-HlaNETNGroundVehicleListener.attributesUpdated(HlaNETNGroundVehicle nETNGroundVehicle, Set&lt;HlaNETNGroundVehicleAttributes.Attribute&gt; attributes, HlaTimeStamp timeStamp, HlaLogicalTime logicalTime)
-</pre></blockquote>
-
-
-
-
-
-<h4>Working with Local Instances</h4>
-
-To create a local instance of NETNGroundVehicle:
-
-<blockquote><pre>
-HlaNETNGroundVehicleManager.createLocalHlaNETNGroundVehicle(
-)
-</pre></blockquote>
-
-If you want to define the <i>HLA instance name</i> in the federation you can use
-
-<blockquote><pre>
-HlaNETNGroundVehicleManager.createLocalHlaNETNGroundVehicle(
-    String hlaInstanceName
-)
-</pre></blockquote>
-
-This will fail (throw an exception) if the name is invalid or already in use. Instance names starting with HLA are invalid.
-<p>
-
-To update the attribute values of a local instance you can use the <code>HlaNETNGroundVehicleUpdater</code> as follows:
-
-<blockquote><pre>
-HlaNETNGroundVehicleUpdater updater = myInstance.getHlaNETNGroundVehicleUpdater();
-
-updater.set<i>AttributeName</i>(<i>new attribute value</i>);
-updater.set<i>AttributeName</i>(<i>new attribute value</i>);
-
-updater.sendUpdate();
-</pre></blockquote>
-
-Note that the update is not sent until the <code>sendUpdate</code> method is called. You have to create a new updater before each
-update since an updater can not be reused.
-
 
 
 
@@ -1088,7 +937,7 @@ Generated by Pitch Developer Studio version 5.0.3
 <br>
 Licensed to LP Internal Development 2020
 <br>
-Generated 2020-05-12 13:32:08 (+0200) by lukas
+Generated 2020-05-17 09:33:09 (+0200) by lukas
 <br>
 Copyright (C) 2006-2020 Pitch Technologies AB. All rights reserved.
 Use is subject to license terms.
