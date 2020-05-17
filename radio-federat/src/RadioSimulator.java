@@ -28,7 +28,7 @@ public class RadioSimulator {
 
             System.out.println("Path to be traversed for transaction " + transactionID);
             for (byte[] b : path) {
-                System.out.print(Arrays.toString(b) + " -> ");
+                System.out.print(UuidAdapter.getUUIDFromBytes(b).toString() + " -> ");
             }
             System.out.println();
         }

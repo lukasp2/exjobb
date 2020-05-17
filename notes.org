@@ -44,12 +44,16 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 \end{enumerate}{}
 
 * todo
-** TODO se till att federaterna kan startas när som helst.
-sätt timer på bruteforce så att den bara bygger om var 10:e sek lr ngt.
-** TODO Implementera req. respnse
-** TODO transactionID i FOM:en
+** TODO (varje radio ska bara lyssna bara på de requests som den skickar)
 ** TODO bitBucket.
+** TODO för stats över hur bra bruteforce är vs rr
 
+hitta ett sätt att ta reda på hur lång tid det tog för trådarna att tömma kön.
+
+if (!lock.tryLock())
+   done- stop time?
+
+** TODO uppdatera bara nw max var 5:e sek
 * pass
 yPitch%123
 lukas123

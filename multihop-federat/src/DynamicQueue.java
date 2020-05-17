@@ -4,18 +4,28 @@ import java.util.concurrent.Semaphore;
 
 public class DynamicQueue {
 
-    public int BLOCK_SIZE = 20;
+	DynamicQueue() {}
 
-    private final ReentrantLock queueLock = new ReentrantLock();
-    private final ReentrantLock requestLock = new ReentrantLock();
+	private LinkedList<Request> requests = new LinkedList<Request>();
+
+	public final int BLOCK_SIZE = 20;
+
+	private final ReentrantLock queueLock = new ReentrantLock();
+
 	private final Semaphore sema = new Semaphore(0, false);
 
-	// I removed volatile:
-    private LinkedList<Request> requests = new LinkedList<Request>();
-
-    DynamicQueue() {}
+	// LOGGER:
+	private boolean firstRequest = true;
+	private long startMillis = 0;
+	//
 
 	public void  addRequest(Request request) {
+		if (firstRequest) {
+			System.out.println("START TIME!");
+			startMillis = System.currentTimeMillis();
+			firstRequest = false;
+		}
+
 		int countConsecutive = 0;
 
 		queueLock.lock();
@@ -44,15 +54,18 @@ public class DynamicQueue {
     // Removes the first element in the queue and returns it.
     public Request poll() {
 
-    	// "lock here so that two threads don't .aquire() for the same request."
-    	//requestLock.lock();
 		try { sema.acquire(); } catch (InterruptedException ie) { System.out.println("DynQueue semaphore crashed!"); }
 
-		// lock here so we don't addRequest and poll in parallel.
+		// lock here so we don't add and poll in parallel.
 		queueLock.lock();
 		Request newRequest = requests.poll();
 		queueLock.unlock();
-		//requestLock.unlock();
+
+		// LOGGER:
+		if (requests.size() == 0) {
+			System.out.print("elapsed time (ms): ");
+			System.out.println((double)(System.currentTimeMillis() - startMillis) / 1000);
+		}
 
 		return newRequest;
     }
