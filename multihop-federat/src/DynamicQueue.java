@@ -61,10 +61,9 @@ public class DynamicQueue {
     public void print() {
     	queueLock.lock();
 		for (Request r : requests) {
-			r.print();
+			System.out.println(r.toString());
 		}
 		queueLock.unlock();
-		System.out.println();
     }
 
     public boolean isEmpty() {

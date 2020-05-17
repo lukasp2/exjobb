@@ -26,7 +26,9 @@ public class Request {
     public long getTransactionID() { return transactionID; }
 
     public void print() {
-	System.out.println("request: [" + comType + ": " + toNode + "->" + fromNode + "] ");
+	System.out.print("[" + comType + ": " + toNode + "->" + fromNode + "]");
     }
+
+    public String toString() { return "[" + comType + ": " + toNode + "->" + fromNode + "]"; }
 }
     

@@ -98,12 +98,14 @@ public class Graph {
 		public ArrayList<Integer> getPath(int goal) {
 			ArrayList<Integer> path = new ArrayList<Integer>();
 
-			int curr = goal;
-			while (steps.get(curr) != -1) {
+			if (steps.containsKey(goal)) {
+				int curr = goal;
+				while (steps.get(curr) != -1) {
+					path.add(curr);
+					curr = steps.get(curr);
+				}
 				path.add(curr);
-				curr = steps.get(curr);
 			}
-			path.add(curr);
 
 			if (PLOT) { fw.writeResult(steps, nodes, goal); }
 

@@ -1,17 +1,15 @@
 import devstudio.generatedcode.*;
 import devstudio.generatedcode.exceptions.*;
-import devstudio.generatedcode.impl.utils.MinMax;
 import internal.prti1516e.com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
     public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw, DynamicQueue dynamicQueue, BiMap<UUID, Integer> nodeIDs, ReentrantLock printLock) {
-        HlaInteractionManager.HlaResponseInteraction _hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
+        this._hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
         this.name = name;
         this.nw = nw;
         this.dynamicQueue = dynamicQueue;
@@ -45,12 +43,6 @@ public class MultihopSimulator implements Runnable {
         while (true) {
             Request request = dynamicQueue.poll(); // request.print();
 
-            printLock.lock();
-            System.out.print(name + " picked up "); request.print();
-            //System.out.println();
-            printLock.unlock();
-
-            // Building graph
             if (request.getRequestType() != prevRequestType) // also rebuild immediately if the network changes?
             {
                 //logs.startTime();
@@ -63,7 +55,6 @@ public class MultihopSimulator implements Runnable {
 
             //logs.branchFactors.add(graph.branchingFactor);
 
-            // performs A* search in the graph
             // logs.startTime();
             ArrayList<Integer> res = graph.aStar(request);
             // logs.Astarstats.add(System.nanoTime() - logs.startTime);
@@ -77,35 +68,24 @@ public class MultihopSimulator implements Runnable {
 
         // logs.print();
 
-        // logs.printBFS2();
         // logs.printAstar2();
         // logs.printBuild();
     }
 
-    public void sendResponse(ArrayList<Integer> path, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
+    public void sendResponse(ArrayList<Integer> intArray, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
 
-        ArrayList<byte[]> a = new ArrayList<>();
-        for (int i : path) {
-            a.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(i)));
-        }
-
-
-        byte[][] b = new byte[a.size()][16];
-        b = a.toArray(b);
-
+        ArrayList<byte[]> byteArray = new ArrayList<>();
         printLock.lock();
-        System.out.println("name: " + name);
-        for (byte[] k : b) {
-            System.out.println(Arrays.toString(k));
+        System.out.print(name + " with request " + request.toString() + " is publishing path ");
+        for (int nodeID : intArray) {
+            System.out.print(nodeID + " ");
+            byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
         }
+        System.out.println();
+        printLock.unlock();
 
-        if (b == null) {
-            System.out.println("b is null");
-        }
-
-        _hlaRI.setPath(b);
+        _hlaRI.setPath(byteArray.toArray(new byte[byteArray.size()][16]));
         _hlaRI.setTransactionID(request.getTransactionID());
         _hlaRI.sendInteraction();
-        printLock.unlock();
     }
 }

@@ -68,7 +68,7 @@ public class Main {
 
             System.out.println("network has been (re)built");
 
-            // new thread which fills the queue with all possible requests (for brute force)
+            // new thread: fills the queue with all possible requests (for brute force)
             new QueueFillerThread(nw, dynamicQueue);
         }
     };
@@ -102,10 +102,8 @@ public class Main {
 
         System.out.println("Simulator ready!");
 
-        // this lock is only for printing, it can be removed later on
         ReentrantLock printLock = new ReentrantLock();
 
-        // threads to serve the queue
         Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread 1", nw, dynamicQueue, nodeIDs, printLock));
         t1.start();
 
