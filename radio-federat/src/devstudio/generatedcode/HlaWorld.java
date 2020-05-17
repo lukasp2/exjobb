@@ -417,6 +417,13 @@ public interface HlaWorld {
    void enableNotifications();
 
    /**
+    * Get the NETNGroundVehicle manager.
+    *
+    * @return the NETNGroundVehicle manager
+    */
+   HlaNETNGroundVehicleManager getHlaNETNGroundVehicleManager();
+
+   /**
     * Get the interaction manager.
     *
     * @return the interaction manager

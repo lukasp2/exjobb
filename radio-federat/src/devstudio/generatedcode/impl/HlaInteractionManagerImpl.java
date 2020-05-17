@@ -11,7 +11,6 @@ package devstudio.generatedcode.impl;
  */
 
 import devstudio.generatedcode.impl.encoders.BaseEncoder;
-import devstudio.generatedcode.impl.encoders.NodeArrayEncoder;
 import se.pitch.encoders1516.HLAinteger32BE;
 import se.pitch.encoders1516.HLAinteger64BE;
 import se.pitch.encoders1516.HLAopaqueData;
@@ -40,9 +39,6 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    /* @GuardedBy("this") */
    private final HLAinteger64BE _hLAinteger64BEEncoder = BaseEncoder.createHLAinteger64BE();
    private final HLAinteger64BE _hLAinteger64BEDecoder = BaseEncoder.createHLAinteger64BE();
-   /* @GuardedBy("this") */
-   private final NodeArrayEncoder _nodeArrayEncoderEncoder = new NodeArrayEncoder();
-   private final NodeArrayEncoder _nodeArrayEncoderDecoder = new NodeArrayEncoder();
 
    private static final class HlaRequestParametersImpl implements HlaRequestParameters {
       private final ParameterValue<byte[]> _fromNode;
@@ -265,151 +261,6 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
       return new HlaRequestInteractionImpl();
    }
 
-   private static final class HlaResponseParametersImpl implements HlaResponseParameters {
-      private final ParameterValue<byte[][]> _path;
-      private final ParameterValue<Long> _transactionID;
-      private final HlaFederateId _producingFederate;
-      private final boolean _isWithinInterest;
-
-      private HlaResponseParametersImpl(
-         ParameterValue<byte[][]> path,
-         ParameterValue<Long> transactionID,
-         HlaFederateId producingFederate,
-         boolean isWithinInterest
-      ) {
-         _path = new ParameterValue<byte[][]>(path);
-         _transactionID = new ParameterValue<Long>(transactionID);
-         _producingFederate = producingFederate;
-         _isWithinInterest = isWithinInterest;
-      }
-
-      public boolean hasPath() {
-         return _path.hasValue();
-      }
-
-      public byte[][] getPath() throws HlaValueNotSetException {
-         if (_path.hasValue()) {
-            return _path.getValue();
-         }
-         throw new HlaValueNotSetException("Parameter 'path' not set");
-      }
-
-      public byte[][] getPath(byte[][] defaultValue) {
-         if (_path.hasValue()) {
-            return _path.getValue();
-         }
-         return defaultValue;
-      }
-
-      public boolean hasTransactionID() {
-         return _transactionID.hasValue();
-      }
-
-      public long getTransactionID() throws HlaValueNotSetException {
-         if (_transactionID.hasValue()) {
-            return _transactionID.getValue();
-         }
-         throw new HlaValueNotSetException("Parameter 'transactionID' not set");
-      }
-
-      public long getTransactionID(long defaultValue) {
-         if (_transactionID.hasValue()) {
-            return _transactionID.getValue();
-         }
-         return defaultValue;
-      }
-
-      @Override
-      public HlaFederateId getProducingFederate() {
-         return _producingFederate;
-      }
-
-      @Override
-      public boolean isWithinInterest() {
-         return _isWithinInterest;
-      }
-
-      @Override
-      public String toString() {
-         ToStringBuilder sb = new ToStringBuilder("HlaResponseParameters");
-         if (hasPath()) {
-            sb.append("Path", getPath());
-         }
-         if (hasTransactionID()) {
-            sb.append("transactionID", getTransactionID());
-         }
-         return sb.getToString();
-      }
-   }
-
-   public class HlaResponseInteractionImpl implements HlaResponseInteraction {
-      private final Object _lock = new Object();
-      /* @GuardedBy("_lock") */
-      private final ParameterValue<byte[][]> _path;
-      /* @GuardedBy("_lock") */
-      private final ParameterValue<Long> _transactionID;
-
-      private HlaResponseInteractionImpl() {
-         _path = new ParameterValue<byte[][]>();
-         _transactionID = new ParameterValue<Long>();
-      }
-
-      public HlaResponseParametersImpl build(HlaFederateId producingFederate) {
-         synchronized (_lock) {
-            return new HlaResponseParametersImpl(
-               _path,
-               _transactionID,
-               producingFederate,
-               true
-            );
-         }
-      }
-
-      private HlaResponseParametersImpl build() {
-         return build(HlaInteractionManagerImpl.this._hlaWorld.getFederateId());
-      }
-
-      public HlaResponseInteractionImpl setPath(byte[][] value) {
-         if (value == null) {
-            throw new NullPointerException();
-         }
-         synchronized (_lock) {
-            _path.setValueFromUser(value);
-         }
-         return this;
-      }
-
-      public HlaResponseInteractionImpl setTransactionID(Long value) {
-         if (value == null) {
-            throw new NullPointerException();
-         }
-         synchronized (_lock) {
-            _transactionID.setValueFromUser(value);
-         }
-         return this;
-      }
-
-      public void sendInteraction() throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
-         HlaInteractionManagerImpl.this.sendResponseParams(build(), null);
-      }
-
-      public void sendInteraction(HlaTimeStamp timestamp) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
-         HlaInteractionManagerImpl.this.sendResponseParams(build(), timestamp);
-      }
-
-      public void sendInteraction(HlaLogicalTime logicalTime) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
-         HlaInteractionManagerImpl.this.sendResponseParams(build(), null, logicalTime);
-      }
-
-      public void sendInteraction(HlaTimeStamp timestamp, HlaLogicalTime logicalTime) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
-         HlaInteractionManagerImpl.this.sendResponseParams(build(), timestamp, logicalTime);
-      }
-   }
-
-   public HlaResponseInteractionImpl getHlaResponseInteraction() {
-      return new HlaResponseInteractionImpl();
-   }
-
    private static class InteractionInfo {
       private final boolean _local;
       private final boolean _remote;
@@ -429,11 +280,9 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    }
 
    private static final String REQUEST_INTERACTION_CLASS_NAME = "HLAinteractionRoot.Request";
-   private static final String RESPONSE_INTERACTION_CLASS_NAME = "HLAinteractionRoot.Response";
 
    private static final Map<String, InteractionInfo> INTERACTIONS = new MapAdapter<String, InteractionInfo>()
-         .append(REQUEST_INTERACTION_CLASS_NAME, new InteractionInfo(true, true))
-         .append(RESPONSE_INTERACTION_CLASS_NAME, new InteractionInfo(true, true))
+         .append(REQUEST_INTERACTION_CLASS_NAME, new InteractionInfo(true, false))
          .unmodifiableMap();
 
 
@@ -441,7 +290,7 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
    private final HlaWorldImpl _hlaWorld;
 
    private final DualMap<String, InteractionClassHandle> _interactions =
-      new DualMap<String, InteractionClassHandle>(2);
+      new DualMap<String, InteractionClassHandle>(1);
 
    private final Set<HlaInteractionListener> _listeners = new CopyOnWriteArraySet<HlaInteractionListener>();
    private final Set<Interaction> _enabled = EnumSet.allOf(Interaction.class);
@@ -607,116 +456,6 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
       );
    }
 
-
-   public void sendResponse(
-      byte[][] path,
-      long transactionID
-   ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
-      HlaResponseInteractionImpl interaction = getHlaResponseInteraction();
-      interaction.setPath(path);
-      interaction.setTransactionID(transactionID);
-      interaction.sendInteraction();
-   }
-
-   public void sendResponse(
-      byte[][] path,
-      long transactionID,
-      HlaTimeStamp timeStamp
-   ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
-      HlaResponseInteractionImpl interaction = getHlaResponseInteraction();
-      interaction.setPath(path);
-      interaction.setTransactionID(transactionID);
-      interaction.sendInteraction(timeStamp);
-   }
-
-   public void sendResponse(
-      byte[][] path,
-      long transactionID,
-      HlaLogicalTime logicalTime
-   ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException, HlaRtiException, HlaSaveInProgressException, HlaRestoreInProgressException {
-      HlaResponseInteractionImpl interaction = getHlaResponseInteraction();
-      interaction.setPath(path);
-      interaction.setTransactionID(transactionID);
-      interaction.sendInteraction(logicalTime);
-   }
-
-   public void sendResponse(
-      byte[][] path,
-      long transactionID,
-      HlaTimeStamp timeStamp,
-      HlaLogicalTime logicalTime
-   ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException, HlaRtiException,
-            HlaSaveInProgressException, HlaRestoreInProgressException {
-      HlaResponseInteractionImpl interaction = getHlaResponseInteraction();
-      interaction.setPath(path);
-      interaction.setTransactionID(transactionID);
-      interaction.sendInteraction(timeStamp, logicalTime);
-   }
-
-   public void sendResponseParams(
-      HlaResponseParameters parameters,
-      HlaTimeStamp timeStamp
-   ) throws HlaNotConnectedException, HlaFomException, HlaInternalException, HlaRtiException,
-            HlaSaveInProgressException, HlaRestoreInProgressException {
-   try {
-         sendResponseParams(
-            parameters,
-            timeStamp,
-            null
-         );
-      } catch (HlaInvalidLogicalTimeException e) {
-         //can not happen with null logicalTime
-      }
-   }
-
-   public void sendResponseParams(
-      HlaResponseParameters parameters,
-      HlaTimeStamp timestamp,
-      HlaLogicalTime logicalTime
-   ) throws HlaNotConnectedException, HlaFomException, HlaInvalidLogicalTimeException, HlaInternalException, HlaRtiException,
-            HlaSaveInProgressException, HlaRestoreInProgressException {
-      InteractionClassHandle handle = _interactions.get(RESPONSE_INTERACTION_CLASS_NAME);
-
-      if (handle == null) {
-         throw new HlaNotConnectedException("Not connected");
-      }
-
-      HlaTimeStamp hlaTimeStamp = timestamp != null ? timestamp : _hlaWorld.getCurrentTime();
-      HlaLogicalTime hlaLogicalTime = logicalTime != null ? logicalTime : _hlaWorld.getDefaultSendTime();
-      NameValueMap nameValueMap = new NameValueMap(2);
-      synchronized (this) {
-         if (parameters.hasPath()) {
-            try {
-               _nodeArrayEncoderEncoder.setValue(parameters.getPath());
-               nameValueMap.put("Path",
-                                _nodeArrayEncoderEncoder.toByteArray(),
-                                false);
-            } catch (Throwable t) {
-               _hlaWorld.postException(new HlaDecodeException("Failed to encode Path", t));
-            }
-         }
-         if (parameters.hasTransactionID()) {
-            try {
-               _hLAinteger64BEEncoder.setValue(parameters.getTransactionID());
-               nameValueMap.put("transactionID",
-                                _hLAinteger64BEEncoder.toByteArray(),
-                                false);
-            } catch (Throwable t) {
-               _hlaWorld.postException(new HlaDecodeException("Failed to encode transactionID", t));
-            }
-         }
-      }
-
-      _interactionManager.sendInteraction(handle, nameValueMap, hlaTimeStamp, hlaLogicalTime);
-
-      fireResponseInteraction(
-         true,
-         parameters,
-         hlaTimeStamp,
-         hlaLogicalTime
-      );
-   }
-
    public void addHlaInteractionListener(HlaInteractionListener listener) {
        if (listener == null) {
            throw new NullPointerException();
@@ -766,22 +505,6 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
          return;
       }
 
-      Interaction interaction = Interaction.find(interactionName);
-      if (interaction == null) {
-         _hlaWorld.postException(new HlaInternalException("Received unknown interaction: " + interactionName));
-         return;
-      }
-
-      switch (interaction) {
-         case REQUEST: {
-            receiveRequest(parameters, hlaTimeStamp, logicalTime, producingFederate);
-            return;
-         }
-         case RESPONSE: {
-            receiveResponse(parameters, hlaTimeStamp, logicalTime, producingFederate);
-            return;
-         }
-      }
       _hlaWorld.postException(new HlaInternalException("Received unknown interaction: " + interactionName));
    }
 
@@ -827,130 +550,6 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
     * Private functions
     */
 
-   private void receiveRequest(NameValueMap parameters, HlaTimeStamp hlaTimeStamp, HlaLogicalTime logicalTime, HlaFederateId producingFederate) {
-      HlaRequestInteractionImpl interaction = getHlaRequestInteraction();
-      byte[] interactionData;
-      interactionData = parameters.get("fromNode");
-      if (interactionData != null) {
-         try {
-            _hLAopaqueDataDecoder.decode(interactionData);
-            interaction.setFromNode(_hLAopaqueDataDecoder.getValue());
-
-            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _hLAopaqueDataDecoder.getEncodedLength() != interactionData.length) {
-               _hlaWorld.postException(
-                  new HlaDecodeException("Failed to decode fromNode. " +
-                                         "Invalid data length " + interactionData.length + ", expected " + _hLAopaqueDataDecoder.getEncodedLength(),
-                                         interactionData));
-            }
-         } catch (Throwable t) {
-            _hlaWorld.postException(new HlaDecodeException("Failed to decode fromNode", interactionData, t));
-         }
-      }
-
-      interactionData = parameters.get("toNode");
-      if (interactionData != null) {
-         try {
-            _hLAopaqueDataDecoder.decode(interactionData);
-            interaction.setToNode(_hLAopaqueDataDecoder.getValue());
-
-            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _hLAopaqueDataDecoder.getEncodedLength() != interactionData.length) {
-               _hlaWorld.postException(
-                  new HlaDecodeException("Failed to decode toNode. " +
-                                         "Invalid data length " + interactionData.length + ", expected " + _hLAopaqueDataDecoder.getEncodedLength(),
-                                         interactionData));
-            }
-         } catch (Throwable t) {
-            _hlaWorld.postException(new HlaDecodeException("Failed to decode toNode", interactionData, t));
-         }
-      }
-
-      interactionData = parameters.get("comType");
-      if (interactionData != null) {
-         try {
-            _hLAinteger32BEDecoder.decode(interactionData);
-            interaction.setComType(_hLAinteger32BEDecoder.getValue());
-
-            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _hLAinteger32BEDecoder.getEncodedLength() != interactionData.length) {
-               _hlaWorld.postException(
-                  new HlaDecodeException("Failed to decode comType. " +
-                                         "Invalid data length " + interactionData.length + ", expected " + _hLAinteger32BEDecoder.getEncodedLength(),
-                                         interactionData));
-            }
-         } catch (Throwable t) {
-            _hlaWorld.postException(new HlaDecodeException("Failed to decode comType", interactionData, t));
-         }
-      }
-
-      interactionData = parameters.get("transactionID");
-      if (interactionData != null) {
-         try {
-            _hLAinteger64BEDecoder.decode(interactionData);
-            interaction.setTransactionID(_hLAinteger64BEDecoder.getValue());
-
-            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _hLAinteger64BEDecoder.getEncodedLength() != interactionData.length) {
-               _hlaWorld.postException(
-                  new HlaDecodeException("Failed to decode transactionID. " +
-                                         "Invalid data length " + interactionData.length + ", expected " + _hLAinteger64BEDecoder.getEncodedLength(),
-                                         interactionData));
-            }
-         } catch (Throwable t) {
-            _hlaWorld.postException(new HlaDecodeException("Failed to decode transactionID", interactionData, t));
-         }
-      }
-
-      fireRequestInteraction(
-         false,
-         interaction.build(producingFederate),
-         hlaTimeStamp,
-         logicalTime
-      );
-   }
-
-   private void receiveResponse(NameValueMap parameters, HlaTimeStamp hlaTimeStamp, HlaLogicalTime logicalTime, HlaFederateId producingFederate) {
-      HlaResponseInteractionImpl interaction = getHlaResponseInteraction();
-      byte[] interactionData;
-      interactionData = parameters.get("Path");
-      if (interactionData != null) {
-         try {
-            _nodeArrayEncoderDecoder.decode(interactionData);
-            interaction.setPath(_nodeArrayEncoderDecoder.getValue());
-
-            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _nodeArrayEncoderDecoder.getEncodedLength() != interactionData.length) {
-               _hlaWorld.postException(
-                  new HlaDecodeException("Failed to decode Path. " +
-                                         "Invalid data length " + interactionData.length + ", expected " + _nodeArrayEncoderDecoder.getEncodedLength(),
-                                         interactionData));
-            }
-         } catch (Throwable t) {
-            _hlaWorld.postException(new HlaDecodeException("Failed to decode Path", interactionData, t));
-         }
-      }
-
-      interactionData = parameters.get("transactionID");
-      if (interactionData != null) {
-         try {
-            _hLAinteger64BEDecoder.decode(interactionData);
-            interaction.setTransactionID(_hLAinteger64BEDecoder.getValue());
-
-            if (HlaTuning.VERIFY_RECEIVED_DATA_LENGTH && _hLAinteger64BEDecoder.getEncodedLength() != interactionData.length) {
-               _hlaWorld.postException(
-                  new HlaDecodeException("Failed to decode transactionID. " +
-                                         "Invalid data length " + interactionData.length + ", expected " + _hLAinteger64BEDecoder.getEncodedLength(),
-                                         interactionData));
-            }
-         } catch (Throwable t) {
-            _hlaWorld.postException(new HlaDecodeException("Failed to decode transactionID", interactionData, t));
-         }
-      }
-
-      fireResponseInteraction(
-         false,
-         interaction.build(producingFederate),
-         hlaTimeStamp,
-         logicalTime
-      );
-   }
-
 
    private void fireRequestInteraction(
       final boolean local,
@@ -962,26 +561,6 @@ final class HlaInteractionManagerImpl extends AbstractInteractionClassManager im
          _hlaWorld.postNotification(new Runnable() {
             public void run() {
                listener.request(
-                  local,
-                  parameters,
-                  hlaTimeStamp,
-                  hlaLogicalTime
-               );
-            }
-         });
-      }
-   }
-
-   private void fireResponseInteraction(
-      final boolean local,
-      final HlaResponseParameters parameters,
-      final HlaTimeStamp hlaTimeStamp,
-      final HlaLogicalTime hlaLogicalTime
-   ) {
-      for (final HlaInteractionListener listener : _listeners) {
-         _hlaWorld.postNotification(new Runnable() {
-            public void run() {
-               listener.response(
                   local,
                   parameters,
                   hlaTimeStamp,

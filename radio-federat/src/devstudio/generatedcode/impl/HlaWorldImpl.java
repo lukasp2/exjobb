@@ -11,7 +11,7 @@ package devstudio.generatedcode.impl;
  */
 
 /*
- * Generated 2020-05-17 09:33:09 (+0200) by lukas using Pitch Developer Studio 5.0.3
+ * Generated 2020-05-17 10:05:42 (+0200) by lukas using Pitch Developer Studio 5.0.3
  */
 
 import devstudio.generatedcode.*;
@@ -72,6 +72,7 @@ public final class HlaWorldImpl implements HlaWorld {
    private final HlaSettings _settings;
    private final boolean _manualEvokeMode;
    private final HlaTimeStampFactory _timeStampFactory;
+   private final HlaNETNGroundVehicleManagerImpl _nETNGroundVehicleManager;
 
    /* @GuardedBy("this") */
    private ExceptionListener _exceptionListener = null;
@@ -132,6 +133,7 @@ public final class HlaWorldImpl implements HlaWorld {
       _interactionManager = new HlaInteractionManagerImpl(interactionManager, this);
       _saveRestoreManager = new HlaSaveRestoreManagerImpl(new SaveRestManager(_federate), objectManager, this);
 
+      _nETNGroundVehicleManager = new HlaNETNGroundVehicleManagerImpl(this, objectManager);
 
       _notificationQueue = new NotificationQueue();
    }
@@ -489,6 +491,10 @@ public final class HlaWorldImpl implements HlaWorld {
          return;
       }
       _notificationQueue.enableNotifications();
+   }
+
+   public HlaNETNGroundVehicleManager getHlaNETNGroundVehicleManager() {
+      return _nETNGroundVehicleManager;
    }
 
    public HlaInteractionManager getHlaInteractionManager() {

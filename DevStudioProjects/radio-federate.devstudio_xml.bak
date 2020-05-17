@@ -1,4 +1,3230 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<developerStudio projectFileVersion="9" projectJavaBaseDir="/home/lukas/Desktop/exjobb/radio-federat" uuidSeed="1589700443043">
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/VisualOMTProjects/RequestResponse.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>New Module</name>
+        <type>FOM</type>
+        <version>1.0</version>
+        <securityClassification>unclassified</securityClassification>
+        <purpose></purpose>
+        <applicationDomain></applicationDomain>
+        <description>Description of New Module</description>
+        <useLimitation></useLimitation>
+        <other></other>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+            <interactionClass>
+                <name>Request</name>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>Receive</order>
+                <semantics></semantics>
+                <parameter>
+                    <name>fromNode</name>
+                    <dataType>HLAopaqueData</dataType>
+                    <semantics></semantics>
+                </parameter>
+                <parameter>
+                    <name>toNode</name>
+                    <dataType>HLAopaqueData</dataType>
+                    <semantics></semantics>
+                </parameter>
+                <parameter>
+                    <name>comType</name>
+                    <dataType>HLAinteger32BE</dataType>
+                    <semantics></semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>HLAinteger64BE</dataType>
+                    <semantics></semantics>
+                </parameter>
+            </interactionClass>
+            <interactionClass>
+                <name>Response</name>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>Receive</order>
+                <semantics></semantics>
+                <parameter>
+                    <name>Path</name>
+                    <dataType>NodeArray</dataType>
+                    <semantics>A list of nodes to be travesed</semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>HLAinteger64BE</dataType>
+                    <semantics></semantics>
+                </parameter>
+            </interactionClass>
+        </interactionClass>
+    </interactions>
+    <switches>
+        <autoProvide isEnabled="false"/>
+        <conveyRegionDesignatorSets isEnabled="false"/>
+        <conveyProducingFederate isEnabled="false"/>
+        <attributeScopeAdvisory isEnabled="false"/>
+        <attributeRelevanceAdvisory isEnabled="false"/>
+        <objectClassRelevanceAdvisory isEnabled="false"/>
+        <interactionRelevanceAdvisory isEnabled="false"/>
+        <serviceReporting isEnabled="false"/>
+        <exceptionReporting isEnabled="false"/>
+        <delaySubscriptionEvaluation isEnabled="false"/>
+        <automaticResignAction resignAction="CancelThenDeleteThenDivest"/>
+    </switches>
+    <dataTypes>
+        <simpleDataTypes/>
+        <enumeratedDataTypes/>
+        <arrayDataTypes>
+            <arrayData>
+                <name>NodeArray</name>
+                <dataType>HLAopaqueData</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics></semantics>
+            </arrayData>
+        </arrayDataTypes>
+        <fixedRecordDataTypes/>
+        <variantRecordDataTypes/>
+    </dataTypes>
+    <notes/>
+</objectModel>]]></fom>
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/network-federat/NETN-Base_v1.0.2.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>NETN-Base</name>
+        <type>FOM</type>
+        <version>1.0</version>
+        <modificationDate>2013-10-24</modificationDate>
+        <securityClassification>unclassified</securityClassification>
+        <purpose></purpose>
+        <applicationDomain>Training</applicationDomain>
+        <description>Base module for NETN FOM v2 modules. Mainly datatypes for use in other NETN FOM modules</description>
+        <useLimitation></useLimitation>
+        <useHistory>Datatypes is collected from FOM modules in NETN FOM v1.
+NETN_AggDeagg_v1.07_2010
+NETN_Service_Consumer_Provider_v1.0.3_2010
+NETN_Logistics_v1.1.2_2010</useHistory>
+        <useHistory>v1.0.0 - First version in NETN FOM v2</useHistory>
+        <useHistory>v1.0.1 - Added array data type: ArrayOfWorldLocation3 (moved from NETN_Aggregate FOM module)</useHistory>
+        <useHistory>v1.0.2 - Renamed data type, new name: ArrayOfWorldLocationStruct3. 
+Updated References, Dependency
+
+</useHistory>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>Lennart Olsson</pocName>
+            <pocOrg>Pitch Technologies</pocOrg>
+            <pocTelephone>+46 13 4705506</pocTelephone>
+            <pocEmail>lennart.olsson@pitch.se</pocEmail>
+        </poc>
+        <reference>
+            <type>Dependency</type>
+            <identification>RPR-Base_v2.0</identification>
+        </reference>
+        <other></other>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+        </interactionClass>
+    </interactions>
+    <dataTypes>
+        <simpleDataTypes>
+            <simpleData>
+                <name>TimeSecInt64</name>
+                <representation>HLAinteger64BE</representation>
+                <units>Second</units>
+                <resolution>1</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Number of seconds since 1 January 1970</semantics>
+            </simpleData>
+            <simpleData>
+                <name>CounterInt32</name>
+                <representation>HLAinteger32BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A counter</semantics>
+            </simpleData>
+            <simpleData>
+                <name>QuantityFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>NA</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>The number of units</semantics>
+            </simpleData>
+        </simpleDataTypes>
+        <enumeratedDataTypes>
+            <enumeratedData>
+                <name>ActiveStatusEnum8</name>
+                <representation>HLAoctet</representation>
+                <semantics>An inactive object should not be shown on C4I systems and can not move or interact with other objects.</semantics>
+                <enumerator>
+                    <name>Other</name>
+                    <value>0</value>
+                </enumerator>
+                <enumerator>
+                    <name>Active</name>
+                    <value>1</value>
+                </enumerator>
+                <enumerator>
+                    <name>Inactive</name>
+                    <value>2</value>
+                </enumerator>
+            </enumeratedData>
+            <enumeratedData>
+                <name>AggregateMissionEnum16</name>
+                <representation>HLAinteger16BE</representation>
+                <semantics>The specific value that represents the general class or nature of activity (from JC3IEDM action-event-category-code)</semantics>
+                <enumerator>
+                    <name>Abdication</name>
+                    <value>1</value>
+                </enumerator>
+                <enumerator>
+                    <name>Accident</name>
+                    <value>2</value>
+                </enumerator>
+                <enumerator>
+                    <name>AccidentAircraftGround</name>
+                    <value>3</value>
+                </enumerator>
+                <enumerator>
+                    <name>Accident_Mine</name>
+                    <value>4</value>
+                </enumerator>
+                <enumerator>
+                    <name>Accident_Traffic</name>
+                    <value>5</value>
+                </enumerator>
+                <enumerator>
+                    <name>Accident_Weapon</name>
+                    <value>6</value>
+                </enumerator>
+                <enumerator>
+                    <name>Accident_Workplace</name>
+                    <value>7</value>
+                </enumerator>
+                <enumerator>
+                    <name>Advancing</name>
+                    <value>8</value>
+                </enumerator>
+                <enumerator>
+                    <name>AerialEngagement</name>
+                    <value>9</value>
+                </enumerator>
+                <enumerator>
+                    <name>AerialShootDown</name>
+                    <value>10</value>
+                </enumerator>
+                <enumerator>
+                    <name>AirAssault</name>
+                    <value>11</value>
+                </enumerator>
+                <enumerator>
+                    <name>AirborneAssault</name>
+                    <value>12</value>
+                </enumerator>
+                <enumerator>
+                    <name>AircraftCrash</name>
+                    <value>13</value>
+                </enumerator>
+                <enumerator>
+                    <name>AircraftLanding</name>
+                    <value>14</value>
+                </enumerator>
+                <enumerator>
+                    <name>AircraftLaunchActivity</name>
+                    <value>15</value>
+                </enumerator>
+                <enumerator>
+                    <name>AircraftLoss</name>
+                    <value>16</value>
+                </enumerator>
+                <enumerator>
+                    <name>AirspaceViolation</name>
+                    <value>17</value>
+                </enumerator>
+                <enumerator>
+                    <name>AlertCancellation</name>
+                    <value>18</value>
+                </enumerator>
+                <enumerator>
+                    <name>Ambush</name>
+                    <value>19</value>
+                </enumerator>
+                <enumerator>
+                    <name>AmphibiousOperation</name>
+                    <value>20</value>
+                </enumerator>
+                <enumerator>
+                    <name>ArmsProduction</name>
+                    <value>21</value>
+                </enumerator>
+                <enumerator>
+                    <name>ArmsTrade</name>
+                    <value>22</value>
+                </enumerator>
+                <enumerator>
+                    <name>Arresting_Legal</name>
+                    <value>23</value>
+                </enumerator>
+                <enumerator>
+                    <name>ArrestingOrObstructing</name>
+                    <value>24</value>
+                </enumerator>
+                <enumerator>
+                    <name>Arson</name>
+                    <value>25</value>
+                </enumerator>
+                <enumerator>
+                    <name>ArtilleryFire</name>
+                    <value>26</value>
+                </enumerator>
+                <enumerator>
+                    <name>Assassination</name>
+                    <value>27</value>
+                </enumerator>
+                <enumerator>
+                    <name>Assembling</name>
+                    <value>28</value>
+                </enumerator>
+                <enumerator>
+                    <name>AssistingACriminal</name>
+                    <value>29</value>
+                </enumerator>
+                <enumerator>
+                    <name>AtmosphericPollution</name>
+                    <value>30</value>
+                </enumerator>
+                <enumerator>
+                    <name>Attack_Deliberate</name>
+                    <value>31</value>
+                </enumerator>
+                <enumerator>
+                    <name>Attack_Diversion</name>
+                    <value>32</value>
+                </enumerator>
+                <enumerator>
+                    <name>Attack_Electronic</name>
+                    <value>33</value>
+                </enumerator>
+                <enumerator>
+                    <name>Attack_Hasty</name>
+                    <value>34</value>
+                </enumerator>
+                <enumerator>
+                    <name>Attack_Main</name>
+                    <value>35</value>
+                </enumerator>
+                <enumerator>
+                    <name>Attack_NotOtherwiseSpecified</name>
+                    <value>36</value>
+                </enumerator>
+                <enumerator>
+                    <name>Attack_Supporting</name>
+                    <value>37</value>
+                </enumerator>
+                <enumerator>
+                    <name>AttemptedMurder</name>
+                    <value>38</value>
+                </enumerator>
+                <enumerator>
+                    <name>AttemptedRape</name>
+                    <value>39</value>
+                </enumerator>
+                <enumerator>
+                    <name>AttemptedRobbery</name>
+                    <value>40</value>
+                </enumerator>
+                <enumerator>
+                    <name>AttemptedSuicide</name>
+                    <value>41</value>
+                </enumerator>
+                <enumerator>
+                    <name>Avoiding</name>
+                    <value>42</value>
+                </enumerator>
+                <enumerator>
+                    <name>BellyLanding</name>
+                    <value>43</value>
+                </enumerator>
+                <enumerator>
+                    <name>Blocking</name>
+                    <value>44</value>
+                </enumerator>
+                <enumerator>
+                    <name>Bombing</name>
+                    <value>45</value>
+                </enumerator>
+                <enumerator>
+                    <name>Bombing_Accidental</name>
+                    <value>46</value>
+                </enumerator>
+                <enumerator>
+                    <name>Bombing_Deliberate</name>
+                    <value>47</value>
+                </enumerator>
+                <enumerator>
+                    <name>BoobyTrapDiscovery</name>
+                    <value>48</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderCrossing_Escorted</name>
+                    <value>49</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderCrossing_Forced</name>
+                    <value>50</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderCrossing_Illegal</name>
+                    <value>51</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderCrossing_Not-Planned</name>
+                    <value>52</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderCrossing_Planned</name>
+                    <value>53</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderCrossing_Surveilled</name>
+                    <value>54</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderIncursion</name>
+                    <value>55</value>
+                </enumerator>
+                <enumerator>
+                    <name>BorderRaid</name>
+                    <value>56</value>
+                </enumerator>
+                <enumerator>
+                    <name>Breaching</name>
+                    <value>57</value>
+                </enumerator>
+                <enumerator>
+                    <name>Build-Up</name>
+                    <value>58</value>
+                </enumerator>
+                <enumerator>
+                    <name>BurnedOutObject</name>
+                    <value>59</value>
+                </enumerator>
+                <enumerator>
+                    <name>Bypass</name>
+                    <value>60</value>
+                </enumerator>
+                <enumerator>
+                    <name>Canalise</name>
+                    <value>61</value>
+                </enumerator>
+                <enumerator>
+                    <name>Capture</name>
+                    <value>62</value>
+                </enumerator>
+                <enumerator>
+                    <name>CarrierLaunch</name>
+                    <value>63</value>
+                </enumerator>
+                <enumerator>
+                    <name>CarrierRecovery</name>
+                    <value>64</value>
+                </enumerator>
+                <enumerator>
+                    <name>CBRN-EVENT</name>
+                    <value>65</value>
+                </enumerator>
+                <enumerator>
+                    <name>CeremonyOrParade</name>
+                    <value>66</value>
+                </enumerator>
+                <enumerator>
+                    <name>CivilDemonstration_Illegal</name>
+                    <value>67</value>
+                </enumerator>
+                <enumerator>
+                    <name>CivilDemonstration_Legal</name>
+                    <value>68</value>
+                </enumerator>
+                <enumerator>
+                    <name>CivilDisobedience</name>
+                    <value>69</value>
+                </enumerator>
+                <enumerator>
+                    <name>CivilUnrest</name>
+                    <value>70</value>
+                </enumerator>
+                <enumerator>
+                    <name>CivilWar</name>
+                    <value>71</value>
+                </enumerator>
+                <enumerator>
+                    <name>Clearing_Air</name>
+                    <value>72</value>
+                </enumerator>
+                <enumerator>
+                    <name>Clearing_LandCombat</name>
+                    <value>73</value>
+                </enumerator>
+                <enumerator>
+                    <name>Clearing_Obstacle</name>
+                    <value>74</value>
+                </enumerator>
+                <enumerator>
+                    <name>Clearing_RadioNet</name>
+                    <value>75</value>
+                </enumerator>
+                <enumerator>
+                    <name>CodewordExecution</name>
+                    <value>76</value>
+                </enumerator>
+                <enumerator>
+                    <name>Collision_Mid-Air</name>
+                    <value>77</value>
+                </enumerator>
+                <enumerator>
+                    <name>Collision_Obstacle</name>
+                    <value>78</value>
+                </enumerator>
+                <enumerator>
+                    <name>CommunicationsActivation</name>
+                    <value>79</value>
+                </enumerator>
+                <enumerator>
+                    <name>CommunicationsDeactivation</name>
+                    <value>80</value>
+                </enumerator>
+                <enumerator>
+                    <name>CommunicationsDisruption</name>
+                    <value>81</value>
+                </enumerator>
+                <enumerator>
+                    <name>CommunicationsInterception</name>
+                    <value>82</value>
+                </enumerator>
+                <enumerator>
+                    <name>CommunicationsOutage</name>
+                    <value>83</value>
+                </enumerator>
+                <enumerator>
+                    <name>CommunicationsRestoration</name>
+                    <value>84</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingConference</name>
+                    <value>85</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingForwardPassageOfLines</name>
+                    <value>86</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingMediaInterview</name>
+                    <value>87</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingPreparatoryFire</name>
+                    <value>88</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingRearwardPassageOfLines</name>
+                    <value>89</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingRecreationalActivities</name>
+                    <value>90</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingRoadService</name>
+                    <value>91</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingSocialEvents</name>
+                    <value>92</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConductingSportingEvents</name>
+                    <value>93</value>
+                </enumerator>
+                <enumerator>
+                    <name>Confiscation</name>
+                    <value>94</value>
+                </enumerator>
+                <enumerator>
+                    <name>ConsolidatingOfAPosition</name>
+                    <value>95</value>
+                </enumerator>
+                <enumerator>
+                    <name>Constructing</name>
+                    <value>96</value>
+                </enumerator>
+                <enumerator>
+                    <name>Containing</name>
+                    <value>97</value>
+                </enumerator>
+                <enumerator>
+                    <name>Cooperating</name>
+                    <value>98</value>
+                </enumerator>
+                <enumerator>
+                    <name>CounterAttack</name>
+                    <value>99</value>
+                </enumerator>
+                <enumerator>
+                    <name>CounterAttackByFire</name>
+                    <value>100</value>
+                </enumerator>
+                <enumerator>
+                    <name>Counter-BatteryFire</name>
+                    <value>101</value>
+                </enumerator>
+                <enumerator>
+                    <name>CoupDetat</name>
+                    <value>102</value>
+                </enumerator>
+                <enumerator>
+                    <name>Covering</name>
+                    <value>103</value>
+                </enumerator>
+                <enumerator>
+                    <name>CrimeAgainstHumanity</name>
+                    <value>104</value>
+                </enumerator>
+                <enumerator>
+                    <name>CriminalIncident</name>
+                    <value>105</value>
+                </enumerator>
+                <enumerator>
+                    <name>Crossing</name>
+                    <value>106</value>
+                </enumerator>
+                <enumerator>
+                    <name>Dazzle</name>
+                    <value>107</value>
+                </enumerator>
+                <enumerator>
+                    <name>Death_NaturalCauses</name>
+                    <value>108</value>
+                </enumerator>
+                <enumerator>
+                    <name>DeathOfChiefOfState</name>
+                    <value>109</value>
+                </enumerator>
+                <enumerator>
+                    <name>DeathOfSpiritualLeader</name>
+                    <value>110</value>
+                </enumerator>
+                <enumerator>
+                    <name>Deception</name>
+                    <value>111</value>
+                </enumerator>
+                <enumerator>
+                    <name>Deception_Electronic</name>
+                    <value>112</value>
+                </enumerator>
+                <enumerator>
+                    <name>Defeat</name>
+                    <value>113</value>
+                </enumerator>
+                <enumerator>
+                    <name>Defending</name>
+                    <value>114</value>
+                </enumerator>
+                <enumerator>
+                    <name>Deflecting</name>
+                    <value>115</value>
+                </enumerator>
+                <enumerator>
+                    <name>Delaying</name>
+                    <value>116</value>
+                </enumerator>
+                <enumerator>
+                    <name>Demolition</name>
+                    <value>117</value>
+                </enumerator>
+                <enumerator>
+                    <name>Demonstration</name>
+                    <value>118</value>
+                </enumerator>
+                <enumerator>
+                    <name>Denying</name>
+                    <value>119</value>
+                </enumerator>
+                <enumerator>
+                    <name>Deploying</name>
+                    <value>120</value>
+                </enumerator>
+                <enumerator>
+                    <name>Destroying</name>
+                    <value>121</value>
+                </enumerator>
+                <enumerator>
+                    <name>Disease</name>
+                    <value>122</value>
+                </enumerator>
+                <enumerator>
+                    <name>Disengaging</name>
+                    <value>123</value>
+                </enumerator>
+                <enumerator>
+                    <name>Disrupting</name>
+                    <value>124</value>
+                </enumerator>
+                <enumerator>
+                    <name>Distributing</name>
+                    <value>125</value>
+                </enumerator>
+                <enumerator>
+                    <name>Diversion</name>
+                    <value>126</value>
+                </enumerator>
+                <enumerator>
+                    <name>Drive-ByShooting</name>
+                    <value>127</value>
+                </enumerator>
+                <enumerator>
+                    <name>Drought</name>
+                    <value>128</value>
+                </enumerator>
+                <enumerator>
+                    <name>DrugConsumption_Illegal</name>
+                    <value>129</value>
+                </enumerator>
+                <enumerator>
+                    <name>DrugDistribution_Illegal</name>
+                    <value>130</value>
+                </enumerator>
+                <enumerator>
+                    <name>DrugManufacturing_Illegal</name>
+                    <value>131</value>
+                </enumerator>
+                <enumerator>
+                    <name>DrugOperation</name>
+                    <value>132</value>
+                </enumerator>
+                <enumerator>
+                    <name>DrugStorage</name>
+                    <value>133</value>
+                </enumerator>
+                <enumerator>
+                    <name>DrugTransportation</name>
+                    <value>134</value>
+                </enumerator>
+                <enumerator>
+                    <name>EarlyWarningAlert</name>
+                    <value>135</value>
+                </enumerator>
+                <enumerator>
+                    <name>Earthquake</name>
+                    <value>136</value>
+                </enumerator>
+                <enumerator>
+                    <name>ElectionAssociatedViolence</name>
+                    <value>137</value>
+                </enumerator>
+                <enumerator>
+                    <name>ElectronicEmission</name>
+                    <value>138</value>
+                </enumerator>
+                <enumerator>
+                    <name>ElectronicWarfare</name>
+                    <value>139</value>
+                </enumerator>
+                <enumerator>
+                    <name>EnemyContact</name>
+                    <value>140</value>
+                </enumerator>
+                <enumerator>
+                    <name>Engaging</name>
+                    <value>141</value>
+                </enumerator>
+                <enumerator>
+                    <name>Enveloping</name>
+                    <value>142</value>
+                </enumerator>
+                <enumerator>
+                    <name>Epidemic</name>
+                    <value>143</value>
+                </enumerator>
+                <enumerator>
+                    <name>EquipmentFailure</name>
+                    <value>144</value>
+                </enumerator>
+                <enumerator>
+                    <name>Escaping</name>
+                    <value>145</value>
+                </enumerator>
+                <enumerator>
+                    <name>Escorting</name>
+                    <value>146</value>
+                </enumerator>
+                <enumerator>
+                    <name>Evacuating</name>
+                    <value>147</value>
+                </enumerator>
+                <enumerator>
+                    <name>Execution</name>
+                    <value>148</value>
+                </enumerator>
+                <enumerator>
+                    <name>Exploitation</name>
+                    <value>149</value>
+                </enumerator>
+                <enumerator>
+                    <name>Explosion</name>
+                    <value>150</value>
+                </enumerator>
+                <enumerator>
+                    <name>Famine</name>
+                    <value>151</value>
+                </enumerator>
+                <enumerator>
+                    <name>Fire</name>
+                    <value>152</value>
+                </enumerator>
+                <enumerator>
+                    <name>Firefighting</name>
+                    <value>153</value>
+                </enumerator>
+                <enumerator>
+                    <name>Fix</name>
+                    <value>154</value>
+                </enumerator>
+                <enumerator>
+                    <name>Fix_Acoustic</name>
+                    <value>155</value>
+                </enumerator>
+                <enumerator>
+                    <name>Fix_Electromagnetic</name>
+                    <value>156</value>
+                </enumerator>
+                <enumerator>
+                    <name>Fix_Electro-Optical</name>
+                    <value>157</value>
+                </enumerator>
+                <enumerator>
+                    <name>Flood</name>
+                    <value>158</value>
+                </enumerator>
+                <enumerator>
+                    <name>FollowingAndAssuming</name>
+                    <value>159</value>
+                </enumerator>
+                <enumerator>
+                    <name>FollowingAndSupporting</name>
+                    <value>160</value>
+                </enumerator>
+                <enumerator>
+                    <name>ForcedLanding</name>
+                    <value>161</value>
+                </enumerator>
+                <enumerator>
+                    <name>FriendlyFire</name>
+                    <value>162</value>
+                </enumerator>
+                <enumerator>
+                    <name>GeneratingChemicalSmoke</name>
+                    <value>163</value>
+                </enumerator>
+                <enumerator>
+                    <name>Genocide</name>
+                    <value>164</value>
+                </enumerator>
+                <enumerator>
+                    <name>GovernmentalCollapse</name>
+                    <value>165</value>
+                </enumerator>
+                <enumerator>
+                    <name>Guarding</name>
+                    <value>166</value>
+                </enumerator>
+                <enumerator>
+                    <name>Gunnery_Air-To-Air</name>
+                    <value>167</value>
+                </enumerator>
+                <enumerator>
+                    <name>Harassing</name>
+                    <value>168</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hiding</name>
+                    <value>169</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hijacking_Boat</name>
+                    <value>170</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hijacking_LandVehicle</name>
+                    <value>171</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hijacking_NotOtherwiseSpecified</name>
+                    <value>172</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hijacking_Plane</name>
+                    <value>173</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hold_Defensive</name>
+                    <value>174</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hold_Offensive</name>
+                    <value>175</value>
+                </enumerator>
+                <enumerator>
+                    <name>HostageTaking</name>
+                    <value>176</value>
+                </enumerator>
+                <enumerator>
+                    <name>HumanRightsViolation</name>
+                    <value>177</value>
+                </enumerator>
+                <enumerator>
+                    <name>Hunting</name>
+                    <value>178</value>
+                </enumerator>
+                <enumerator>
+                    <name>Identifying</name>
+                    <value>179</value>
+                </enumerator>
+                <enumerator>
+                    <name>Illumination</name>
+                    <value>180</value>
+                </enumerator>
+                <enumerator>
+                    <name>IndirectFire</name>
+                    <value>181</value>
+                </enumerator>
+                <enumerator>
+                    <name>IndiscriminateShooting</name>
+                    <value>182</value>
+                </enumerator>
+                <enumerator>
+                    <name>IndustrialEspionageIncident</name>
+                    <value>183</value>
+                </enumerator>
+                <enumerator>
+                    <name>Infiltration</name>
+                    <value>184</value>
+                </enumerator>
+                <enumerator>
+                    <name>Interception</name>
+                    <value>185</value>
+                </enumerator>
+                <enumerator>
+                    <name>Interdiction</name>
+                    <value>186</value>
+                </enumerator>
+                <enumerator>
+                    <name>Intimidation</name>
+                    <value>187</value>
+                </enumerator>
+                <enumerator>
+                    <name>Invasion</name>
+                    <value>188</value>
+                </enumerator>
+                <enumerator>
+                    <name>Isolation</name>
+                    <value>189</value>
+                </enumerator>
+                <enumerator>
+                    <name>IssuingMediaArticle</name>
+                    <value>190</value>
+                </enumerator>
+                <enumerator>
+                    <name>IssuingMediaDocumentary</name>
+                    <value>191</value>
+                </enumerator>
+                <enumerator>
+                    <name>IssuingPressRelease</name>
+                    <value>192</value>
+                </enumerator>
+                <enumerator>
+                    <name>Jamming</name>
+                    <value>193</value>
+                </enumerator>
+                <enumerator>
+                    <name>Kidnapping</name>
+                    <value>194</value>
+                </enumerator>
+                <enumerator>
+                    <name>LabourStrike</name>
+                    <value>195</value>
+                </enumerator>
+                <enumerator>
+                    <name>Leaguer</name>
+                    <value>196</value>
+                </enumerator>
+                <enumerator>
+                    <name>LetterBombExplosion</name>
+                    <value>197</value>
+                </enumerator>
+                <enumerator>
+                    <name>LetterBombIncident</name>
+                    <value>198</value>
+                </enumerator>
+                <enumerator>
+                    <name>LocalElection</name>
+                    <value>199</value>
+                </enumerator>
+                <enumerator>
+                    <name>Locating</name>
+                    <value>200</value>
+                </enumerator>
+                <enumerator>
+                    <name>Looting</name>
+                    <value>201</value>
+                </enumerator>
+                <enumerator>
+                    <name>Maintaining</name>
+                    <value>202</value>
+                </enumerator>
+                <enumerator>
+                    <name>Marking</name>
+                    <value>203</value>
+                </enumerator>
+                <enumerator>
+                    <name>MartialLawImplementation</name>
+                    <value>204</value>
+                </enumerator>
+                <enumerator>
+                    <name>MassingOfForces</name>
+                    <value>205</value>
+                </enumerator>
+                <enumerator>
+                    <name>MassiveDeportationOrBanishment</name>
+                    <value>206</value>
+                </enumerator>
+                <enumerator>
+                    <name>MedicalEvacuation</name>
+                    <value>207</value>
+                </enumerator>
+                <enumerator>
+                    <name>MilitaryMobilisation</name>
+                    <value>208</value>
+                </enumerator>
+                <enumerator>
+                    <name>Mine-Laying</name>
+                    <value>209</value>
+                </enumerator>
+                <enumerator>
+                    <name>MissingIndividual</name>
+                    <value>210</value>
+                </enumerator>
+                <enumerator>
+                    <name>MissionStaging</name>
+                    <value>211</value>
+                </enumerator>
+                <enumerator>
+                    <name>MortarFire</name>
+                    <value>212</value>
+                </enumerator>
+                <enumerator>
+                    <name>Moving</name>
+                    <value>213</value>
+                </enumerator>
+                <enumerator>
+                    <name>Murder</name>
+                    <value>214</value>
+                </enumerator>
+                <enumerator>
+                    <name>MutualAssistancePactAgreement</name>
+                    <value>215</value>
+                </enumerator>
+                <enumerator>
+                    <name>NationalElection</name>
+                    <value>216</value>
+                </enumerator>
+                <enumerator>
+                    <name>NationalHoliday</name>
+                    <value>217</value>
+                </enumerator>
+                <enumerator>
+                    <name>NationalStateOfEmergency</name>
+                    <value>218</value>
+                </enumerator>
+                <enumerator>
+                    <name>NaturalDisaster</name>
+                    <value>219</value>
+                </enumerator>
+                <enumerator>
+                    <name>NavalGunFire</name>
+                    <value>220</value>
+                </enumerator>
+                <enumerator>
+                    <name>NavalPlatformFlightOperations</name>
+                    <value>221</value>
+                </enumerator>
+                <enumerator>
+                    <name>NetworkSeizure</name>
+                    <value>222</value>
+                </enumerator>
+                <enumerator>
+                    <name>Neutralize_Chemical</name>
+                    <value>223</value>
+                </enumerator>
+                <enumerator>
+                    <name>Neutralize_Combat</name>
+                    <value>224</value>
+                </enumerator>
+                <enumerator>
+                    <name>Neutralize_Explosive</name>
+                    <value>225</value>
+                </enumerator>
+                <enumerator>
+                    <name>Obscure</name>
+                    <value>226</value>
+                </enumerator>
+                <enumerator>
+                    <name>Observing</name>
+                    <value>227</value>
+                </enumerator>
+                <enumerator>
+                    <name>Occupying</name>
+                    <value>228</value>
+                </enumerator>
+                <enumerator>
+                    <name>Oceans_SeasOrWaterPollution</name>
+                    <value>229</value>
+                </enumerator>
+                <enumerator>
+                    <name>OffensiveOrCounteroffensive</name>
+                    <value>230</value>
+                </enumerator>
+                <enumerator>
+                    <name>OrganisedCrime</name>
+                    <value>231</value>
+                </enumerator>
+                <enumerator>
+                    <name>OutbreakOfRacialOrTribalOrEthnicWarfare</name>
+                    <value>232</value>
+                </enumerator>
+                <enumerator>
+                    <name>Patrolling</name>
+                    <value>233</value>
+                </enumerator>
+                <enumerator>
+                    <name>PeaceConference</name>
+                    <value>234</value>
+                </enumerator>
+                <enumerator>
+                    <name>PeaceTreatyAgreement</name>
+                    <value>235</value>
+                </enumerator>
+                <enumerator>
+                    <name>Penetrating</name>
+                    <value>236</value>
+                </enumerator>
+                <enumerator>
+                    <name>Pestilence</name>
+                    <value>237</value>
+                </enumerator>
+                <enumerator>
+                    <name>PetroleumProductSpills</name>
+                    <value>238</value>
+                </enumerator>
+                <enumerator>
+                    <name>Picketing</name>
+                    <value>239</value>
+                </enumerator>
+                <enumerator>
+                    <name>Poisoning</name>
+                    <value>240</value>
+                </enumerator>
+                <enumerator>
+                    <name>PoliticalDemonstration</name>
+                    <value>241</value>
+                </enumerator>
+                <enumerator>
+                    <name>PoliticalExecution</name>
+                    <value>242</value>
+                </enumerator>
+                <enumerator>
+                    <name>POWReturn</name>
+                    <value>243</value>
+                </enumerator>
+                <enumerator>
+                    <name>PrisonerExchange</name>
+                    <value>244</value>
+                </enumerator>
+                <enumerator>
+                    <name>Procuring</name>
+                    <value>245</value>
+                </enumerator>
+                <enumerator>
+                    <name>Protection_Electronic</name>
+                    <value>246</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingAccommodation</name>
+                    <value>247</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingAgriculturalSupport</name>
+                    <value>248</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingBedding</name>
+                    <value>249</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingCamps</name>
+                    <value>250</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingConstructionServices</name>
+                    <value>251</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingDecontaminationServices</name>
+                    <value>252</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingEducationServices</name>
+                    <value>253</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingHealthcareServices</name>
+                    <value>254</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingHostNationSupport</name>
+                    <value>255</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingInfrastructure</name>
+                    <value>256</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingLaundryServices</name>
+                    <value>257</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingRepairServices</name>
+                    <value>258</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingSecurityServices</name>
+                    <value>259</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingShelter</name>
+                    <value>260</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingStorageServices</name>
+                    <value>261</value>
+                </enumerator>
+                <enumerator>
+                    <name>ProvidingTranshipmentServices</name>
+                    <value>262</value>
+                </enumerator>
+                <enumerator>
+                    <name>Proxy-Bombing</name>
+                    <value>263</value>
+                </enumerator>
+                <enumerator>
+                    <name>PsychologicalOperation</name>
+                    <value>264</value>
+                </enumerator>
+                <enumerator>
+                    <name>PublishingMediaArticle</name>
+                    <value>265</value>
+                </enumerator>
+                <enumerator>
+                    <name>PublishingMediaDocumentary</name>
+                    <value>266</value>
+                </enumerator>
+                <enumerator>
+                    <name>PublishingPressRelease</name>
+                    <value>267</value>
+                </enumerator>
+                <enumerator>
+                    <name>Pursuing</name>
+                    <value>268</value>
+                </enumerator>
+                <enumerator>
+                    <name>Rape</name>
+                    <value>269</value>
+                </enumerator>
+                <enumerator>
+                    <name>Reconnaissance</name>
+                    <value>270</value>
+                </enumerator>
+                <enumerator>
+                    <name>ReconnaissanceInForce</name>
+                    <value>271</value>
+                </enumerator>
+                <enumerator>
+                    <name>Reconstituting</name>
+                    <value>272</value>
+                </enumerator>
+                <enumerator>
+                    <name>Recovering</name>
+                    <value>273</value>
+                </enumerator>
+                <enumerator>
+                    <name>Recuperating</name>
+                    <value>274</value>
+                </enumerator>
+                <enumerator>
+                    <name>Redeployment</name>
+                    <value>275</value>
+                </enumerator>
+                <enumerator>
+                    <name>RefugeeMovement</name>
+                    <value>276</value>
+                </enumerator>
+                <enumerator>
+                    <name>Reinforcing</name>
+                    <value>277</value>
+                </enumerator>
+                <enumerator>
+                    <name>ReliefInPlace</name>
+                    <value>278</value>
+                </enumerator>
+                <enumerator>
+                    <name>ReligiousDemonstration</name>
+                    <value>279</value>
+                </enumerator>
+                <enumerator>
+                    <name>ReligiousViolence</name>
+                    <value>280</value>
+                </enumerator>
+                <enumerator>
+                    <name>ReligiousWarfare</name>
+                    <value>281</value>
+                </enumerator>
+                <enumerator>
+                    <name>Rendezvous</name>
+                    <value>282</value>
+                </enumerator>
+                <enumerator>
+                    <name>Reorganising</name>
+                    <value>283</value>
+                </enumerator>
+                <enumerator>
+                    <name>Repairing</name>
+                    <value>284</value>
+                </enumerator>
+                <enumerator>
+                    <name>Resting</name>
+                    <value>285</value>
+                </enumerator>
+                <enumerator>
+                    <name>Resupplying</name>
+                    <value>286</value>
+                </enumerator>
+                <enumerator>
+                    <name>Retain</name>
+                    <value>287</value>
+                </enumerator>
+                <enumerator>
+                    <name>Retire</name>
+                    <value>288</value>
+                </enumerator>
+                <enumerator>
+                    <name>Revolution</name>
+                    <value>289</value>
+                </enumerator>
+                <enumerator>
+                    <name>Riot</name>
+                    <value>290</value>
+                </enumerator>
+                <enumerator>
+                    <name>Robbery</name>
+                    <value>291</value>
+                </enumerator>
+                <enumerator>
+                    <name>RocketFire</name>
+                    <value>292</value>
+                </enumerator>
+                <enumerator>
+                    <name>Sabotage</name>
+                    <value>293</value>
+                </enumerator>
+                <enumerator>
+                    <name>Screening</name>
+                    <value>294</value>
+                </enumerator>
+                <enumerator>
+                    <name>SecessionOfPortionOfCountry</name>
+                    <value>295</value>
+                </enumerator>
+                <enumerator>
+                    <name>Securing</name>
+                    <value>296</value>
+                </enumerator>
+                <enumerator>
+                    <name>SecurityCompromise</name>
+                    <value>297</value>
+                </enumerator>
+                <enumerator>
+                    <name>SecurityViolation</name>
+                    <value>298</value>
+                </enumerator>
+                <enumerator>
+                    <name>Seizing</name>
+                    <value>299</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsABreakoutForce</name>
+                    <value>300</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsABridgeheadForce</name>
+                    <value>301</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsAFlankGuard</name>
+                    <value>302</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsAMainBody</name>
+                    <value>303</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsAnAdvanceGuard</name>
+                    <value>304</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsAnIn-PlaceForce</name>
+                    <value>305</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsARearGuard</name>
+                    <value>306</value>
+                </enumerator>
+                <enumerator>
+                    <name>ServingAsAReserve</name>
+                    <value>307</value>
+                </enumerator>
+                <enumerator>
+                    <name>SettingUp</name>
+                    <value>308</value>
+                </enumerator>
+                <enumerator>
+                    <name>Shooting</name>
+                    <value>309</value>
+                </enumerator>
+                <enumerator>
+                    <name>SniperAttack</name>
+                    <value>310</value>
+                </enumerator>
+                <enumerator>
+                    <name>SpaceAccident</name>
+                    <value>311</value>
+                </enumerator>
+                <enumerator>
+                    <name>Spying</name>
+                    <value>312</value>
+                </enumerator>
+                <enumerator>
+                    <name>StateOfWar</name>
+                    <value>313</value>
+                </enumerator>
+                <enumerator>
+                    <name>Strafing_Aerial</name>
+                    <value>314</value>
+                </enumerator>
+                <enumerator>
+                    <name>Strike</name>
+                    <value>315</value>
+                </enumerator>
+                <enumerator>
+                    <name>Suicide</name>
+                    <value>316</value>
+                </enumerator>
+                <enumerator>
+                    <name>Supporting</name>
+                    <value>317</value>
+                </enumerator>
+                <enumerator>
+                    <name>Suppressing</name>
+                    <value>318</value>
+                </enumerator>
+                <enumerator>
+                    <name>Surrender</name>
+                    <value>319</value>
+                </enumerator>
+                <enumerator>
+                    <name>Surveillance_Electronic</name>
+                    <value>320</value>
+                </enumerator>
+                <enumerator>
+                    <name>SuspensionOfHostilities</name>
+                    <value>321</value>
+                </enumerator>
+                <enumerator>
+                    <name>Terrorism</name>
+                    <value>322</value>
+                </enumerator>
+                <enumerator>
+                    <name>Threaten</name>
+                    <value>323</value>
+                </enumerator>
+                <enumerator>
+                    <name>Torture</name>
+                    <value>324</value>
+                </enumerator>
+                <enumerator>
+                    <name>Transporting</name>
+                    <value>325</value>
+                </enumerator>
+                <enumerator>
+                    <name>Traversing</name>
+                    <value>326</value>
+                </enumerator>
+                <enumerator>
+                    <name>TreatyViolation</name>
+                    <value>327</value>
+                </enumerator>
+                <enumerator>
+                    <name>Troublemaking_Agitating</name>
+                    <value>328</value>
+                </enumerator>
+                <enumerator>
+                    <name>Troublemaking_Bullying</name>
+                    <value>329</value>
+                </enumerator>
+                <enumerator>
+                    <name>Troublemaking_Harassing</name>
+                    <value>330</value>
+                </enumerator>
+                <enumerator>
+                    <name>Troublemaking_Hooliganism</name>
+                    <value>331</value>
+                </enumerator>
+                <enumerator>
+                    <name>Troublemaking_Inciting</name>
+                    <value>332</value>
+                </enumerator>
+                <enumerator>
+                    <name>Troublemaking_Intimidating</name>
+                    <value>333</value>
+                </enumerator>
+                <enumerator>
+                    <name>Turning</name>
+                    <value>334</value>
+                </enumerator>
+                <enumerator>
+                    <name>UnexplodedOrdnanceDiscovery</name>
+                    <value>335</value>
+                </enumerator>
+                <enumerator>
+                    <name>VandalismOrRapeOrLootOrRansackOrPlunderOrSack</name>
+                    <value>336</value>
+                </enumerator>
+                <enumerator>
+                    <name>Verifying</name>
+                    <value>337</value>
+                </enumerator>
+                <enumerator>
+                    <name>VesselSinking</name>
+                    <value>338</value>
+                </enumerator>
+                <enumerator>
+                    <name>VolcanicEruption</name>
+                    <value>339</value>
+                </enumerator>
+                <enumerator>
+                    <name>WarOrCrisisAlert</name>
+                    <value>340</value>
+                </enumerator>
+                <enumerator>
+                    <name>WarOrMilitaryConference</name>
+                    <value>341</value>
+                </enumerator>
+                <enumerator>
+                    <name>WarCrime</name>
+                    <value>342</value>
+                </enumerator>
+                <enumerator>
+                    <name>WeaponFiring</name>
+                    <value>343</value>
+                </enumerator>
+                <enumerator>
+                    <name>Withdrawal</name>
+                    <value>344</value>
+                </enumerator>
+                <enumerator>
+                    <name>WithdrawalUnderPressure</name>
+                    <value>345</value>
+                </enumerator>
+                <enumerator>
+                    <name>Witnessing</name>
+                    <value>346</value>
+                </enumerator>
+                <enumerator>
+                    <name>NotOtherwiseSpecified</name>
+                    <value>347</value>
+                </enumerator>
+            </enumeratedData>
+            <enumeratedData>
+                <name>DamageStatusEnhancedEnum32</name>
+                <representation>HLAinteger32BE</representation>
+                <semantics>The damage status of an object</semantics>
+                <enumerator>
+                    <name>NoDamage</name>
+                    <value>0</value>
+                </enumerator>
+                <enumerator>
+                    <name>SlightDamage</name>
+                    <value>1</value>
+                </enumerator>
+                <enumerator>
+                    <name>ModerateDamage</name>
+                    <value>2</value>
+                </enumerator>
+                <enumerator>
+                    <name>SignificantDamage</name>
+                    <value>3</value>
+                </enumerator>
+                <enumerator>
+                    <name>Destroyed</name>
+                    <value>4</value>
+                </enumerator>
+            </enumeratedData>
+        </enumeratedDataTypes>
+        <arrayDataTypes>
+            <arrayData>
+                <name>Callsign</name>
+                <dataType>HLAunicodeChar</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Unique identifier for an entity. A more user friendly identifier than UUID, used in Logistics protocol for Consumer and Provider.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>NETN_ArrayOfEntityTypeStruct</name>
+                <dataType>EntityTypeStruct</dataType>
+                <cardinality>[1..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>One or more entity types.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>UuidArrayOfHLAbyte16</name>
+                <dataType>HLAbyte</dataType>
+                <cardinality>16</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>16 bytes in the UUID. 
+ 
+A universally unique identifier (UUID), standardized by the Open Software Foundation (OSF) as part of the Distributed Computing Environment (DCE). 
+ 
+A UUID is a 16-byte (128-bit) number. In its canonical form, a UUID is represented by 32 hexadecimal digits, displayed in five groups separated by hyphens, in the form 8-4-4-4-12 for a total of 36 characters (32 digits and four hyphens). For example: 
+550e8400-e29b-41d4-a716-446655440000</semantics>
+            </arrayData>
+            <arrayData>
+                <name>ArrayOfUuid</name>
+                <dataType>UuidArrayOfHLAbyte16</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Array with UUIDs</semantics>
+            </arrayData>
+            <arrayData>
+                <name>NETN_ArrayOfSupplyStruct</name>
+                <dataType>NETN_SupplyStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Array with NETN SupplyStructs</semantics>
+            </arrayData>
+            <arrayData>
+                <name>ArrayOfWorldLocationStruct3</name>
+                <dataType>WorldLocationStruct</dataType>
+                <cardinality>[3..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>3 or more locations, specifying a region (area)</semantics>
+            </arrayData>
+        </arrayDataTypes>
+        <fixedRecordDataTypes>
+            <fixedRecordData>
+                <name>NETN_EventIdentifier</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Uniquely identifies an event from an entity.</semantics>
+                <field>
+                    <name>EventCount</name>
+                    <dataType>CounterInt32</dataType>
+                    <semantics>EventCount shall be set to one for each exercise and incremented by one for NETN event. In the case where all possible values are exhausted, the numbers may be reused beginning again at one.</semantics>
+                </field>
+                <field>
+                    <name>IssuingObjectIdentifier</name>
+                    <dataType>Callsign</dataType>
+                    <semantics>Callsign for the  entity which issued the event.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>NETN_SupplyStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Same definition as RPR2 SupplyStruct.</semantics>
+                <field>
+                    <name>SupplyType</name>
+                    <dataType>EntityTypeStruct</dataType>
+                    <semantics>The type of supply (as described in the Bit Encoded Values for Use with Protocols for Distributed Interactive Simulation Applications)</semantics>
+                </field>
+                <field>
+                    <name>Quantity</name>
+                    <dataType>QuantityFloat32</dataType>
+                    <semantics>The number of units of the supply type.  The unit measure depends on the supply type and shall use the SI units of measurement used for such supplies.</semantics>
+                </field>
+            </fixedRecordData>
+        </fixedRecordDataTypes>
+        <variantRecordDataTypes/>
+    </dataTypes>
+    <notes/>
+</objectModel>]]></fom>
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/network-federat/NETN-COM.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>NETN-COM</name>
+        <type>FOM</type>
+        <version>1.0 (Baseline MAR 2020)</version>
+        <modificationDate>2020-03-21</modificationDate>
+        <securityClassification>Not classified</securityClassification>
+        <purpose>Simulation, Training</purpose>
+        <applicationDomain></applicationDomain>
+        <description>	
+NATO Education and Training Network (NETN) Communication Network (COM) Module. 
+        
+This module is a specification of how to represent Communication Networks in a federated distributed simulation. The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. The NETN COM FOM module is available as a XML file for use in HLA based federations.
+        </description>
+        <useLimitation></useLimitation>
+        <useHistory>1.0.0 - Initial version developed by MSG-164 and MSG-163 for NETN-FOM v3.0</useHistory>
+        <poc>
+            <pocType>Release authority</pocType>
+            <pocName>NATO Modelling and Simulation Group</pocName>
+            <pocOrg>NATO Science and Technology Organization</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>MSG-164 MSaaS Phase 2</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>Daniel Kallfass</pocName>
+            <pocOrg>Airbus</pocOrg>
+            <pocTelephone></pocTelephone>
+            <pocEmail></pocEmail>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>MSG-163 Evolution of NATO Standards for Federated Simulation</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <reference>
+            <type>Dependency</type>
+            <identification>NETN-BASE</identification>
+        </reference>
+        <other>Copyright © 2020 by NATO/OTAN. All rights reserved.
+This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.
+
+Above license gives you the right to use and redistribute the NETN FOM Module (XML file and Documentation) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference. You are NOT allowed to modify the NETN FOM Module or its documentation without prior permission by the NATO Modelling and Simulation Group.</other>
+        <glyph type="png" height="64" width="64" alt="">iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABcSAAAXEgFnn9JSAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAAKeklEQVR4Ae2YfYydRRWHAUW+ioIKVAm0BSwVRUDFgmChoDQREhSsMaiJwRgSTCAqUYKJQfiDaPATDBIpMUYiKhorII1ShJYKRQiIfDW2tBWKLRSoBQSxRZ/nvvNbZ+/e3XsXd2+36kmed77OO2fmzJmZ995ttvm//G97YNsepv9KdF5R9DaTburhnV5UtG3f2xVl+7X/CSMOLIOrBzVcfa3TLR+HtutZ38uitL/3ssvDGXOSL5VeDyI9HP4JS2EZKLVOU9Pbs37Pfg+Gv8FiWANKrdPU9PGpcWUKzIeNsLpg/hqYDEp0m9LIT52dlX8X+TvgGbDvR0v+MtKdQRlN380bY/DMAPemrwfhfpgFu8HuMBuWwwMwWidszzvKUfA0/BoOhUnwepgLT8IC8GxQdFrfpPb4PKyuhJ06WN+Vuqfgu1Vbt4FmQjr4Nri+erfOzqDgdjirVOa9Wmfc8ln9fbFgWH6mWHKFnKA4eeUcWAV7gVI7r6kZ/NyhFI8jtW9TZUewX9+Pjo5dAkrsNqVxeNYD95BTDG09n8PuH+Rtk1yB95LfBV4LSt5tSkOfaX8DTc/C40XF/mzzwNWOch+45TwLbNMJ4ya1A2JoHdYczJRi1VUyOsS8ciA4OA9FJe82paHPtDtxHecElfStw7PdtPs8uBUU7fRFamf8CIsegJFMIGUj4IoUSNvbq6ZWNgegk7wb7D9Sv+thuAHOL419PQO0mXNgOvnH4GbYDyIzyNwMrsp7QMnkmtLwz+idiMoL8H3YExTtHgkr4A/walDqRWlqxvnpasToO8n/HtbC72ApePr/Cm4Do2AaKJlcU+r8rPv+ICpOdg0shkVg3zfCPqBkHE2pj896oIbsqXAhXFDyrpb7WCesgtE4wUnZv+INchp8C4yoL0JEG1tUaicMN5AdaLgJ/gJTQellz9p3nOA79rMSTrGA9NJHozkGz+HCzBXxanIlah3zYsj/Hd4HD8E9sD94rXWbgH3Lq0CxP9+bZgHZ3CT9edaT62TRweiIrJp58Zp0orYfD3cVPCR7cQJqA98UXnk6M1ejbX2Tbg7IQLJqKZs6USNEh+iE38JieBvYZpTUoU5xiKR9wjtgyMhLhRGgExRP9oVwCxwCRslITtCptitei7n6rN/qJE5w4FeDn7uHWUA85LLSltV1/7uFcl5cS34+KNb1GpmtFybKo3bCVQxKJ8wsg3PCtmfFS/VAMo/cDQOlfzupqto6sllRR3s5+Lv/aAuIkRBxi3wavgdXgh9b6n4E/ByO1O+kbsKn9Sp/k9H6r8+cMuojSRfAY/AgGPY/AJ1lBKyGVeB7u4OS67IpbSXP2gmXMOb74NuwHm6Hk2EPqMV3DoBzYR0YFceAUvfX1HR/eu7UZ0/3N8ZYow5fvxM83c/o0YbOua68c1J5p9dIcBuqa1ofuKWb/iS158/GpP8DvL8y7QDFAXriSwZeH6aeD/4vcCgo3ZwwUqTYf98kk/CwexLOK5YdxEiDVE3nRce8v0Jvg0j6Tjlp6vem4itwB9wJF8MUUPpyvdZGLsOoP5sj3VYweqaZ0HvJ+6H0ASuRHZtk0DOrO5davypXgLYvhWXwInjDKNFtSuPwzMAn07f/KnmoKZ0G3rR0fsaROu1W+HFRcwL1FotTj6fec+brRa9OLqLgV+uxpbI+n0rV2CUZ+Cy6fARmlq5HazT9+PrX4AHIxLNFamcY8tdARJ04xzrbdKRi363+ayOtlv/w4QBdBWWvJmnd7WZTX6q7JrX+KrT9rTAVFCemLR2g3gGwH/hhpTgvf4sY+pnj1eSnFfwB13KiHYyXxBn1RF6ured50cl4oCrPNUnrbDC7EbwtUm9du/y1VOxaUsc35geCk211TLoB9L6ftn7YpJ7sqMWvwp3gcPCTeQq8DjzxPXOMjn3A7WaYa0t9RccptnlAPmgB8Sf7mDvAPjWuI1aDp/fbwcNwtA5IP7zaCnEPVT+RnZghbN9GhnkjYyl8CRaD54FtER33OfB9t4bnkc4YF8meM/Uf5J8XK263tJWqEZPoTkXrz+Cn9AyYDX5fuPr1zWIkuM+duBM9Co6Ab8Cz4CGojpK0KY3x05XLap9G3n2ZX4STerTl5OMAr7X1kL3brYtzUHgI1oHvLYfzIJNOStX4SYyYXgt3Qup2Jh8HkR0iRkoO5xPIG6pnFi2d4A0gnuLRte9cjWRbkWEEHAO10zMGdcZdMqCDsOSZcDe8prKaSTgosZyJq3YK+N41FhB1EhWtig4PdTo51zrb+iaZiKt9HXjy3gVPwSdgJHkjjf5D5GHl4fkIzAZFJ3WaYKuxPGzXvhMW893eQWXsJJM3XQRPgAeW4n8Drqr70kPtdHg3zIFz4WfgxNfCyaBcAb4TJxhZfZ0Q9noWPa6475aAq+f9rGTQbyL/VXBLrII18CjolIWgU1zpWr5DYTOcWCq10207FNX+JVl5P3zuhYdhcjGf0I2DSnXrZNchU1JRperW+jrNSPhY0dGhsVmqtlyyfTG9F6n7/Y/g15nS/iPISanfaQXTlmjx/doJXmc64VM2IBPCCQnXPRnQn+AeyAdKUqqGiIPXCa6i1JOmOEjqlf4sLTrhzEojC1BV9SebybvP3cN3wM7F9EiTLyqjSnRCouYs8n4C+3kbqZ2UujFLXZ32FcoEp9O2FhZBwj0pVWMqTjJb4pPkjYQLKwvtTmgfc6XaW9YOnYypYZZ8fmm9hbr1cD3EWKKCqnERx5KJfoj8Jri4suQ4HUPGmnyip1IdORsjw2m9lQZ/Y8+vFPq1F42C2PJq9Ir0u6KbJHoG9LJqAxVkUmd4+VX2cXCy7jlP+Mthf7gJfgOnguKA/IjplzgZV1Wbc+CXcBWcDkeD4/IafgYWwk/AObmwRk1LMtm6rJJiB5fABrgdNHgkKN71P4UzLCCDOm2q+vLUAY5LJxwH88B/hhyfvwjF20mH+Fn9UVgDwy6WHSqz4Dnwd7UGIu6nS0EnqaPU7U1Nf5+OOefOD8k7tpPahnAgZT/O/NMkMmSL1xO5ES2JGCl1tNxK+YY0trVV1X3JZvIzsPYCuGU7yXQqPbPOLo05yAd044A3U/MopKPc6yru4gOxbR1MBSWR05T6+8x1/HnMPgy7FfMZU+Zltdv2ltJu/XZRsi573wnb+LSVSOrNJwoeJ28IxXito14/Jbb94/RJaP+vL+2OyTn5p4qyGbatHZDJraRhI/gzVbED71RDzZeU2eBv+7UWkLzblPr7jO07MXsI7FvMu0COOVvE6nfAA2YQ619q5cqjdsYF1OkE91W7HEyFTjm/asggqqq+ZRPipi7egmEsf4F6o+Ow0p7oHaSeztwGft0Z6h4aXiOe+ueAK+/HTzqoHUf1FpGs8hFYfwIWwYdhJpwAV4K3mr8hFK/BYSVOmITGReBdGgyfL0M6mAiTZzgtMeQVI/QXsByWwQpYAnNBMVoHxj1c6OqE7PfJ5KeBYW9neljR4KZWbuI86jF59+8Brvz98CI4Xxm09yl3FJ3QyUF6L1HS8cUtXJnobB+GzhlY+TR2mmDaTNsnaxQYGaYTWVygerJby7gnsk//S8f2L2ttvPWWbEnCAAAAAElFTkSuQmCC</glyph>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+            <objectClass>
+                <name>Communication</name>
+                <sharing>Neither</sharing>
+                <semantics>Abstract Class for NETN-Communication Objects</semantics>
+                <objectClass>
+                    <name>CommunicationNetworkStatus</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <semantics>This NetworkConnectivityStatus HLA Object is created and managed during the HLA exercise by a communication manager simulation (service). 
+ 
+The NetworkConnectivityStatus holds a list all available connectivity links between sending and receiving entities and the communication status (e.g. available or interrupted connectivity).</semantics>
+                    <attribute>
+                        <name>CommunicationNetworkId</name>
+                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <updateType>Static</updateType>
+                        <updateCondition>Initial</updateCondition>
+                        <ownership>NoTransfer</ownership>
+                        <sharing>Neither</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>Identifies the communicationn network.</semantics>
+                    </attribute>
+                    <attribute>
+                        <name>CommunicationConnectivity</name>
+                        <dataType>NetworkConnectivityStructArray</dataType>
+                        <updateType>Conditional</updateType>
+                        <updateCondition>On Change</updateCondition>
+                        <ownership>Divest</ownership>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAbestEffort</transportation>
+                        <order>Receive</order>
+                        <semantics>N/A</semantics>
+                    </attribute>
+                </objectClass>
+            </objectClass>
+        </objectClass>
+    </objects>
+    <dimensions/>
+    <synchronizations/>
+    <transportations/>
+    <updateRates/>
+    <dataTypes>
+        <basicDataRepresentations/>
+        <simpleDataTypes/>
+        <enumeratedDataTypes/>
+        <arrayDataTypes>
+            <arrayData>
+                <name>NetworkConnectivityStructArray</name>
+                <dataType>NetworkConnectivityStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>N/A</semantics>
+            </arrayData>
+        </arrayDataTypes>
+        <fixedRecordDataTypes>
+            <fixedRecordData>
+                <name>NetworkConnectivityStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Describes the connectivity status between a sender and a receiver entity. 
+The state of this communication link is decribed in percentage of the probability of having a connection: 0% if there is no connectivity. 100% if there is maximum connectivity available.</semantics>
+                <field>
+                    <name>Sender</name>
+                    <dataType>UuidArrayOfHLAbyte16</dataType>
+                    <semantics>Uniquie Id of the sending entity/unit</semantics>
+                </field>
+                <field>
+                    <name>Receiver</name>
+                    <dataType>UuidArrayOfHLAbyte16</dataType>
+                    <semantics>Unique Id of the receiving entity/unit</semantics>
+                </field>
+                <field>
+                    <name>NetworkState</name>
+                    <dataType>PercentFloat32</dataType>
+                    <semantics>Percentage decribing the probability of having a connection: 0% if there is no connectivity. 100% if there is maximum connectivity available.</semantics>
+                </field>
+            </fixedRecordData>
+        </fixedRecordDataTypes>
+        <variantRecordDataTypes/>
+    </dataTypes>
+    <notes/>
+</objectModel>]]></fom>
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/network-federat/RPR-Base_v2.0.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>SISO-STD-001.1-2015 - Real-time Platform Reference Base FOM Module</name>
+        <type>FOM</type>
+        <version>2.0</version>
+        <modificationDate>2015-08-10</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <purpose>The RPR FOM supports interoperability for real-time, platform oriented defense simulation.</purpose>
+        <applicationDomain>All domains</applicationDomain>
+        <description>This module provides a common base for RPR based FOM Modules. It contains common datatypes and the BaseEntity and EmbeddedSystem object class definitions.</description>
+        <useLimitation></useLimitation>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>RPR FOM Product Development Group</pocName>
+            <pocOrg>SISO - Simulation Interoperability Standards Organization</pocOrg>
+            <pocTelephone>+1 (407) 882-1348</pocTelephone>
+            <pocEmail>siso-help@sisostds.org</pocEmail>
+        </poc>
+        <reference>
+            <type>Dependency</type>
+            <identification>Real-time Platform Reference Enumerations FOM Module</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>Standard for Guidance, Rationale, and Interoperability Modalities for the Real-time Platform Reference Federation Object Model (RPR FOM)
+SISO-STD-001-2015
+10 August 2015</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>IEEE Standard for Distributed Interactive Simulation - Application Protocols
+IEEE Std 1278.1-1995
+September 21, 1995</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>IEEE Standard for Distributed Interactive Simulation - Application Protocols
+IEEE Std 1278.1a-1998
+19 March 1998</identification>
+        </reference>
+        <other>Copyright © 2015 by the Simulation Interoperability Standards Organization, Inc.
+P.O. Box 781238
+Orlando, FL 32878-1238, USA
+All rights reserved.
+
+Schema and API: SISO hereby grants a general, royalty-free license to copy, distribute, display, and make derivative works from this material, for all purposes, provided that any use of the material contains the following attribution: “Reprinted with permission from SISO Inc.” Should a reader require additional information, contact the SISO Inc. Board of Directors.
+
+Documentation: SISO hereby grants a general, royalty-free license to copy, distribute, display, and make derivative works from this material, for noncommercial purposes, provided that any use of the material contains the following attribution: “Reprinted with permission from SISO Inc.” The material may not be used for a commercial purpose without express written permission from the SISO Inc. Board of Directors.
+
+SISO Inc. Board of Directors
+P.O. Box 781238
+Orlando, FL 32878-1238, USA
+</other>
+        <glyph type="png" height="64" width="64" alt="">iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABaRJREFUeNrsWmtIU28Yn3Oat0xNGTo0kSDC+SExBcULosgcuMgLZKLoBBcpoiEofvGCeMP5YQjui5YIi/RDQRFhGCoVpCEaal5zOIV9EBRvef//6oXD/umO85yj88Ae2GFs73ve5/fcn/d97QICAgQCgZ2dnYBvdHx8jKfo4OBgeXlZwE+SSCRCBwcHAW8JzAsFPCcbABsAGwAbgFNTzLdv3woKCgIDAzMzM9+8ebO5uXlRCG7dunXMHa2trT1//jwmJoakdqFQSGWcwsLC/v7+3d1dDpcD85wBGB8fLysr8/X1JRyHhIS0tbXNzc11dXUlJSVR6fLOnTuVlZUjIyOHh4dXAsDW1lZPT49MJhOJRODP0dHx4cOH79+/39vbMx02MzPT0NBw7949AgP6uX//fmNj4/T0tNUAzM7OVlVVBQUFEZ78/PwqKip+/vxJMwV115cvX0pKSvz9/alaICEhob293WAwXBIAiPbdu3dpaWlOTk6EicjIyM7OTli/5S+BT79+/Rr+7e7uTl7i5uaWmpqq0+lWV1cvCsDS0lJzc3NwcDBZ0tXVNScnZ2hoiI01r6ysaLXa+Ph4YoEgHx+fvLw8yAjGyQ0A6P3Tp0/g9fr162SN27dv19XV6fV6DuPJxMRETU2NVCqlwiNCMIwNAtrf32cIAFaOSBIeHk5ior29PeIJXHZ7e/v4Ygi8DgwMPH36lHISLI3A1dTUxASAXC4nb4HsESJZRoxz0fr6em5uLqWNuLg4cwDoMjHlphADDAmeR7q4i24UP378+OjRo+7ubqJ2PF1cXJhk4vz8/P9VHUJhRESERqOB512E1I+Ojvr6+hBVyXJeXl4tLS0qlQrfFQoFExMqLS09FTNeDf2iLqBxLzasI7bCYhH08BfSNn5B1GYCoLq6mkbXsKvQ0FC1Wk1W4oR1ZIPi4uJfv35RAxCI8DssigmA1tZWYoL0dOPGjaysrA8fPvxTPpyLdWdnZ1gL4t4/w1AC4t/s7GwmADo6Oq5du2a5/6GAQ8FjKj9LWMcSyFyTk5OnDkZNjjFKpZIJgN7eXjr3N0Mwg4yMjLdv3/7+/ftU1hMTE6lC6PHjx2NjYzRoSTCFcpgAwGJUrcKA7t69W1tbS1mFKeuwzPT09O/fv59paUCI8UVFRUwAfP78WSwWs4zrKJmgkOTkZKrFSUlJ+fr1q4WugrmY9ezZM3MARDRrw7GgAaPRyAYAarJXr16RqIW2ASV3dHS05dMRGIixmRsgos/EMGiu9gDhUZD9eSci1dADENJrgKpAWRKCQWxsLIOJZ2rgjFqIKwCMiRUADjXAjBB2WZkQhz5gHQDIkdbVAGlxmAMgadW6GmDlA6QXs64GCABHR0deAiA+gOTNVw0QE2IFwLo+QJyYxxo4PDzc3d1lC4DaM7tkWllZefLkycbGhsNf4hmAly9fhoeH44nvYWFhgYGBDA840LBz4gbomy3c/V1eXkYLT5WANTU1Ozs7zPdGYYIPHjy4NAA6nU4ikZApUVFRIyMjHGzuIpb19/fL5XJLdigYAzAVPHReX19/sqVmu70+ODioUCiYwaAHYCr4uLg4+jaf7QEH2tm0tLTzXhExB8BU8Ghf1Wr1uTaXmB8xDQ8PY2GaEsUSAKaCT0hImJiYuOxDvtHR0ezsbGoT23IApoL39PTUaDQHBwdWO2b98eOHUqlE+2YhAFPBy2QyNscOXJ4TT01NqVQqc0nDw8Njc3PTaDRSgvf29tZqtSxPi7kEQJ1KFRUVndzPu3nzZnt7+5/1/hKi2fz8/NU6qTelhYWF0tJSGLfpXjy5diAWizs7O6/iVYOTpNfry8vLYSoUDMRfbs82LxYAIYPBABhSqfTFixecvxzM2+GzuLjI08tCqFJtF55sAGwA+A6AbD7ylMA8WnbRn2jKz+v3YP4/AQYAfdmTgIW+0AIAAAAASUVORK5CYII=</glyph>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+            <objectClass notes="RPRnoteBase1">
+                <name>BaseEntity</name>
+                <sharing>Subscribe</sharing>
+                <semantics>A base class of aggregate and discrete scenario domain participants. The BaseEntity class is characterized by being located at a particular location in space and independently movable, if capable of movement at all. It specifically excludes elements normally considered to be a component of another element. The BaseEntity class is intended to be a container for common attributes for entities of this type. Since it lacks sufficient class specific attributes that are required for simulation purposes, federates cannot publish objects of this class. Certain simulation management federates, e.g. viewers, may subscribe to this class. Simulation federates will normally subscribe to one of the subclasses, to gain the extra information required to properly simulate the entity.</semantics>
+                <attribute notes="RPRnoteBase2">
+                    <name>EntityType</name>
+                    <dataType>EntityTypeStruct</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>The category of the entity.</semantics>
+                </attribute>
+                <attribute notes="RPRnoteBase2">
+                    <name>EntityIdentifier</name>
+                    <dataType>EntityIdentifierStruct</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>The unique identifier for the entity instance.</semantics>
+                </attribute>
+                <attribute notes="RPRnoteBase3">
+                    <name>IsPartOf</name>
+                    <dataType>IsPartOfStruct</dataType>
+                    <updateType>Conditional</updateType>
+                    <updateCondition>On change</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>Defines if the entity if a constituent part of another entity (denoted the host entity). If the entity is a constituent part of another entity then the HostEntityIdentifier shall be set to the EntityIdentifier of the host entity and the HostRTIObjectIdentifier shall be set to the RTI object instance ID of the host entity. If the entity is not a constituent part of another entity then the HostEntityIdentifier shall be set to 0.0.0 and the HostRTIObjectIdentifier shall be set to the empty string.</semantics>
+                </attribute>
+                <attribute notes="RPRnoteBase2 RPRnoteBase18">
+                    <name>Spatial</name>
+                    <dataType>SpatialVariantStruct</dataType>
+                    <updateType>Conditional</updateType>
+                    <updateCondition notes="RPRnoteBase10 RPRnoteBase11 RPRnoteBase12 RPRnoteBase13 RPRnoteBase14">On change</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>Spatial state stored in one variant record attribute.</semantics>
+                </attribute>
+                <attribute notes="RPRnoteBase3 RPRnoteBase18">
+                    <name>RelativeSpatial</name>
+                    <dataType>SpatialVariantStruct</dataType>
+                    <updateType>Conditional</updateType>
+                    <updateCondition notes="RPRnoteBase10 RPRnoteBase11 RPRnoteBase12 RPRnoteBase13 RPRnoteBase14">On change</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>Relative spatial state stored in one variant record attribute.</semantics>
+                </attribute>
+            </objectClass>
+            <objectClass>
+                <name>EmbeddedSystem</name>
+                <sharing>Neither</sharing>
+                <semantics>A base class used to associate components such as sensor and emitting systems with their parent entity object.</semantics>
+                <attribute notes="RPRnoteBase2">
+                    <name>EntityIdentifier</name>
+                    <dataType>EntityIdentifierStruct</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>The EntityIdentifier of the object which this embedded system is a part of.</semantics>
+                </attribute>
+                <attribute notes="RPRnoteBase2 RPRnoteBase4">
+                    <name>HostObjectIdentifier</name>
+                    <dataType>RTIobjectId</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>NA</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>The RTI object instance ID of the object of which this embedded system is part of.</semantics>
+                </attribute>
+                <attribute notes="RPRnoteBase2">
+                    <name>RelativePosition</name>
+                    <dataType>RelativePositionStruct</dataType>
+                    <updateType>Conditional</updateType>
+                    <updateCondition>On change</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>The position of the embedded system, relative to the host object's position.</semantics>
+                </attribute>
+            </objectClass>
+        </objectClass>
+    </objects>
+    <tags>
+        <updateReflectTag>
+            <dataType>RPRUserDefinedTag</dataType>
+            <semantics>User-supplied tag provided with each update/reflect of object instance attribute values. Contains at least the DIS timestamp in the first 8 characters.</semantics>
+        </updateReflectTag>
+        <sendReceiveTag>
+            <dataType>RPRUserDefinedTag</dataType>
+            <semantics>User-supplied tag provided with each send/receive of an interaction. Contains at least the DIS timestamp in the first 8 characters.</semantics>
+        </sendReceiveTag>
+        <deleteRemoveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </deleteRemoveTag>
+        <divestitureRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureRequestTag>
+        <divestitureCompletionTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureCompletionTag>
+        <acquisitionRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </acquisitionRequestTag>
+        <requestUpdateTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </requestUpdateTag>
+    </tags>
+    <dataTypes>
+        <simpleDataTypes>
+            <simpleData>
+                <name>AccelerationMeterPerSecondSquaredFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>meter per second squared (m/(s^2))</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Linear acceleration vector composed of SI base units. Based on the Linear Acceleration Vector record as specified in IEEE 1278.1-1995 section 5.2.33b.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>AngleDegreeFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>degree (deg)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Angle, based on unit degree (of arc), unit symbol °.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>AngleRadianFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>radian (rad)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Angle, based on SI derived unit radian, unit symbol rad.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>AngularVelocityRadianPerSecondFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>radian per second (rad/s)</units>
+                <resolution>NA</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Angular velocity vector composed of SI base units. Based on the Angular Velocity Vector record as specified in IEEE 1278.1-1995 section 5.2.2.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>ClockTimeHourInteger32</name>
+                <representation>HLAinteger32BE</representation>
+                <units>hour</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Time past on the clock in full hours since a specified point in time.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>DepthMeterFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>meter (m)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Depth, based on SI base unit meter, unit symbol m.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Float32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>NA</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Single-precision floating point number.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Float64</name>
+                <representation>HLAfloat64BE</representation>
+                <units>NA</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Double-precision floating point number.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>FrequencyHertzFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>hertz (Hz)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Frequency, based on SI derived unit hertz, unit symbol Hz.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Integer16</name>
+                <representation>HLAinteger16BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Integer in the range [-2^15, 2^15-1].</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Integer32</name>
+                <representation>HLAinteger32BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Integer in the range [-2^31, 2^31-1].</semantics>
+            </simpleData>
+            <simpleData>
+                <name>InterrogationsPerSecondFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>interrogations/second</units>
+                <resolution>NA</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Number of interrogations per second.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>LengthMeterFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>meter (m)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Length, based on SI base unit meter, unit symbol m.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>MassKilogramFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>kilogram (kg)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Mass, based on SI base unit kilogram, unit symbol kg.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>MeterFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>meter (m)</units>
+                <resolution>NA</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Datatype based on SI base unit meter, unit symbol m.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>MeterFloat64</name>
+                <representation>HLAfloat64BE</representation>
+                <units>meter (m)</units>
+                <resolution>NA</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Datatype based on SI base unit meter, unit symbol m.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Octet</name>
+                <representation>HLAoctet</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Uninterpreted 8-bit value.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>PercentFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>percent (%)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Percentage</semantics>
+            </simpleData>
+            <simpleData>
+                <name>PercentUnsignedInteger32</name>
+                <representation>RPRunsignedInteger32BE</representation>
+                <units>percent (%)</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Percentage</semantics>
+            </simpleData>
+            <simpleData>
+                <name>PowerRatioDecibelMilliwattFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>decibel milliwatt (dBm)</units>
+                <resolution>NA</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Power ratio in decibels (dB) of a measured power referenced to 1 milliwatt (mW).</semantics>
+            </simpleData>
+            <simpleData>
+                <name>RevolutionsPerMinuteInteger16</name>
+                <representation>HLAinteger16BE</representation>
+                <units>revolutions per minute (RPM)</units>
+                <resolution>1</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Frequency of rotation, expressed in revolutions per minute.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>TemperatureDegreeCelsiusFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>degree Celsius (C)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Temperature, based on SI derived unit degree Celsius, unit symbol °C.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>TimeMicrosecondFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>microsecond</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Time, based on SI base unit second, expressed in microsecond, unit symbol μs.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>TimeMillisecondUnsignedInteger32</name>
+                <representation>RPRunsignedInteger32BE</representation>
+                <units>millisecond (ms)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>Time, based on SI base unit second, expressed in millisecond, unit symbol ms.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>TimeSecondInteger32</name>
+                <representation>HLAinteger32BE</representation>
+                <units>second (s)</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Time, based on SI base unit second, unit symbol s.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>TimestampUnsignedInteger32</name>
+                <representation>RPRunsignedInteger32BE</representation>
+                <units>3600/(2^31) second</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>The time past the hour, scaled so that value 0 represents the start of the hour and value 2^31 - 1 represents one time unit before the start of the next hour, thereby resulting in each time unit representing exactly 3600/(2^31) s, which is approximately 1.67638063 microsecond.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>UnsignedInteger16</name>
+                <representation>RPRunsignedInteger16BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Integer in the range [0, 2^16-1].</semantics>
+            </simpleData>
+            <simpleData>
+                <name>UnsignedInteger32</name>
+                <representation>RPRunsignedInteger32BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Integer in the range [0, 2^32-1].</semantics>
+            </simpleData>
+            <simpleData>
+                <name>UnsignedInteger64</name>
+                <representation>RPRunsignedInteger64BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Integer in the range [0, 2^64-1].</semantics>
+            </simpleData>
+            <simpleData>
+                <name>UnsignedInteger8</name>
+                <representation>RPRunsignedInteger8BE</representation>
+                <units>NA</units>
+                <resolution>1</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Integer in the range [0, 2^8-1].</semantics>
+            </simpleData>
+            <simpleData>
+                <name>VelocityMeterPerSecondFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>meter per second (m/s)</units>
+                <resolution>NA</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Speed/Velocity in meter per second.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>WavelengthMicronFloat32</name>
+                <representation>HLAfloat32BE</representation>
+                <units>micron</units>
+                <resolution>NA</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>Wavelength expressed in micrometer.</semantics>
+            </simpleData>
+        </simpleDataTypes>
+        <arrayDataTypes>
+            <arrayData>
+                <name>RPRUserDefinedTag</name>
+                <dataType>HLAASCIIchar</dataType>
+                <cardinality>[8..2147483647]</cardinality>
+                <encoding>RPRnullTerminatedArray</encoding>
+                <semantics>The array shall be at least 8 bytes (octets) in size, which shall contain the time according to the DIS time stamp field format (IEEE 1278.1-1995 section 5.2.31) converted into hexadecimal American Standard Code for Information Interchange (ASCII) character representation (0-9 and A-F), with leading zeros included.  The ordering of the characters shall be in accordance with section 5.1.1 of IEEE 1278.1-1995, that is most significant octet first, with the most significant bits first (i.e. the character for bits 4-7 precedes the character for bits 0-3). This encoding is equivalent to the result of the 'C'-statement "sprintf(UserTag, "%08X", DIStimestamp)," where 'DIStimestamp' is represented in native format. 
+ 
+More user-supplied information may be included, starting from the 9th character, as specified in the federation agreements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>ArticulatedParameterStructLengthlessArray</name>
+                <dataType>ArticulatedParameterStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRlengthlessArray</encoding>
+                <semantics>Dynamic array of ArticulatedParameterStruct elements, may also contain no elements. The array is encoded without array length, containing only the elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>ClockTimeStructLengthlessArray</name>
+                <dataType>ClockTimeStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRlengthlessArray</encoding>
+                <semantics>Dynamic array of ClockTimeStruct elements, may also contain no elements. The array is encoded without array length, containing only the elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>EntityTypeStructLengthlessArray</name>
+                <dataType>EntityTypeStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRlengthlessArray</encoding>
+                <semantics>Dynamic array of EntityTypeStruct elements, may also contain no elements. The array is encoded without array length, containing only the elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>Float32Array1Plus</name>
+                <dataType>Float32</dataType>
+                <cardinality>[1..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Generic dynamic array of Float32 elements, containing at least one element.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>Integer16Array1Plus</name>
+                <dataType>Integer16</dataType>
+                <cardinality>[1..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Generic dynamic array of Integer16 elements, containing at least one element.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray</name>
+                <dataType>Octet</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Generic dynamic array of Octet elements, may also contain no elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray1Plus</name>
+                <dataType>Octet</dataType>
+                <cardinality>[1..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Generic dynamic array of Octet elements, containing at least one element.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray2</name>
+                <dataType>Octet</dataType>
+                <cardinality>2</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>Generic array of two Octet elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray3</name>
+                <dataType>Octet</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>Generic array of three Octet elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray4</name>
+                <dataType>Octet</dataType>
+                <cardinality>4</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>Generic array of four Octet elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray7</name>
+                <dataType>Octet</dataType>
+                <cardinality>7</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>Generic array of seven Octet elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray8</name>
+                <dataType>Octet</dataType>
+                <cardinality>8</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>Generic array of eight Octet elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetPadding32Array</name>
+                <dataType>Octet</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRpaddingTo32Array</encoding>
+                <semantics>Generic dynamic array of meaningless Octet elements, to align the subsequent data structure to the next 32 bit octet boundary value (OBV). The array is encoded without array length, containing zero to three elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetPadding64Array</name>
+                <dataType>Octet</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRpaddingTo64Array</encoding>
+                <semantics>Generic dynamic array of meaningless Octet elements, to align the subsequent data structure to the next 64 bit octet boundary value (OBV). The array is encoded without array length, containing zero to seven elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>OrientationStructLengthlessArray</name>
+                <dataType>OrientationStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRlengthlessArray</encoding>
+                <semantics>Dynamic array of OrientationStruct elements, may also contain no elements. The array is encoded without array length, containing only the elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>UnsignedInteger16Array1Plus</name>
+                <dataType>UnsignedInteger16</dataType>
+                <cardinality>[1..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Generic dynamic array of UnsignedInteger16 elements, containing at least one element.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>UnsignedInteger32LengthlessArray</name>
+                <dataType>UnsignedInteger32</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRlengthlessArray</encoding>
+                <semantics>Generic dynamic array of UnsignedInteger32 elements, may also contain no elements. The array is encoded without array length, containing only the elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>UnsignedInteger64Array1Plus</name>
+                <dataType>UnsignedInteger64</dataType>
+                <cardinality>[1..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Generic dynamic array of UnsignedInteger64 elements, containing at least one element.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>UnsignedInteger8LengthlessArray</name>
+                <dataType>UnsignedInteger8</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRlengthlessArray</encoding>
+                <semantics>Generic dynamic array of UnsignedInteger8 elements, may also contain no elements. The array is encoded without array length, containing only the elements.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>WorldLocationStructLengthlessArray</name>
+                <dataType>WorldLocationStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRlengthlessArray</encoding>
+                <semantics>Dynamic array of WorldLocationStruct elements, may also contain no elements. The array is encoded without array length, containing only the elements.</semantics>
+            </arrayData>
+        </arrayDataTypes>
+        <fixedRecordDataTypes>
+            <fixedRecordData>
+                <name>AccelerationVectorStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The magnitude of the change in linear velocity over time.</semantics>
+                <field>
+                    <name>XAcceleration</name>
+                    <dataType>AccelerationMeterPerSecondSquaredFloat32</dataType>
+                    <semantics>Acceleration component along the X axis.</semantics>
+                </field>
+                <field>
+                    <name>YAcceleration</name>
+                    <dataType>AccelerationMeterPerSecondSquaredFloat32</dataType>
+                    <semantics>Acceleration component along the Y axis.</semantics>
+                </field>
+                <field>
+                    <name>ZAcceleration</name>
+                    <dataType>AccelerationMeterPerSecondSquaredFloat32</dataType>
+                    <semantics>Acceleration component along the Z axis.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>AngularVelocityVectorStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The rate at which the orientation is changing over time, in body coordinates.</semantics>
+                <field>
+                    <name>XAngularVelocity</name>
+                    <dataType>AngularVelocityRadianPerSecondFloat32</dataType>
+                    <semantics>Acceleration component about the X axis.</semantics>
+                </field>
+                <field>
+                    <name>YAngularVelocity</name>
+                    <dataType>AngularVelocityRadianPerSecondFloat32</dataType>
+                    <semantics>Acceleration component about the Y axis.</semantics>
+                </field>
+                <field>
+                    <name>ZAngularVelocity</name>
+                    <dataType>AngularVelocityRadianPerSecondFloat32</dataType>
+                    <semantics>Acceleration component about the Z axis.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>ArticulatedParameterStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Structure to specify a movable or attached part of an entity. Based on the Articulation Parameter record as specified in IEEE 1278.1-1995 section 5.2.5. 
+ 
+Note that usage of this datatype for the PhyscialEntity object class attribute ArticulatedParametersArray and MunitionDetonation interaction class parameter ArticulatedPartData shall be in accordance with IEEE 1278.1-1995 Annex A.</semantics>
+                <field>
+                    <name>ArticulatedParameterChange</name>
+                    <dataType>Octet</dataType>
+                    <semantics>Indicator of a change to the part. This field shall be set to zero for each exercise and sequentially incremented by one for each change in articulation parameters. In the case where all possible values are exhausted, the numbers shall be reused beginning at zero.</semantics>
+                </field>
+                <field>
+                    <name>PartAttachedTo</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Identification of the articulated part to which this articulation parameter is attached. This field shall contain the value zero if the articulated part is attached directly to the entity.</semantics>
+                </field>
+                <field>
+                    <name>ParameterValue</name>
+                    <dataType>ParameterValueVariantStruct</dataType>
+                    <semantics>Details of the parameter: whether it is an articulated or an attached part, and its type and value.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase7">
+                <name>ArticulatedPartsStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Structure to represent the state of a movable part of an entity.</semantics>
+                <field>
+                    <name>Class</name>
+                    <dataType>ArticulatedPartsTypeEnum32</dataType>
+                    <semantics>The type class uniquely identifies a particular articulated part on a given entity type. Guidance for uniquely assigning type classes to an entity's articulated parts is given in section 4.8 of the enumeration document (SISO-REF-010).</semantics>
+                </field>
+                <field>
+                    <name>TypeMetric</name>
+                    <dataType>ArticulatedTypeMetricEnum32</dataType>
+                    <semantics>The type metric uniquely identifies the transformation to be applied to the articulated part.</semantics>
+                </field>
+                <field>
+                    <name>Value</name>
+                    <dataType>Float32</dataType>
+                    <semantics>Value of the transformation to be applied to the articulated part.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>AttachedPartsStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Structure to represent removable parts that may be attached to an entity.</semantics>
+                <field>
+                    <name>Station</name>
+                    <dataType>StationEnum32</dataType>
+                    <semantics>Identification of the location (or station) to which the part is attached.</semantics>
+                </field>
+                <field>
+                    <name>StoreType</name>
+                    <dataType>EntityTypeStruct</dataType>
+                    <semantics>The entity type of the attached part.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>ClockTimeStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Specification of the point in time of an occurrence. Based on the Clock Time record as specified in IEEE 1278.1-1995 section 5.2.8.</semantics>
+                <field>
+                    <name>Hours</name>
+                    <dataType>ClockTimeHourInteger32</dataType>
+                    <semantics>The number of hours since 0000 hours, January 1, 1970 UTC.</semantics>
+                </field>
+                <field>
+                    <name>TimePastTheHour</name>
+                    <dataType>TimestampUnsignedInteger32</dataType>
+                    <semantics>The time past the hour indicated in the Hours field.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>ConstituentPartRelationshipStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The relationship of the constituent part object to its host object. Based on the Relationship record as specified in IEEE 1278.1a-1998 section 5.2.56.</semantics>
+                <field>
+                    <name>Nature</name>
+                    <dataType>ConstituentPartNatureEnum16</dataType>
+                    <semantics>The nature or purpose for the joining of the constituent part object to the host object.</semantics>
+                </field>
+                <field>
+                    <name>Position</name>
+                    <dataType>ConstituentPartPositionEnum16</dataType>
+                    <semantics>The position of the constituent part object with respect to the host object.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>DimensionStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Bounding box in X,Y,Z axis.</semantics>
+                <field>
+                    <name>XAxisLength</name>
+                    <dataType>MeterFloat32</dataType>
+                    <semantics>Length in meters along X axis.</semantics>
+                </field>
+                <field>
+                    <name>YAxisLength</name>
+                    <dataType>MeterFloat32</dataType>
+                    <semantics>Length in meters along Y axis.</semantics>
+                </field>
+                <field>
+                    <name>ZAxisLength</name>
+                    <dataType>MeterFloat32</dataType>
+                    <semantics>Length in meters along Z axis.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>EntityIdentifierStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Unique, exercise-wide identification of the entity, or a symbolic group address referencing multiple entities or a simulation application. Based on the Entity Identifier record as specified in IEEE 1278.1-1995 section 5.2.14.</semantics>
+                <field>
+                    <name>FederateIdentifier</name>
+                    <dataType>FederateIdentifierStruct</dataType>
+                    <semantics>Simulation application (federate) identifier.</semantics>
+                </field>
+                <field>
+                    <name>EntityNumber</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Each entity in a given simulation application shall be given an entity identifier number unique to all other entities in that application. This identifier number is valid for the duration of the exercise; however, entity identifier numbers may be reused when all possible numbers have been exhausted. No entity shall have an entity identifier number of NO_ENTITY (0), ALL_ENTITIES (0xFFFF), or RQST_ASSIGN_ID (0xFFFE). The entity identifier number need not be registered or retained for future exercises. An entity identifier number equal to zero with valid site and application identification shall address a simulation application. An entity identifier number equal to ALL_ENTITIES shall mean all entities within the specified site and application. An entity identifier number equal to RQST_ASSIGN_ID allows the receiver of the CreateEntity interaction to define the entity identifier number of the new entity. The new entity will specify its entity identifier number in the Acknowledge interaction.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase5">
+                <name>EntityTypeStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Type of entity. Based on the Entity Type record as specified in IEEE 1278.1-1995 section 5.2.16.</semantics>
+                <field>
+                    <name>EntityKind</name>
+                    <dataType>Octet</dataType>
+                    <semantics>Kind of entity.</semantics>
+                </field>
+                <field>
+                    <name>Domain</name>
+                    <dataType>Octet</dataType>
+                    <semantics>Domain in which the entity operates.</semantics>
+                </field>
+                <field>
+                    <name>CountryCode</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Country to which the design of the entity is attributed.</semantics>
+                </field>
+                <field>
+                    <name>Category</name>
+                    <dataType>Octet</dataType>
+                    <semantics>Main category that describes the entity.</semantics>
+                </field>
+                <field>
+                    <name>Subcategory</name>
+                    <dataType>Octet</dataType>
+                    <semantics>Subcategory to which an entity belongs based on the Category field.</semantics>
+                </field>
+                <field>
+                    <name>Specific</name>
+                    <dataType>Octet</dataType>
+                    <semantics>Specific information about an entity based on the Subcategory field.</semantics>
+                </field>
+                <field>
+                    <name>Extra</name>
+                    <dataType>Octet</dataType>
+                    <semantics>Extra information required to describe a particular entity.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>EventIdentifierStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Identification of an event. Based on the Event Identifier record as specified in IEEE 1278.1-1995 section 5.2.18.</semantics>
+                <field>
+                    <name>EventCount</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>The event number. Uniquely assigned by the simulation application (federate) that initiates the sequence of events. It shall be set to one for each exercise and incremented by one for each event. In the case where all possible values are exhausted, the numbers may be reused beginning again at one.</semantics>
+                </field>
+                <field>
+                    <name>IssuingObjectIdentifier</name>
+                    <dataType>RTIobjectId</dataType>
+                    <semantics>Identification of the object issuing the event.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>FederateIdentifierStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Unique identification of the simulation application (federate) in an exercise, or a symbolic group address referencing multiple simulation applications. Based on the Simulation Address record as specified in IEEE 1278.1-1995 section 5.2.14.1.</semantics>
+                <field>
+                    <name>SiteID</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Each site shall be assigned a unique site identification. No individual site shall be assigned an identification number containing NO_SITE (0) or ALL_SITES (0xFFFF). An identification number equal to ALL_SITES (0xFFFF) shall mean all sites; this may be used to initialize or start all sites. The mechanism by which Site Identification numbers are assigned is part of federation agreements.</semantics>
+                </field>
+                <field>
+                    <name>ApplicationID</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Each simulation application (federate) at a site shall be assigned an identification number unique within that site. No simulation application shall be assigned an identification number containing NO_APPLIC (0) or ALL_APPLIC (0xFFFF). An application identification number equal to ALL_APPLIC (0xFFFF) shall mean all applications; this may be used to start all applications within a site. One or more simulation applications may reside in a single host computer. The mechanism by which application identification numbers are assigned is part of federation agreements.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>IsPartOfStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Defines the spatial relationship between two objects.</semantics>
+                <field>
+                    <name>HostEntityIdentifier</name>
+                    <dataType>EntityIdentifierStruct</dataType>
+                    <semantics>The identifier of the entity of which the object is a constituent part.</semantics>
+                </field>
+                <field>
+                    <name>HostRTIObjectIdentifier</name>
+                    <dataType>RTIobjectId</dataType>
+                    <semantics>The RTI instance identifier of the object of which this object is a constituent part.</semantics>
+                </field>
+                <field>
+                    <name>Relationship</name>
+                    <dataType>ConstituentPartRelationshipStruct</dataType>
+                    <semantics>The relationship of the constituent part object to its host object.</semantics>
+                </field>
+                <field>
+                    <name>NamedLocation</name>
+                    <dataType>NamedLocationStruct</dataType>
+                    <semantics>The discrete positional relationship of the constituent part object with respect to its host object.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase20">
+                <name>LinearSegmentStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Specifies linear object segment characteristics.</semantics>
+                <field>
+                    <name>SegmentNumber</name>
+                    <dataType>UnsignedInteger32</dataType>
+                    <semantics>Identifies the individual segment.</semantics>
+                </field>
+                <field>
+                    <name>PercentComplete</name>
+                    <dataType>PercentUnsignedInteger32</dataType>
+                    <semantics>Specifies the percent completion of the segment.</semantics>
+                </field>
+                <field>
+                    <name>Location</name>
+                    <dataType>WorldLocationStruct</dataType>
+                    <semantics>Specifies the location of the segment.</semantics>
+                </field>
+                <field>
+                    <name>Orientation</name>
+                    <dataType>OrientationStruct</dataType>
+                    <semantics>Specifies the orientation of the segment.</semantics>
+                </field>
+                <field>
+                    <name>Length</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Specifies the length of the segment, in meters, extending in the positive X direction.</semantics>
+                </field>
+                <field>
+                    <name>Width</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Specifies the total width of the segment, in meters; one-half of the width shall extend in the positive Y direction, and one-half of the width shall extend in the negative Y direction.</semantics>
+                </field>
+                <field>
+                    <name>Height</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Specifies the height of the segment, in meters, above ground.</semantics>
+                </field>
+                <field>
+                    <name>Depth</name>
+                    <dataType>UnsignedInteger16</dataType>
+                    <semantics>Specifies the depth of the segment, in meters, below ground level.</semantics>
+                </field>
+                <field>
+                    <name>DamagedState</name>
+                    <dataType>DamageStatusEnum32</dataType>
+                    <semantics>Specifies the damaged appearance of the segment.</semantics>
+                </field>
+                <field>
+                    <name>Deactivated</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Specifies whether or not the segment has been deactivated (it has ceased to exist in the synthetic environment).</semantics>
+                </field>
+                <field>
+                    <name>Flaming</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Specifies whether or not the segment is aflame.</semantics>
+                </field>
+                <field>
+                    <name>ObjectPreDistributed</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Specifies whether or not the segment was created before the start of the exercise.</semantics>
+                </field>
+                <field>
+                    <name>Smoking</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Specifies whether or not the segment is smoking (creating a smoke plume).</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>NamedLocationStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The discrete positional relationship of the constituent part object with respect to its host object. Based on the specifications in IEEE 1278.1a-1998 of the IsPartOf PDU 'Location of Part' (paragraph 5.3.9.4e) and 'Named Location' (paragraph 5.3.9.4f) fields.</semantics>
+                <field>
+                    <name>StationNumber</name>
+                    <dataType>Integer16</dataType>
+                    <semantics>The number of the particular station at which the constituent part is attached.</semantics>
+                </field>
+                <field>
+                    <name>StationName</name>
+                    <dataType>StationNameLocationVariantStruct</dataType>
+                    <semantics>The name of the station where the constituent part is located.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>OrientationStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The orientation of an object in the world coordinate system, as specified in IEEE Std 1278.1-1995 section 1.3.2.</semantics>
+                <field>
+                    <name>Psi</name>
+                    <dataType>AngleRadianFloat32</dataType>
+                    <semantics>Rotation about the Z axis.</semantics>
+                </field>
+                <field>
+                    <name>Theta</name>
+                    <dataType>AngleRadianFloat32</dataType>
+                    <semantics>Rotation about the Y axis.</semantics>
+                </field>
+                <field>
+                    <name>Phi</name>
+                    <dataType>AngleRadianFloat32</dataType>
+                    <semantics>Rotation about the X axis.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>RelativePositionStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Relative position in right-handed Cartesian coordinates.</semantics>
+                <field>
+                    <name>BodyXDistance</name>
+                    <dataType>MeterFloat32</dataType>
+                    <semantics>The distance from the reference location along the X axis.</semantics>
+                </field>
+                <field>
+                    <name>BodyYDistance</name>
+                    <dataType>MeterFloat32</dataType>
+                    <semantics>The distance from the reference location along the Y axis.</semantics>
+                </field>
+                <field>
+                    <name>BodyZDistance</name>
+                    <dataType>MeterFloat32</dataType>
+                    <semantics>The distance from the reference location along the Z axis.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>RelativeRangeBearingStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Relative position in polar coordinates.</semantics>
+                <field>
+                    <name>Range</name>
+                    <dataType>LengthMeterFloat32</dataType>
+                    <semantics>The range from the reference location.</semantics>
+                </field>
+                <field>
+                    <name>Bearing</name>
+                    <dataType>AngleRadianFloat32</dataType>
+                    <semantics>The bearing from the reference location.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase15">
+                <name>SpatialFPStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Spatial structure for Dead Reckoning Algorithm FPW (2) and FPB (6).</semantics>
+                <field>
+                    <name>WorldLocation</name>
+                    <dataType>WorldLocationStruct</dataType>
+                    <semantics>Location of the object.</semantics>
+                </field>
+                <field notes="RPRnoteBase19">
+                    <name>IsFrozen</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Whether the object is frozen or not.</semantics>
+                </field>
+                <field>
+                    <name>Orientation</name>
+                    <dataType>OrientationStruct</dataType>
+                    <semantics>The angles of rotation around the coordinate axes between the object's attitude and the reference coordinate system axes (calculated as the Tait-Bryan Euler angles specifying the successive rotations needed to transform from the world coordinate system to the entity coordinate system).</semantics>
+                </field>
+                <field>
+                    <name>VelocityVector</name>
+                    <dataType>VelocityVectorStruct</dataType>
+                    <semantics>The rate at which an object's position is changing over time.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase15">
+                <name>SpatialFVStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Spatial structure for Dead Reckoning Algorithm FVW (5) and RVB (9).</semantics>
+                <field>
+                    <name>WorldLocation</name>
+                    <dataType>WorldLocationStruct</dataType>
+                    <semantics>Location of the object.</semantics>
+                </field>
+                <field notes="RPRnoteBase19">
+                    <name>IsFrozen</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Whether the object is frozen or not.</semantics>
+                </field>
+                <field>
+                    <name>Orientation</name>
+                    <dataType>OrientationStruct</dataType>
+                    <semantics>The angles of rotation around the coordinate axes between the object's attitude and the reference coordinate system axes (calculated as the Tait-Bryan Euler angles specifying the successive rotations needed to transform from the world coordinate system to the entity coordinate system).</semantics>
+                </field>
+                <field>
+                    <name>VelocityVector</name>
+                    <dataType>VelocityVectorStruct</dataType>
+                    <semantics>The rate at which an object's position is changing over time.</semantics>
+                </field>
+                <field>
+                    <name>AccelerationVector</name>
+                    <dataType>AccelerationVectorStruct</dataType>
+                    <semantics>The magnitude of the change in linear velocity of an object over time.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase15">
+                <name>SpatialRPStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Spatial structure for Dead Reckoning Algorithm RPW (3) and RPB (7).</semantics>
+                <field>
+                    <name>WorldLocation</name>
+                    <dataType>WorldLocationStruct</dataType>
+                    <semantics>Location of the object.</semantics>
+                </field>
+                <field notes="RPRnoteBase19">
+                    <name>IsFrozen</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Whether the object is frozen or not.</semantics>
+                </field>
+                <field>
+                    <name>Orientation</name>
+                    <dataType>OrientationStruct</dataType>
+                    <semantics>The angles of rotation around the coordinate axes between the object's attitude and the reference coordinate system axes (calculated as the Tait-Bryan Euler angles specifying the successive rotations needed to transform from the world coordinate system to the entity coordinate system).</semantics>
+                </field>
+                <field>
+                    <name>VelocityVector</name>
+                    <dataType>VelocityVectorStruct</dataType>
+                    <semantics>The rate at which an object's position is changing over time.</semantics>
+                </field>
+                <field>
+                    <name>AngularVelocity</name>
+                    <dataType>AngularVelocityVectorStruct</dataType>
+                    <semantics>The rate at which an object's orientation is changing over time.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase15">
+                <name>SpatialRVStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Spatial structure for Dead Reckoning Algorithm RVW (4) and RVB (8).</semantics>
+                <field>
+                    <name>WorldLocation</name>
+                    <dataType>WorldLocationStruct</dataType>
+                    <semantics>Location of the object.</semantics>
+                </field>
+                <field notes="RPRnoteBase19">
+                    <name>IsFrozen</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Whether the object is frozen or not.</semantics>
+                </field>
+                <field>
+                    <name>Orientation</name>
+                    <dataType>OrientationStruct</dataType>
+                    <semantics>The angles of rotation around the coordinate axes between the object's attitude and the reference coordinate system axes (calculated as the Tait-Bryan Euler angles specifying the successive rotations needed to transform from the world coordinate system to the entity coordinate system).</semantics>
+                </field>
+                <field>
+                    <name>VelocityVector</name>
+                    <dataType>VelocityVectorStruct</dataType>
+                    <semantics>The rate at which an object's position is changing over time.</semantics>
+                </field>
+                <field>
+                    <name>AccelerationVector</name>
+                    <dataType>AccelerationVectorStruct</dataType>
+                    <semantics>The magnitude of the change in linear velocity of an object over time.</semantics>
+                </field>
+                <field>
+                    <name>AngularVelocity</name>
+                    <dataType>AngularVelocityVectorStruct</dataType>
+                    <semantics>The rate at which an object's orientation is changing over time.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase15">
+                <name>SpatialStaticStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Spatial structure for Dead Reckoning Algorithm Static (1).</semantics>
+                <field>
+                    <name>WorldLocation</name>
+                    <dataType>WorldLocationStruct</dataType>
+                    <semantics>Location of the object.</semantics>
+                </field>
+                <field notes="RPRnoteBase19">
+                    <name>IsFrozen</name>
+                    <dataType>RPRboolean</dataType>
+                    <semantics>Whether the object is frozen or not.</semantics>
+                </field>
+                <field>
+                    <name>Orientation</name>
+                    <dataType>OrientationStruct</dataType>
+                    <semantics>The angles of rotation around the coordinate axes between the object's attitude and the reference coordinate system axes (calculated as the Tait-Bryan Euler angles specifying the successive rotations needed to transform from the world coordinate system to the entity coordinate system).</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData notes="RPRnoteBase16 RPRnoteBase17">
+                <name>VariableDatumStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>These fields shall specify the types of variable datum, their length, and their value.</semantics>
+                <field>
+                    <name>DatumID</name>
+                    <dataType>DatumIdentifierEnum32</dataType>
+                    <semantics>The fixed datum id represented by a 32-bit enumeration</semantics>
+                </field>
+                <field>
+                    <name>DatumLength</name>
+                    <dataType>UnsignedInteger32</dataType>
+                    <semantics>This field shall specify the length of the variable datum in bits.</semantics>
+                </field>
+                <field>
+                    <name>DatumValue</name>
+                    <dataType>UnsignedInteger64Array1Plus</dataType>
+                    <semantics>Value of the variable datum defined by the Variable Datum ID and Variable Datum length. This field shall be padded at the end to make the length a multiple of 64-bits.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>VelocityVectorStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The rate at which the position is changing over time.</semantics>
+                <field>
+                    <name>XVelocity</name>
+                    <dataType>VelocityMeterPerSecondFloat32</dataType>
+                    <semantics>Velocity component along the X axis.</semantics>
+                </field>
+                <field>
+                    <name>YVelocity</name>
+                    <dataType>VelocityMeterPerSecondFloat32</dataType>
+                    <semantics>Velocity component along the Y axis.</semantics>
+                </field>
+                <field>
+                    <name>ZVelocity</name>
+                    <dataType>VelocityMeterPerSecondFloat32</dataType>
+                    <semantics>Velocity component along the Z axis.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>WorldLocationStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The location of an object in the world coordinate system, as specified in IEEE Std 1278.1-1995 section 1.3.2.</semantics>
+                <field>
+                    <name>X</name>
+                    <dataType>MeterFloat64</dataType>
+                    <semantics>Distance from the origin along the X axis.</semantics>
+                </field>
+                <field>
+                    <name>Y</name>
+                    <dataType>MeterFloat64</dataType>
+                    <semantics>Distance from the origin along the Y axis.</semantics>
+                </field>
+                <field>
+                    <name>Z</name>
+                    <dataType>MeterFloat64</dataType>
+                    <semantics>Distance from the origin along the Z axis.</semantics>
+                </field>
+            </fixedRecordData>
+        </fixedRecordDataTypes>
+        <variantRecordDataTypes>
+            <variantRecordData>
+                <name>ParameterValueVariantStruct</name>
+                <discriminant>ArticulatedParameterType</discriminant>
+                <dataType>ParameterTypeEnum32</dataType>
+                <alternative>
+                    <enumerator>ArticulatedPart</enumerator>
+                    <name>ArticulatedParts</name>
+                    <dataType>ArticulatedPartsStruct</dataType>
+                    <semantics>Alternative for an articulated part.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>AttachedPart</enumerator>
+                    <name>AttachedParts</name>
+                    <dataType>AttachedPartsStruct</dataType>
+                    <semantics>Alternative for an attached part.</semantics>
+                </alternative>
+                <encoding>HLAvariantRecord</encoding>
+                <semantics>Variant record specifying the type of articulation parameter (articulated or attached part), and its type and value.</semantics>
+            </variantRecordData>
+            <variantRecordData>
+                <name>SpatialVariantStruct</name>
+                <discriminant>DeadReckoningAlgorithm</discriminant>
+                <dataType>DeadReckoningAlgorithmEnum8</dataType>
+                <alternative>
+                    <enumerator>Static</enumerator>
+                    <name>SpatialStatic</name>
+                    <dataType>SpatialStaticStruct</dataType>
+                    <semantics>Variant for representing a static object.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_FPW</enumerator>
+                    <name>SpatialFPW</name>
+                    <dataType>SpatialFPStruct</dataType>
+                    <semantics>Variant for representing an object with a constant velocity (or low acceleration) linear motion in world coordinates.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_RPW</enumerator>
+                    <name>SpatialRPW</name>
+                    <dataType>SpatialRPStruct</dataType>
+                    <semantics>Variant for representing an object with a constant velocity (or low acceleration) linear motion, including rotation information, in world coordinates.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_RVW</enumerator>
+                    <name>SpatialRVW</name>
+                    <dataType>SpatialRVStruct</dataType>
+                    <semantics>Variant for representing an object with high speed or maneuvering at any speed, including rotation information, in world coordinates.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_FVW</enumerator>
+                    <name>SpatialFVW</name>
+                    <dataType>SpatialFVStruct</dataType>
+                    <semantics>Variant for representing an object with high speed or maneuvering at any speed in world coordinates.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_FPB</enumerator>
+                    <name>SpatialFPB</name>
+                    <dataType>SpatialFPStruct</dataType>
+                    <semantics>Variant for representing an object with a constant velocity (or low acceleration) linear motion in body axis coordinates.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_RPB</enumerator>
+                    <name>SpatialRPB</name>
+                    <dataType>SpatialRPStruct</dataType>
+                    <semantics>Variant for representing an object with a constant velocity (or low acceleration) linear motion, including rotation information, in body axis coordinates.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_RVB</enumerator>
+                    <name>SpatialRVB</name>
+                    <dataType>SpatialRVStruct</dataType>
+                    <semantics>Variant for representing an object with high speed or maneuvering at any speed, including rotation information, in body axis coordinates.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>DRM_FVB</enumerator>
+                    <name>SpatialFVB</name>
+                    <dataType>SpatialFVStruct</dataType>
+                    <semantics>Variant for representing an object with high speed or maneuvering at any speed in body axis coordinates.</semantics>
+                </alternative>
+                <encoding>HLAvariantRecord</encoding>
+                <semantics>Variant Record for a single spatial attribute.</semantics>
+            </variantRecordData>
+            <variantRecordData notes="RPRnoteBase6">
+                <name>StationNameLocationVariantStruct</name>
+                <discriminant>StationName</discriminant>
+                <dataType>ConstituentPartStationNameEnum16</dataType>
+                <alternative>
+                    <enumerator>OnStationXYZ</enumerator>
+                    <name>RelativeLocation</name>
+                    <dataType>RelativePositionStruct</dataType>
+                    <semantics>The location of the constituent part object relative to the host object entity coordinate system.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>OnStationRangeBearing</enumerator>
+                    <name>RelativeRangeAndBearing</name>
+                    <dataType>RelativeRangeBearingStruct</dataType>
+                    <semantics>The location of the constituent part object relative to the host object in polar coordinates.</semantics>
+                </alternative>
+                <encoding>HLAvariantRecord</encoding>
+                <semantics>The station name at which the constituent part is located. In case of 'On Station', the alternative specifies its location relative to the host object.</semantics>
+            </variantRecordData>
+        </variantRecordDataTypes>
+    </dataTypes>
+    <notes>
+        <note>
+            <label>RPRnoteBase1</label>
+            <semantics>Federates shall send the time at which the data is valid in the user defined tag with every attribute values update and interaction. The time shall be in the first 8 bytes (octets) of the user defined tag, using the DIS timestamp field format (see section 5.2.31 of IEEE 1278.1-1995) converted into hexadecimal ASCII character representation (0-9 and A-F). The ordering of the characters shall be in accordance with section 5.1.1 of IEEE 1278.1-1995, that is most significant octet first, with the most significant bits first (i.e. the character for bits 4-7 precedes the character for bits 0-3). 
+ 
+All federates shall transmit this field, even if they do not use it themselves, so that other federates can use its value to compensate for network transport delays.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase2</label>
+            <semantics>Not optional</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase3</label>
+            <semantics>Default value: all zeros</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase4</label>
+            <semantics>This must reference a valid Object instance.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase5</label>
+            <semantics>All fields in the entity type struct are enumerations. The values for the individual fields are to be derived from the federation agreements, which could refer to SISO-REF-010. The values used in this structure should comply with the requirements specified in section 5.2.16 of IEEE 1278.1-1995 (for platform and environmental entities) and section 5.2.39 of IEEE 1278.1a-1998 (for aggregate entities).</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase6</label>
+            <semantics>This note applies when this datatype is used within the BaseEntity.IsPartOf attribute. 
+The following StationName enumerations - On station RNG/BRG (15) and On station - x,y,z (16), are optional to transmit along with associated RelativeLocation or RelativeRangeAndBearing information. If these enumeration values (15) and (16) are received, they shall be ignored. The RelativeSpatial attribute shall be used in all cases. (Note: Although the RelativeLocation field uses the same WorldLocation contained in the RelativeSpatial attribute, in both these cases, the values do not represent a location in world coordinates, but, rather, the relative location of a part entity to the host entity in the referenced entity coordinate system. The RelativeRangeAndBearing field does not provide full relative spatial data and, therefore, cannot be substituted for the RelativeSpatial attribute.)</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase7</label>
+            <semantics>The units of the Value field depends on the value of the TypeMetric field. The units are defined in section A.2.1.4 of IEEE 1278.1-1995.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase8</label>
+            <semantics>The TSPI_Change condition shall be evaluated as follows: The owner of a base entity object shall maintain two state models of the object in support of the dead reckoning process. One model shall be the internal model used by the simulation application to represent that object. The other shall be a dead reckoning model of the object. Certain thresholds shall be established as criteria for determining if the object's actual TSPI data has varied by an allowable amount from the dead reckoned TSPI data. TSPI_Change is TRUE when either: 
+a) the objects actual position differs from the dead reckoned position by more than DRA_POS_THRSH_DFLT 
+b) the objects actual orientation differs from the dead reckoned orientation by more than DRA_ORIENT_THRSH_DFLT 
+See section 5.1.4 of IEEE 1278.1-1995 for the value of these symbolic constants.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase9</label>
+            <semantics>The values of the default update conditions are as follows: 
+DRA_POS_EPSILON_DFLT 0.001 m 
+DRA_ORIENT_EPSILON_DFLT 0.00001 rad 
+DRA_VEL_EPSILON_DFLT 0.001 m/s 
+DRA_ACCEL_EPSILON_DFLT 0.001 m/s/s 
+DRA_ANG_VEL_EPSILON_DFLT 0.00001 rad/s</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase10</label>
+            <semantics notes="RPRnoteBase8 RPRnoteBase9">The update condition for the WorldLocation field is TRUE when TSPI_Change is TRUE and the actual position differs from the last transmitted position by more than a threshold value in any direction. 
+The default threshold shall be DRA_POS_EPSILSON_DFLT.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase11</label>
+            <semantics notes="RPRnoteBase8 RPRnoteBase9">The update condition for the Orientation field is TRUE when TSPI_Change is TRUE and the actual orientation differs from the last transmitted orientation by more than a threshold value in any orientation. 
+The default threshold shall be DRA_ORIENT_EPSILON_DFLT.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase12</label>
+            <semantics notes="RPRnoteBase8 RPRnoteBase9">In case Dead Reckoning Algorithm FPW (2), RPW (3), RVW (4), FVW (5), FPB (6), RPB (7), RVB (8), or RVB (9) is used, the update condition for the VelocityVector field is TRUE when TSPI_Change is TRUE and the actual velocity differs from the last transmitted velocity by more than a threshold value in any direction. 
+The default threshold shall be DRA_VEL_EPSILON_DFLT.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase13</label>
+            <semantics notes="RPRnoteBase8 RPRnoteBase9">In case Dead Reckoning Algorithm RVW (4), FVW (5), RVB (8), or RVB (9) is used, the update condition for the AccelerationVector field is TRUE when TSPI_Change is TRUE and the actual acceleration differs from the last transmitted acceleration by more than a threshold value in any direction. 
+The default threshold shall be DRA_ACCEL_EPSILON_DFLT.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase14</label>
+            <semantics notes="RPRnoteBase8 RPRnoteBase9">In case Dead Reckoning Algorithm RPW (3), RVW (4), RPB (7), or RVB (8) is used, the update condition for the VelocityVector field is TRUE when TSPI_Change is TRUE and the actual angular velocity differs from the last transmitted angular velocity by more than a threshold value in any direction. 
+The default threshold shall be DRA_ANG_VEL_EPSILON_DFLT.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase15</label>
+            <semantics>Frozen entities should not be dead-reckoned, i.e. should be displayed as fixed at the current location even if non-zero velocity, acceleration or rotation data received from the frozen entity.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase16</label>
+            <semantics>The DatumLength equals the length in bits of the DatumValue only. The total size of a VariableDatumStruct record must account for the padding length.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase17</label>
+            <semantics>The type of the DatumValue field is determined by the value of the DatumID field. The types and associated units, etc., for each of the DatumID enumeration values are to be derived from the federation agreements, which could refer to SISO-REF-010. The DatumValue element type is defined as a UnsignedInteger64 (64 bits) to ensure the correct byte alignment for types that include 64-bit elements.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase18</label>
+            <semantics>If the entity is a constituent part of another entity (denoted by the IsPartOf attribute being set appropriately) then the Spatial attribute may be ignored by a receiving federate. Instead, the receiving federate can calculate spatial attribute values by adding the offsets provided in the RelativeSpatial attribute to the values provided in the host entity's Spatial attribute. Even if a federate is updating RelativeSpatial, it should still update Spatial for the benefit of federates who do not subscribe to the optional RelativeSpatial and IsPartOf attributes.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase19</label>
+            <semantics>If the entity is a constituent part of another entity (denoted by the IsPartOf attribute being set appropriately) then the IsFrozen attribute is no longer updated. The frozen status of the entity is the same as the frozen status of the host entity.</semantics>
+        </note>
+        <note>
+            <label>RPRnoteBase20</label>
+            <semantics>Damaged appearance for environment objects has values 0: no damage, 1: damaged and 2: destroyed, with respect to the DIS standard as defined in SISO-REF-010 (section 12.1.2.1) ; this has to be taken into account when setting up a DIS-HLA gateway (SDEM mapping and filtering)</semantics>
+        </note>
+    </notes>
+</objectModel>]]></fom>
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/network-federat/RPR-Enumerations_v2.0.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelIdentification>
         <name>SISO-STD-001.1-2015 - Real-time Platform Reference Enumerations FOM Module</name>
@@ -16335,4 +19561,218 @@ d) Round brackets characters "(" and ")" have been replaced with "_".</semantics
             <semantics>Deprecated in SISO-REF-010.</semantics>
         </note>
     </notes>
-</objectModel>
+</objectModel>]]></fom>
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/network-federat/RPR-Foundation_v2.0.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>SISO-STD-001.1-2015 - Real-time Platform Reference Foundation FOM Module</name>
+        <type>FOM</type>
+        <version>2.0</version>
+        <modificationDate>2015-08-10</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <purpose>The RPR FOM supports interoperability for real-time, platform oriented defense simulation.</purpose>
+        <applicationDomain>All domains</applicationDomain>
+        <description>This module contains the foundation for all other RPR FOM modules, including generic datatypes that can be considered independent from the RPR FOM purpose.</description>
+        <useLimitation></useLimitation>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>RPR FOM Product Development Group</pocName>
+            <pocOrg>SISO - Simulation Interoperability Standards Organization</pocOrg>
+            <pocTelephone>+1 (407) 882-1348</pocTelephone>
+            <pocEmail>siso-help@sisostds.org</pocEmail>
+        </poc>
+        <reference>
+            <type>Dependency</type>
+            <identification>MIM</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>Standard for Guidance, Rationale, and Interoperability Modalities for the Real-time Platform Reference Federation Object Model (RPR FOM)
+SISO-STD-001-2015
+10 August 2015</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>IEEE Standard for Distributed Interactive Simulation - Application Protocols
+IEEE Std 1278.1-1995
+September 21, 1995</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>IEEE Standard for Distributed Interactive Simulation - Application Protocols
+IEEE Std 1278.1a-1998
+19 March 1998</identification>
+        </reference>
+        <other>Copyright © 2015 by the Simulation Interoperability Standards Organization, Inc.
+P.O. Box 781238
+Orlando, FL 32878-1238, USA
+All rights reserved.
+
+Schema and API: SISO hereby grants a general, royalty-free license to copy, distribute, display, and make derivative works from this material, for all purposes, provided that any use of the material contains the following attribution: “Reprinted with permission from SISO Inc.” Should a reader require additional information, contact the SISO Inc. Board of Directors.
+
+Documentation: SISO hereby grants a general, royalty-free license to copy, distribute, display, and make derivative works from this material, for noncommercial purposes, provided that any use of the material contains the following attribution: “Reprinted with permission from SISO Inc.” The material may not be used for a commercial purpose without express written permission from the SISO Inc. Board of Directors.
+
+SISO Inc. Board of Directors
+P.O. Box 781238
+Orlando, FL 32878-1238, USA
+</other>
+        <glyph type="png" height="64" width="64" alt="">iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABQJJREFUeNrsmmkotGsYx2eYIbsSYhgkSyhZhqxZs0Qa2X3ig/ggwicpS0opQiSSLMUQEYWsZUkoa2Q5WWLsyb5O5vzPO3VyvJjtmXPO1HN9kDL3/Vy/+76W//UMKpPJpFAoVCqVIm/G5/Pxk8bj8bhcLkU+jcFgKNDpdIrcGpxXoMi5kQAkAAlAApAAJAAJQAKQACQACUACkAAkAAlAApAAJIBcGk1G+768vPzxy5aWlubn5/X09GJiYnx8fFRVVf+/AHD64uJiZWVlcXFxY2Njb2/v7OzMwMDA0tLy9vY2JyfH3t4+IiIiJCRES0uLqIdSTUxM9vf3JVv8/Px8enoq8HhtbQ3nDQAdHR0LCws7OzsXFxcHBwecvZKSEj68u7vb1dU1PDx8fHzMYrGio6P9/PykvBBTU1PxAJ6enrhc7vLyMgIDfm9tbV1dXWloaJibm+N0nZ2d4RmDwfjBLT6fj+UcDmdiYgL8np6eCC03NzdlZWXZArS3t/f09KyuriIqaDQaVjo6Ojo5OeGY4T0YJIi36elpkMzMzKioqOA2QII9FRUVxQKgAIAvzObm5uA0FgQFBeF5eDafOEN6dHZ2RkVFMZlMV1fXwsLC9fV1EdfCeeEACBscs4BYU1OTzWaPjo7yZWBIp7q6uoCAAKSNl5dXeXk50oYAgIKCgt/vLjg4eGhoiC8b297eLikpQWLAN+R6S0vLzc2NhAAIHgTodyEoU4y7u7vS0lLBg5AekgB8DJ4fjFiMw8PDpqam+Ph4Q0NDVGQkt7+/v4KCAsq02ABfBo8sMFBPFxYWiouL3d3dUYLV1dXhN3IA2fz+/n5ycoIim56eLh7Az8FDCAa6Xnd3d0pKCuoPmp2urm5CQkJrays8/vTJ1NRUVOrLy0tRAR4fH0UJHgkweDweVEZlZSUEBQ4b1RlCIysra2Rk5P7+/jvUzc1NbFtdXS0SwOvra35+vvQq5SMGMhIiAnLIxsaGSqXS6XRvb2/kKNr529ubKNeFcmRtbQ1+4QBVVVUEKjycdGJiora2Nn6HhouNjUWOHh0diZsnkLTYAacgHGB2dhYxR+A3+GZmZhkZGYODg2i60hSowMDA8PBwXKZISQzJgAXSe29ra/tDcItlAwMDqKe1tbUfAb6dyFDRcF+oCVZWVtIAYIhRU1OT8hQgInNzc1FnodKRBv/4m1ApgeKFxRLoTYF1dHRIfOQYicrKynx9fSF40dr6+vo+6UiRtJDAIOIjIyPF9R7iT4J8RX9obGwMCwszNjZGKauvrz8/P5dczH00nAEku+gAODy0UhE3f3h46O3tjYuLg8pHFyoqKkL5J0CNfjJkJOo3FK8oAOgnQjdE25mcnExLS7P6ZSiAU1NTIjYHSQAEtrOzk5SUJGTcplLHx8d/2AT6LC8vD7ModBviExOzuPVKcgCBjY2NoaF+B4Dh+Esdf3BwUFFR4eHhge6G5TU1NRjzJXNAWgCBtsEY9dds+pt9EvGoZs3NzWjMEMloDjj7LxXyvw0gMC6Xm5mZ+enNAiqJQBf29/ejCOrr6xsZGSUnJyOuEPeEtDbCAP5W4DhggfeAaWhoyM7Oxv4IldDQ0La2tuvra2KnNoIBBMbhcCA5wYBxgsViIdwR9DIaO+E88e9GoTcxoCAx0DHYbDaakUxf7kr1avE/NxQP8vsBEkBaAKgO+fUeztNgyGM5/fd7OP+nAAMA7HElwuUQgMsAAAAASUVORK5CYII=</glyph>
+    </modelIdentification>
+    <dataTypes>
+        <basicDataRepresentations>
+            <basicData>
+                <name>RPRunsignedInteger16BE</name>
+                <size>16</size>
+                <interpretation>Integer in the range [0, 2^16-1]</interpretation>
+                <endian>Big</endian>
+                <encoding>16-bit unsigned integer.</encoding>
+            </basicData>
+            <basicData>
+                <name>RPRunsignedInteger32BE</name>
+                <size>32</size>
+                <interpretation>Integer in the range [0, 2^32-1]</interpretation>
+                <endian>Big</endian>
+                <encoding>32-bit unsigned integer.</encoding>
+            </basicData>
+            <basicData>
+                <name>RPRunsignedInteger64BE</name>
+                <size>64</size>
+                <interpretation>Integer in the range [0, 2^64-1]</interpretation>
+                <endian>Big</endian>
+                <encoding>64-bit unsigned integer.</encoding>
+            </basicData>
+            <basicData>
+                <name>RPRunsignedInteger8BE</name>
+                <size>8</size>
+                <interpretation>Integer in the range [0, 2^8-1]</interpretation>
+                <endian>Big</endian>
+                <encoding>8-bit unsigned integer.</encoding>
+            </basicData>
+        </basicDataRepresentations>
+        <enumeratedDataTypes>
+            <enumeratedData>
+                <name>RPRboolean</name>
+                <representation>HLAoctet</representation>
+                <semantics>Standard Boolean type used for 8-bit compatibility.</semantics>
+                <enumerator>
+                    <name>False</name>
+                    <value>0</value>
+                </enumerator>
+                <enumerator>
+                    <name>True</name>
+                    <value>1</value>
+                </enumerator>
+            </enumeratedData>
+        </enumeratedDataTypes>
+        <arrayDataTypes>
+            <arrayData notes="RPRnoteFoundation1">
+                <name>RTIobjectId</name>
+                <dataType>HLAASCIIchar</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>RPRnullTerminatedArray</encoding>
+                <semantics>An RTI object instance identification string.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>RTIobjectIdArray</name>
+                <dataType>RTIobjectId</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>Set of ID's of registered object instances.</semantics>
+            </arrayData>
+        </arrayDataTypes>
+    </dataTypes>
+    <notes>
+        <note>
+            <label>RPRnoteFoundation1</label>
+            <semantics>This is the unique ObjectName associated with each object instance. The user can define the name to be used in the registerObjectInstance RTI call. If user does not define the name then the RTI will generate a unique name for the object. RTI generated names may be fairly long, so federations wishing to conserve bandwidth may wish to implement their own object naming scheme. 
+ 
+The ObjectName is provided by the RTI in the discoverObjectInstance call. The user can also obtain the ObjectName for a particular object instance using the getObjectInstanceName call.</semantics>
+        </note>
+    </notes>
+</objectModel>]]></fom>
+  <fom format="HLAEvolvedModules" src="file:/home/lukas/Desktop/exjobb/network-federat/RPR-Switches_v2.0.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>SISO-STD-001.1-2015 - Real-time Platform Reference Switches FOM Module</name>
+        <type>FOM</type>
+        <version>2.0</version>
+        <modificationDate>2015-08-10</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <purpose>The RPR FOM supports interoperability for real-time, platform oriented defense simulation.</purpose>
+        <applicationDomain>All domains</applicationDomain>
+        <description>This module contains the switches, required by the HLA standard to be part of a complete FOM.</description>
+        <useLimitation></useLimitation>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>RPR FOM Product Development Group</pocName>
+            <pocOrg>SISO - Simulation Interoperability Standards Organization</pocOrg>
+            <pocTelephone>+1 (407) 882-1348</pocTelephone>
+            <pocEmail>siso-help@sisostds.org</pocEmail>
+        </poc>
+        <reference>
+            <type>Dependency</type>
+            <identification>MIM</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>Standard for Guidance, Rationale, and Interoperability Modalities for the Real-time Platform Reference Federation Object Model (RPR FOM)
+SISO-STD-001-2015
+10 August 2015</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>IEEE Standard for Distributed Interactive Simulation - Application Protocols
+IEEE Std 1278.1-1995
+September 21, 1995</identification>
+        </reference>
+        <reference>
+            <type>Text Document</type>
+            <identification>IEEE Standard for Distributed Interactive Simulation - Application Protocols
+IEEE Std 1278.1a-1998
+19 March 1998</identification>
+        </reference>
+        <other>Copyright © 2015 by the Simulation Interoperability Standards Organization, Inc.
+P.O. Box 781238
+Orlando, FL 32878-1238, USA
+All rights reserved.
+
+Schema and API: SISO hereby grants a general, royalty-free license to copy, distribute, display, and make derivative works from this material, for all purposes, provided that any use of the material contains the following attribution: “Reprinted with permission from SISO Inc.” Should a reader require additional information, contact the SISO Inc. Board of Directors.
+
+Documentation: SISO hereby grants a general, royalty-free license to copy, distribute, display, and make derivative works from this material, for noncommercial purposes, provided that any use of the material contains the following attribution: “Reprinted with permission from SISO Inc.” The material may not be used for a commercial purpose without express written permission from the SISO Inc. Board of Directors.
+
+SISO Inc. Board of Directors
+P.O. Box 781238
+Orlando, FL 32878-1238, USA
+</other>
+        <glyph type="png" height="64" width="64" alt="">iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABVZJREFUeNrsWksvc10ULq26fwMkCIqIKirqm2DgkqAY6ECEgUSExsxfEE0kEmrATEQ6MNEBFZGoWxgSjdSlLpEgEdcg4k5d3ufrSZqmn7NPTy/7fZvXSpxs3bu7+zlnr7WeZ+0TIJFIBAJBQECAwN/s6+sLV9H7+/vJyYnAPy0hISEwKChI4LeGxQcK/Nx+APwA8NBErgza2toyGAyrq6v39/c0bmpgYHJyslKprKmpCQ8P5xiNoV9E0+v1CoWC/q0NCwtTq9XHx8eEtWHxAfg7Ojpim6Wzs1Oj0VBYrlwuLykpiYmJQfvq6mpxcXF7exttmUw2OTmZnp7+7bdSUlJIT2B0dJROLO/t7X1+fnb86cfHx56eHiZH5efn41+2J8AKwGw2S6VSCgD6+vrY7qBWq2XGDA4O8gbQ0dFBYfXwLnAZNgBWqzU3NxfDysvL2QCwhtG1tTUKAEpLS4VCIWuIFInKysrQYPyBXx7AtqMAICIigjwgMjIS16enJ94AkpKSKADY29sjD7BYLLjGx8fzBlBRUSEWi30NwGg07uzssPWia2ZmBo2ioiLeiez29raxsZHCQygsLDw9Pf3/AqBS0MXEWZAA3lEIhiyYlpZGAUNmZubw8PDBwcGtzdAYGhpCCmN6u7q6CJmYg0rgISKP0OEO2LERNrNv3eDg4O7ubo+oBBMBdDrd+Pj45ubmy8vLt9rUQ0n9+fmJST4+Pph/EVjhtYiw4EIFBQWEL4JKcAOwrxJUFAAYKe34OX4eAdvpc172+vrq+C8YKJhcaGgo5xcBQOTib+Ae/2OzH0HzOwQNeWth72ILeTKJk2uFhIR4GYDJZJqYmAAhubu7c/JXUDEwYWwtt30ALnR+fo55GFfG/CABqampkAe1tbWcXIMjjIIRtbe306kdQUmG2MxR5UDZkMMoCQACKFQphaUjZyFz7e/vM4kMDQgARo0gHEGRuQPg7e0NepIOlQBrIFCJuLg4NmVMAjA7OxsdHe3r1cN5dnd32W4wqChDp6GueAsaPLjr62tfA6isrMzIyGDrzcrKqq6uRmN6epp3HuBk6l4xwurtPA/Xw8PDPzSRPTw8kAcgcLuZiTnvjVcMURIZgK0XXQsLC2ggLfAGoFKpKDjx+vp6f38/W+/AwMDGxgYajCfwS2TUwiiypFardSpsIQXZC1vkMEqi05i0vr5+amqKAoycnBwIgKioKLRvbm6WlpYgP9AGqdbr9Wz5lKO0yGgAUAkoo9/i4gqFYm5uzlNFxhS5oMh8SuZwtQuPxMREiURSXFxcV1cHKuEFQfOvzfyYTpOVmoer57viv1iRwQHYNvq7zTxfDZ4n5hGLxdD1roh6lwDAR3U63djYmNlstpcPAm3m6AmeVCWcnAozx8bGQpG1traSyyrcisypsIW74vq98dxcKWy5WlpsaWlBcrm4uIBiwhXt5uZmOjDcLC3ai7tCoZDthAefE44nvMg1TCYTbwAjIyNMjbKtrY3wENVqNYWHwLYGEoCmpiaB7ZBnZWWFAAC9nucBV8rXvCUlHIApCpAr7FKplPsw3WM7OzvjnciYZSEqk0UT2J7VavU1AELcYwWQl5cnsNXWEXAIU8/PzxNO4Lxl2dnZvPOA/aBbJpNdXl5+OwafM6Lb1+bOQbfjqwZIh8Dj1AuOTefwhvyqASmANDQ0IBNrNJrl5WVgqKqqksvlCPzgzxaLxWg0gmVQqDoioJNUgSuv2zDn/ZTNxddtuEM4ZDE2usFgQDqk9sITFJlSqVSpVJwx2qUclGOzP1MP/Lz09wPgrwdAgcn4zrB4cGHRf/Ut/3z9Hov/JcAAoOtCtVEJU98AAAAASUVORK5CYII=</glyph>
+    </modelIdentification>
+    <switches>
+        <autoProvide isEnabled="false"/>
+        <conveyRegionDesignatorSets isEnabled="false"/>
+        <conveyProducingFederate isEnabled="false"/>
+        <attributeScopeAdvisory isEnabled="false"/>
+        <attributeRelevanceAdvisory isEnabled="false"/>
+        <objectClassRelevanceAdvisory isEnabled="false"/>
+        <interactionRelevanceAdvisory isEnabled="false"/>
+        <serviceReporting isEnabled="false"/>
+        <exceptionReporting isEnabled="false"/>
+        <delaySubscriptionEvaluation isEnabled="false"/>
+        <automaticResignAction resignAction="CancelThenDeleteThenDivest"/>
+    </switches>
+</objectModel>]]></fom>
+  <interactions>
+    <interactionClass name="HLAinteractionRoot" isLocal="false" isRemote="false" srcName="HLAinteractionRoot">
+      <interactionClass name="Request" isLocal="true" isRemote="false" srcName="Request">
+        <parameter name="fromNode" srcName="fromNode" />
+        <parameter name="toNode" srcName="toNode" />
+        <parameter name="comType" srcName="comType" />
+        <parameter name="transactionID" srcName="transactionID" />
+      </interactionClass>
+    </interactionClass>
+  </interactions>
+  <dataTypes>
+    <fixedRecordDataTypes />
+    <enumeratedDataTypes />
+    <variantRecordDataTypes />
+  </dataTypes>
+</developerStudio>
