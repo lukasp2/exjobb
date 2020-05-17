@@ -20,45 +20,101 @@
         <interactionClass>
             <name>HLAinteractionRoot</name>
             <interactionClass>
-                <name>RequestPath</name>
-                <sharing>Neither</sharing>
+                <name>Request</name>
+                <sharing>PublishSubscribe</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
                 <semantics>specifies which communication type to be sent over the network</semantics>
                 <parameter>
                     <name>fromNode</name>
-                    <dataType>HLAinteger64BE</dataType>
+                    <dataType>nodeID</dataType>
                     <semantics></semantics>
                 </parameter>
                 <parameter>
                     <name>toNode</name>
-                    <dataType>HLAinteger64BE</dataType>
+                    <dataType>nodeID</dataType>
                     <semantics></semantics>
                 </parameter>
                 <parameter>
                     <name>comType</name>
-                    <dataType>HLAinteger16BE</dataType>
+                    <dataType>comID</dataType>
+                    <semantics>communication ID</semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>transactionID</dataType>
                     <semantics></semantics>
                 </parameter>
             </interactionClass>
             <interactionClass>
-                <name>ResponsePath</name>
-                <sharing>Neither</sharing>
+                <name>Response</name>
+                <sharing>PublishSubscribe</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
                 <semantics></semantics>
                 <parameter>
-                    <name>nodeArray</name>
-                    <dataType>HLAopaqueData</dataType>
-                    <semantics>Array of the nodes to be traversed in the network</semantics>
+                    <name>Path</name>
+                    <dataType>nodeArray</dataType>
+                    <semantics>Array of the nodes represented as byte[] to be traversed in the network.</semantics>
+                </parameter>
+                <parameter>
+                    <name>transactionID</name>
+                    <dataType>transactionID</dataType>
+                    <semantics></semantics>
                 </parameter>
             </interactionClass>
         </interactionClass>
     </interactions>
+    <switches>
+        <autoProvide isEnabled="false"/>
+        <conveyRegionDesignatorSets isEnabled="false"/>
+        <conveyProducingFederate isEnabled="false"/>
+        <attributeScopeAdvisory isEnabled="false"/>
+        <attributeRelevanceAdvisory isEnabled="false"/>
+        <objectClassRelevanceAdvisory isEnabled="false"/>
+        <interactionRelevanceAdvisory isEnabled="false"/>
+        <serviceReporting isEnabled="false"/>
+        <exceptionReporting isEnabled="false"/>
+        <delaySubscriptionEvaluation isEnabled="false"/>
+        <automaticResignAction resignAction="CancelThenDeleteThenDivest"/>
+    </switches>
     <dataTypes>
-        <simpleDataTypes/>
+        <simpleDataTypes>
+            <simpleData>
+                <name>nodeID</name>
+                <representation>HLAinteger32BE</representation>
+                <units>NA</units>
+                <resolution></resolution>
+                <accuracy></accuracy>
+                <semantics></semantics>
+            </simpleData>
+            <simpleData>
+                <name>comID</name>
+                <representation>HLAinteger32BE</representation>
+                <units>NA</units>
+                <resolution></resolution>
+                <accuracy></accuracy>
+                <semantics>An id specifying a type of communication</semantics>
+            </simpleData>
+            <simpleData>
+                <name>transactionID</name>
+                <representation>HLAinteger64BE</representation>
+                <units>NA</units>
+                <resolution></resolution>
+                <accuracy></accuracy>
+                <semantics></semantics>
+            </simpleData>
+        </simpleDataTypes>
         <enumeratedDataTypes/>
-        <arrayDataTypes/>
+        <arrayDataTypes>
+            <arrayData>
+                <name>nodeArray</name>
+                <dataType>HLAopaqueData</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics></semantics>
+            </arrayData>
+        </arrayDataTypes>
         <fixedRecordDataTypes/>
         <variantRecordDataTypes/>
     </dataTypes>
