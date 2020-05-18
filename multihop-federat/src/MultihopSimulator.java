@@ -36,14 +36,20 @@ public class MultihopSimulator implements Runnable {
 
     private Graph graph = new Graph();
 
+    ArrayList<Request> requests = new ArrayList<>();
+
     public void run() {
         // for logging statistical data
         // Logger logs = new Logger(nw.getNumNodes(), radio.DISTANCE, dynamicQueue.BLOCK_SIZE, 1);
 
         while (true) {
-            Request request = dynamicQueue.poll(); // request.print();
+            if (requests.isEmpty()) {
+                requests = dynamicQueue.poll();
+            }
 
-            if (request.getRequestType() != prevRequestType) // also rebuild immediately if the network changes?
+            Request request = requests.get(0);
+
+            if (request.getRequestType() != prevRequestType)
             {
                 //logs.startTime();
                 graph = new Graph(nw, request.getRequestType()); // graph.print();
@@ -55,9 +61,9 @@ public class MultihopSimulator implements Runnable {
 
             //logs.branchFactors.add(graph.branchingFactor);
 
-            // logs.startTime();
+            //logs.startTime();
             ArrayList<Integer> res = graph.aStar(request);
-            // logs.Astarstats.add(System.nanoTime() - logs.startTime);
+            //logs.Astarstats.add(System.nanoTime() - logs.startTime);
 
             try {
                 sendResponse(res, request);
@@ -75,14 +81,17 @@ public class MultihopSimulator implements Runnable {
     public void sendResponse(ArrayList<Integer> intArray, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
 
         ArrayList<byte[]> byteArray = new ArrayList<>();
-        printLock.lock();
-        System.out.print(name + " with request " + request.toString() + " is publishing path ");
-        for (int nodeID : intArray) {
-            System.out.print(nodeID + " ");
-            byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
+
+        if (true) {
+            printLock.lock();
+            System.out.print(name + " with request " + request.toString() + " is publishing path ");
+            for (int nodeID : intArray) {
+                System.out.print(nodeID + " ");
+                byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
+            }
+            System.out.println();
+            printLock.unlock();
         }
-        System.out.println();
-        printLock.unlock();
 
         _hlaRI.setPath(byteArray.toArray(new byte[byteArray.size()][16]));
         _hlaRI.setTransactionID(request.getTransactionID());

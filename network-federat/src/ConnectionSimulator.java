@@ -10,8 +10,6 @@ import java.io.FileNotFoundException;  // handle errors
 
 public class ConnectionSimulator {
     private final HlaWorld _hlaWorld;
-    
-    public Map<Integer, UUID> uuidMap = new HashMap<Integer, UUID>();
 
     public Map<UUID, Boolean> visitedIDs = new HashMap<UUID, Boolean>();
 
@@ -45,29 +43,6 @@ public class ConnectionSimulator {
         gvUpdater.sendUpdate();
     }
 
-    public byte[] getBytesFromMap(Scanner scanner) throws HlaAttributeNotOwnedException, HlaRtiException, HlaNotConnectedException, HlaInternalException {
-        int ID = scanner.nextInt();
-        if (!uuidMap.containsKey(ID)) {
-            uuidMap.put(ID, UuidAdapter.getUUIDFromInt(ID));
-        }
-        System.out.print(ID + "\t\t");
-
-        return UuidAdapter.getBytesFromUUID(uuidMap.get(ID));
-    }
-
-    public double getDoubleFromFile(Scanner scanner) {
-        double value = 0;
-        if (scanner.hasNextDouble()) {
-            value = scanner.nextDouble();
-            System.out.print(value + " \t\t");
-        }
-        else {
-            System.out.println("Error, could not retrieve Double. Found: " + scanner.next());
-        }
-
-        return value;
-    }
-
     public void simulate() throws HlaBaseException, InterruptedException {
         HlaLogicalTime currentTime = _hlaWorld.connect();
 
@@ -78,9 +53,10 @@ public class ConnectionSimulator {
         ArrayList<NetworkConnectivityStruct> networkConnectivityStructs = new ArrayList<NetworkConnectivityStruct>();
 
         try {
-            File myObj = new File("DATAFILE2.txt");
+            File myObj = new File("input/Nodes_200_uuid.txt");
             Scanner scanner = new Scanner(myObj);
             scanner.useLocale(Locale.US);
+
 
             System.out.println("from \tto \t\tquality \tlat \t\t\t\tlong");
             while (scanner.hasNext()) {

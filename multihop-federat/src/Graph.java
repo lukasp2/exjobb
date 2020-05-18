@@ -115,7 +115,7 @@ public class Graph {
 
     // defines an A* search algorithm
     public ArrayList<Integer> aStar(Request request) {
-		int maxhops = radio.getMaxHops(request.getRequestType());
+		int maxhops = radio.getMaxHops();
 
 		Node fromNode = nodes.get(request.getFromNode());
 		Node goal = nodes.get(request.getToNode());

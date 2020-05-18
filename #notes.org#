@@ -1,0 +1,81 @@
+* graphs
+3. request satisfaction delay as a function of BLOCK_SIZE
+> decide how long delay is acceptable.
+
+* ideer för prestanda
+byt grafsökningsalgoritm beroende på grafens struktur
+* vidare arbete
+** hitta bästa vägen
+kräver att vi har någon funktion som jämför två vägar och avgör hur attributerna ska jämföras.
+
+* howto
+** How to create, add, run and use a FOM
+1. start VisualOMT and devleop the FOM, save the module.
+
+2.   Open Pitch Dev Studio.
+2.1: Add the .xml file under interaction/object classes
+2.2: click "Java Code Generate" and load it into a directory "MyFederate"
+
+3:   Open idea (IntelliJ)
+3.1: load the directory HLA_code.
+3.2: go to File->Project Structure->Modules
+3.3: click the '+' to the far right and select JARs or dirs and add the following:
+- /home/lukas/Desktop/exjobb/[module name]/lib/rti_driver.jar
+- /opt/Pitch/prti1516e/lib/prti1516e.jar
+- /opt/JDKit/jdk.13.0.2 (may already be there)
+
+3.4 kryssa ned ruta, i den inbyggda filutforskaren högerklicka src->New->Java Class
+3.5 write code, right click the PathFinder().simulate() call in the main method to run.
+
+4. Open pitchrti1516e.
+
+(5. how to use pitch recorder)
+* sparad LaTeX kod
+** ist för UML:
+\begin{enumerate}
+    \item Main.java \\
+        Innehåller ett huvudprogram. Programmet startas och ser till att grafen uppdateras så fort en ny inmatning kommer in från RTI:n. Används av Graph.java för att bygga upp grafen med hjälp av grannmatriser, och av DynamicQueue.java för att schemalägga förfrågningar.
+    \item Graph.java \\
+        Bygger upp grafen och utför en grafsökningarna. 
+    \item Radio.java \\
+        I denna klass är det definierat för varje typ av kommunikation vad som krävs av förbindelserna för att kommunikationen ska kunna föras över nätverket. Används av Graph.java för att bygga upp rätt graf för en viss typ av kommunikation.
+    \item DynamicQueue.java \\
+        Schemalägger förfrågningar. Används av Graph.java för att hämta förfrågningarna.
+\end{enumerate}{}
+
+* todo
+** TODO (varje radio ska bara lyssna bara på de requests som den skickar)
+** TODO bitBucket.
+** TODO för stats över hur bra bruteforce är vs rr
+
+hitta ett sätt att ta reda på hur lång tid det tog för trådarna att tömma kön.
+
+if (!lock.tryLock())
+   done- stop time?
+
+** TODO uppdatera bara nw max var 5:e sek
+** TODO Undersökningar
+*** TODO HUR TRÅDEN SKA POLLA IFRÅN KÖN 
+varje tråd, när den ska polla en mängd requests att serva, kan polla på två olika sätt:
+1. kolla 20 requests fram i kön, polla alla som är av samma typ.
+
+2. polla från kön tills vi har 20 requests av samma typ (eller tills kön är tom) detta kräver att jag har en restriktion på hur många steg fram i kön jag får kolla efter requests av samma typ.
+
+alt. 2 kan använda sig av studien om blockstorlek som jag gjorde i rapporten! 
+
+* pass
+yPitch%123
+lukas123
+
+** Mattermost
+username: lukas.pohlman
+password: yPitch%123
+
+* qs
+Hur används .vomt filer efter att jag sparat ett projekt i VisualOMT? I Dev studio importeras ju endast .xml filer?
+
+skickar jag med hela arrayen nu?
+
+om man inte ska göra någon ny FOM modul så behöver man inte besöka visualOMT, utan man kan bara importera rätt XML filer i Dev Studio. Hur vet man vilka XML filer man ska importera? I ConnSimulation2 så ligger det fler XML filer än vad jag kan minnas att vi importerade.
+
+Vad gör man i Object/Interaction Classes i Dev. Studio?  

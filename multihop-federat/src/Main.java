@@ -71,7 +71,7 @@ public class Main {
             System.out.println("network has been (re)built");
 
             // new thread: fills the queue with all possible requests (for brute force)
-            //new QueueFillerThread(nw, dynamicQueue);
+            new QueueFillerThread(nw, dynamicQueue);
         }
     };
 
@@ -97,23 +97,28 @@ public class Main {
         }
     };
 
-    public void simulate() throws HlaBaseException {
+    public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 
         System.out.println("Simulator ready!");
 
         ReentrantLock printLock = new ReentrantLock();
 
-        Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread 1", nw, dynamicQueue, nodeIDs, printLock));
-        t1.start();
+        int numThreads = 100;
+        for (int i = 1; i < numThreads; ++i) {
+            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread " + i,
+                    nw, dynamicQueue, nodeIDs, printLock));
+            t1.start();
+        }
 
-        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread 2", nw, dynamicQueue, nodeIDs, printLock);
+        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread " + numThreads,
+                nw, dynamicQueue, nodeIDs, printLock);
         t2.run();
 
         _hlaWorld.disconnect();
     }
 
-    public static void main(String[] args) throws HlaBaseException {
+    public static void main(String[] args) throws HlaBaseException, InterruptedException {
         new Main().simulate();
     }
 }

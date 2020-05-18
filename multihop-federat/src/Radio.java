@@ -1,25 +1,27 @@
+import java.util.Random;
+
 public class Radio {
     public int DISTANCE = 15;
 
-	public final int MAX_HOPS = 6;
+	private final int MAX_HOPS = 4;
+
+	public static final int numComTypes = 3;
 
     // defines which communication type is currently used in the graph
     private int comType;
+
+	// randomizes the type of communication to be transmitted
+	public static int randomizeCom() {
+		Random random = new Random();
+		return random.nextInt(numComTypes);
+	}
 
     public void setCom(int i) {
 	comType = i;
     }
 
-    public int getMaxHops(int requestType) {
-		switch (comType) {
-			case 0:
-				return 6;
-			case 1:
-				return 6;
-			case 2:
-				return 6;
-		}
-		return -1;
+    public int getMaxHops() {
+		return MAX_HOPS;
 	}
 
     public boolean Com(Network nw, int fromNode, int toNode) {

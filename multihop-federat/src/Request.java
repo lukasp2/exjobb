@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Request {
     private final int comType;
     private final int toNode;
@@ -25,10 +27,8 @@ public class Request {
 
     public long getTransactionID() { return transactionID; }
 
-    public void print() {
-	System.out.print("[" + comType + ": " + toNode + "->" + fromNode + "]");
-    }
-
     public String toString() { return "[" + comType + ": " + toNode + "->" + fromNode + "]"; }
+
+
 }
     

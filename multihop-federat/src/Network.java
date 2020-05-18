@@ -54,13 +54,6 @@ public class Network {
 		return nodes;
 	}
 
-	// randomizes the type of communication to be transmitted
-	public int getCom() {
-		Random random = new Random();
-		int rndRequestType = random.nextInt(3);
-		return rndRequestType;
-	}
-
 	public int getNumNodes() {
 		return nodePositions.size();
 	}

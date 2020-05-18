@@ -1,4 +1,7 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.Semaphore;
 
@@ -19,56 +22,62 @@ public class DynamicQueue {
 	private long startMillis = 0;
 	//
 
-	public void  addRequest(Request request) {
+	public void addRequest(Request request) {
 		if (firstRequest) {
 			System.out.println("START TIME!");
 			startMillis = System.currentTimeMillis();
 			firstRequest = false;
 		}
 
-		int countConsecutive = 0;
-
 		queueLock.lock();
-		for (int i = 0; i < requests.size(); i++) {
-			if (requests.get(i).getRequestType() == request.getRequestType()) {
-				while (i < requests.size()
-					   && requests.get(i).getRequestType() == request.getRequestType()
-					   && countConsecutive < BLOCK_SIZE) {
-					countConsecutive++;
-					i++;
-				}
-				if (countConsecutive < BLOCK_SIZE && i < requests.size()) {
-					requests.add(i, request);
-					sema.release(); // resource is available
-					queueLock.unlock();
-					return;
-				}
-				countConsecutive = 0;
-			}
-		}
-		requests.add(request);
+		requests.addFirst(request);
 		queueLock.unlock();
-		sema.release(); // resource is available
+
+		sema.release(); // resource in queue is available
     }
 
     // Removes the first element in the queue and returns it.
-    public Request poll() {
+    public ArrayList<Request> poll() {
 
 		try { sema.acquire(); } catch (InterruptedException ie) { System.out.println("DynQueue semaphore crashed!"); }
 
+		ArrayList<Request> requestList = new ArrayList<>();
+
 		// lock here so we don't add and poll in parallel.
 		queueLock.lock();
-		Request newRequest = requests.poll();
+		Request request = requests.poll();
+		requestList.add(request);
+
+		//pollAllSimilar20StepsAhead();
+		requestList.addAll(pollUntil20(request.getRequestType()));
 		queueLock.unlock();
 
 		// LOGGER:
 		if (requests.size() == 0) {
-			System.out.print("elapsed time (ms): ");
+			System.out.print("elapsed time (sec): ");
 			System.out.println((double)(System.currentTimeMillis() - startMillis) / 1000);
 		}
 
-		return newRequest;
+		return requestList;
     }
+
+    private ArrayList<Request> pollUntil20(int comType) {
+		int numRequestsToLookFor = 20;
+		int lookahead = 50;
+		ArrayList<Request> requestList = new ArrayList<>();
+
+		int i = 0;
+		ListIterator<Request> it = requests.listIterator();
+		while(it.hasNext() && ++i < lookahead && requestList.size() < numRequestsToLookFor) {
+			Request r = it.next();
+			if (r.getRequestType() == comType) {
+				it.remove();
+				requestList.add(r);
+			}
+		}
+
+		return requestList;
+	}
 
     // prints all requests in the queue
     public void print() {
