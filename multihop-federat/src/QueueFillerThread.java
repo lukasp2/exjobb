@@ -1,10 +1,10 @@
 
 public class QueueFillerThread implements Runnable {
 
-    public QueueFillerThread(Network nw, DynamicQueue dynamicQueue) {
+    public QueueFillerThread(Network nw, RequestQueueList requestQueueList) {
         // stores network and dynamic queue as references.
         this.nw = nw;
-        this.dynamicQueue = dynamicQueue;
+        this.requestQueueList = requestQueueList;
 
         Thread t = new Thread(this);
         t.setName("QueueFillerThread");
@@ -13,21 +13,21 @@ public class QueueFillerThread implements Runnable {
 
     public Network nw;
 
-    public DynamicQueue dynamicQueue;
+    public RequestQueueList requestQueueList;
 
     // fill the queue with all possible requests
     public void run() {
         for (int fromNode : nw.getConnections().keySet()) {
             for (int toNode : nw.getConnections().get(fromNode).keySet()) {
                 //for (int i = 0; i < Radio.numComTypes; ++i) {
-                    dynamicQueue.addRequest(new Request(fromNode, toNode, Radio.randomizeCom(), 1));
+                    requestQueueList.add(new Request(fromNode, toNode, Radio.randomizeCom(), 1));
                 //}
             }
         }
 
         if (true) {
             System.out.println("Filled queue:");
-            dynamicQueue.print();
+            requestQueueList.print();
         }
     }
 }

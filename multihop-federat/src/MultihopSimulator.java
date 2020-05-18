@@ -8,11 +8,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
-    public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw, DynamicQueue dynamicQueue, BiMap<UUID, Integer> nodeIDs, ReentrantLock printLock) {
+    public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw, RequestQueueList requestQueueList, BiMap<UUID, Integer> nodeIDs, ReentrantLock printLock) {
         this._hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
         this.name = name;
         this.nw = nw;
-        this.dynamicQueue = dynamicQueue;
+        this.requestQueueList = requestQueueList;
         this.nodeIDs = nodeIDs;
         this.printLock = printLock;
 
@@ -24,7 +24,7 @@ public class MultihopSimulator implements Runnable {
 
     public Network nw;
 
-    public DynamicQueue dynamicQueue;
+    public RequestQueueList requestQueueList;
 
     public ReentrantLock printLock;
 
@@ -36,7 +36,7 @@ public class MultihopSimulator implements Runnable {
 
     private Graph graph = new Graph();
 
-    ArrayList<Request> requests = new ArrayList<>();
+    RequestQueue requests = new RequestQueue();
 
     public void run() {
         // for logging statistical data
@@ -44,13 +44,16 @@ public class MultihopSimulator implements Runnable {
 
         while (true) {
             if (requests.isEmpty()) {
-                requests = dynamicQueue.poll();
+                try { requests = requestQueueList.poll(); }
+                catch (InterruptedException e) { e.printStackTrace(); }
             }
 
-            Request request = requests.get(0);
+            printLock.lock();
+            System.out.println("requests size " + requests.size());
+            Request request = requests.poll();
 
-            if (request.getRequestType() != prevRequestType)
-            {
+            if (request.getRequestType() != prevRequestType) {
+                printLock.unlock();
                 //logs.startTime();
                 graph = new Graph(nw, request.getRequestType()); // graph.print();
                 //logs.graphstats.add(System.nanoTime() - logs.startTime);
@@ -58,6 +61,7 @@ public class MultihopSimulator implements Runnable {
 
                 prevRequestType = request.getRequestType();
             }
+            else { printLock.unlock(); }
 
             //logs.branchFactors.add(graph.branchingFactor);
 
@@ -82,7 +86,7 @@ public class MultihopSimulator implements Runnable {
 
         ArrayList<byte[]> byteArray = new ArrayList<>();
 
-        if (true) {
+        if (false) {
             printLock.lock();
             System.out.print(name + " with request " + request.toString() + " is publishing path ");
             for (int nodeID : intArray) {

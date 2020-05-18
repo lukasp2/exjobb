@@ -14,7 +14,7 @@ public class Main {
 
     public Network nw = new Network();
 
-    public DynamicQueue dynamicQueue = new DynamicQueue();
+    public RequestQueueList requestQueueList = new RequestQueueList();
 
     public BiMap<UUID, Integer> nodeIDs = HashBiMap.create();
     private int nextNodeID = 0;
@@ -68,10 +68,10 @@ public class Main {
                 }
             }
 
-            System.out.println("network has been (re)built");
+            System.out.println("network has been fully (re)built");
 
             // new thread: fills the queue with all possible requests (for brute force)
-            new QueueFillerThread(nw, dynamicQueue);
+            new QueueFillerThread(nw, requestQueueList);
         }
     };
 
@@ -85,7 +85,7 @@ public class Main {
 
             if (nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
                 Request r = new Request(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), comType, transactionID);
-                dynamicQueue.addRequest(r);
+                requestQueueList.add(r);
             }
             else {
                 System.out.println("A request for a path between unknown node(s) was received. Ignoring request.");
@@ -104,15 +104,15 @@ public class Main {
 
         ReentrantLock printLock = new ReentrantLock();
 
-        int numThreads = 100;
+        int numThreads = 9;
         for (int i = 1; i < numThreads; ++i) {
             Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread " + i,
-                    nw, dynamicQueue, nodeIDs, printLock));
+                    nw, requestQueueList, nodeIDs, printLock));
             t1.start();
         }
 
         MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread " + numThreads,
-                nw, dynamicQueue, nodeIDs, printLock);
+                nw, requestQueueList, nodeIDs, printLock);
         t2.run();
 
         _hlaWorld.disconnect();
