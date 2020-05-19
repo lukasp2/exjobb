@@ -68,9 +68,12 @@ public class ConnectionSimulator {
 
                 System.out.print(UuidAdapter.getUUIDFromBytes(fromUuidArr).toString() + "\t\t" + UuidAdapter.getUUIDFromBytes(toUuidArr).toString()  + "\t\t" + signalQuality + "\t\t" + pos_x + "\t\t" + pos_y);
 
-                // if new uuid: create new object, else trash the position values
+                // if new uuid: create new object
                 if (!visitedIDs.containsKey(UuidAdapter.getUUIDFromBytes(fromUuidArr))) {
-                    createObject(scanner, fromUuidArr, pos_x, pos_y);
+                    //if (pos_x != 0.0)
+                    {
+                        createObject(scanner, fromUuidArr, pos_x, pos_y);
+                    }
                 }
 
                 networkConnectivityStructs.add(NetworkConnectivityStruct.create(toUuidArr, fromUuidArr, (float)signalQuality));

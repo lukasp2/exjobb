@@ -46,23 +46,26 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 * todo
 ** TODO (varje radio ska bara lyssna bara på de requests som den skickar)
 ** TODO bitBucket.
-** TODO för stats över hur bra bruteforce är vs rr
+** TODO undersökningar
+*** TODO jämför bruteforce och rr
+*** TODO undersök vilken heuristik som är bäst
+**** nodeDistanceComp
+0.732
+0.695
+0.712
+0.761
+0.784
 
-hitta ett sätt att ta reda på hur lång tid det tog för trådarna att tömma kön.
+**** nodeSignalQualityComp
+1. 
 
-if (!lock.tryLock())
-   done- stop time?
+*** TODO undersök optimala antalet trådar
 
-** TODO uppdatera bara nw max var 5:e sek
-** TODO Undersökningar
-*** TODO HUR TRÅDEN SKA POLLA IFRÅN KÖN 
-varje tråd, när den ska polla en mängd requests att serva, kan polla på två olika sätt:
-1. kolla 20 requests fram i kön, polla alla som är av samma typ.
+*** DONE Radio.{data,voice,dist}Com kan alla ha samma implementation. Justera den så att graferna som byggs upp innehåller fler bågar.
 
-2. polla från kön tills vi har 20 requests av samma typ (eller tills kön är tom) detta kräver att jag har en restriktion på hur många steg fram i kön jag får kolla efter requests av samma typ.
+*** TODO gör en ny Nodes_200_uuid.txt där positionen är slumpad mellan 0-1 på x och y
 
-alt. 2 kan använda sig av studien om blockstorlek som jag gjorde i rapporten! 
-
+** TODO uppdatera bara nw max var 5:e sek?
 * pass
 yPitch%123
 lukas123

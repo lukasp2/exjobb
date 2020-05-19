@@ -133,7 +133,15 @@ public class Graph {
 			return (int) (n1ddist - n2ddist);
 		};
 
-		PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeDistanceComparator);
+		// heuristic based on signal quality to the goal
+		Comparator<Node> nodeSignalQualityComparator = (n1, n2) -> {
+			double n1S = nw.getConnection(n1.id, goal.id);
+			double n2S = nw.getConnection(n2.id, goal.id);
+			return (int) (n1S - n2S);
+		};
+
+		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeDistanceComparator);
+		PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeSignalQualityComparator);
 
 		prioQueue.add(fromNode);
 
@@ -178,55 +186,6 @@ public class Graph {
 		return path.getPath(goal.id);
     }
 
-    // defines an breadth first search (BFS) algorithm
-    public void bfs(int start_i, int goal_i, int maxhops) {
-		Node start = nodes.get(start_i);
-		Node goal = nodes.get(goal_i);
-
-		Queue<Node> queue = new LinkedList<Node>();
-		queue.add(start);
-
-		Path path = new Path();
-		path.addStep(start.id, -1);
-
-		start.visited = true;
-		start.previous_node = start;
-
-		while (!queue.isEmpty()) {
-			Node curr = queue.remove();
-
-			if (PLOT) { fw.writeLine(curr.position.x, curr.position.y,
-					 curr.previous_node.position.x, curr.previous_node.position.y, 'g'); }
-
-			if (curr.hops < maxhops) {
-				if (VERBOSE) { System.out.println("expanded node " + curr.id); }
-
-				List<Node> neighbours = curr.getNeighbours();
-
-				if (neighbours.contains(goal)) {
-					if (VERBOSE) { System.out.println("expanded node " + goal.id + ", found path!"); }
-					path.addStep(goal.id, curr.id);
-					break;
-				}
-
-				for (Node neighbour : neighbours) {
-					if (neighbour != null && !neighbour.visited) {
-						queue.add(neighbour);
-						neighbour.visited = true;
-						path.addStep(neighbour.id, curr.id);
-						neighbour.hops = curr.hops + 1;
-						neighbour.previous_node = curr;
-					}
-				}
-			}
-			else {
-				if (VERBOSE) { System.out.println("... could not access node " + curr.id + ": maxhops reached"); }
-			}
-		}
-
-		path.getPath(goal.id);
-    }
-    
     public void print() {
 		System.out.format("%10s\n", "Graph Adjacency List");
 		for (Node node : nodes) {

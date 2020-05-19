@@ -10,6 +10,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
 
+    private final boolean PRINT_NODES_ADDED = false;
+    private final boolean PRINT_CONN_INFO = false;
+
     private final HlaWorld _hlaWorld;
 
     public Network nw = new Network();
@@ -39,9 +42,11 @@ public class Main {
 
             if (!nodeIDs.containsKey(uuid)) {
                 nodeIDs.put(uuid, nextNodeID++);
-                System.out.println("Node " + nodeIDs.get(uuid) + " ADDED (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
+                if (PRINT_NODES_ADDED) {
+                    System.out.println("Node " + nodeIDs.get(uuid) + " ADDED (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
+                }
             }
-            else {
+            else if (PRINT_NODES_ADDED) {
                 System.out.println("Node " + nodeIDs.get(uuid) + " UPDATED (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
             }
 
@@ -63,12 +68,14 @@ public class Main {
                 if (nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
                     nw.addConnection(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), ncs.networkState);
                 }
-                else {
+                else if (PRINT_CONN_INFO) {
                     System.out.println("Connection between uuid " + fromUuid + " and " + toUuid + " could not be added: nodes does not exists.");
                 }
             }
 
-            System.out.println("network has been fully (re)built");
+            if (PRINT_CONN_INFO) {
+                System.out.println("network has been fully (re)built");
+            }
 
             // new thread: fills the queue with all possible requests (for brute force)
             new QueueFillerThread(nw, requestQueueList);

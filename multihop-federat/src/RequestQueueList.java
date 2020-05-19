@@ -23,7 +23,7 @@ public class RequestQueueList {
 
 	public void add(Request request) {
 		if (firstRequest) {
-			System.out.println("START TIME!");
+			System.out.println("timer started.");
 			startMillis = System.currentTimeMillis();
 			firstRequest = false;
 		}

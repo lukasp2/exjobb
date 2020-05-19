@@ -47,9 +47,20 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 ** TODO (varje radio ska bara lyssna bara på de requests som den skickar)
 ** TODO bitBucket.
 ** TODO undersökningar
-jämför bruteforce och rr
-undersök vilken heuristik som är bäst
-undersök optimala antalet trådar
+*** TODO jämför bruteforce och rr
+*** TODO undersök vilken heuristik som är bäst
+**** nodeDistanceComp
+0.732
+
+
+**** nodeSignalQualityComp
+1. 
+
+*** TODO undersök optimala antalet trådar
+
+*** DONE Radio.{data,voice,dist}Com kan alla ha samma implementation. Justera den så att graferna som byggs upp innehåller fler bågar.
+
+*** TODO gör en ny Nodes_200_uuid.txt där positionen är slumpad mellan 0-1 på x och y
 
 ** TODO uppdatera bara nw max var 5:e sek?
 * pass

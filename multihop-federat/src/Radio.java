@@ -1,13 +1,13 @@
 import java.util.Random;
 
 public class Radio {
-    public int DISTANCE = 15;
+    private double DISTANCE = 0.005;
 
 	private final int MAX_HOPS = 4;
 
 	public static final int numComTypes = 3;
 
-    // defines which communication type is currently used in the graph
+    // specifies communication type currently used
     private int comType;
 
 	// randomizes the type of communication to be transmitted
@@ -27,9 +27,9 @@ public class Radio {
     public boolean Com(Network nw, int fromNode, int toNode) {
 		switch (comType) {
 			case 0:
-				return voiceCom(nw, fromNode, toNode);
+				return distCom(nw, fromNode, toNode); //voiceCom(nw, fromNode, toNode);
 			case 1:
-				return dataCom(nw, fromNode, toNode);
+				return distCom(nw, fromNode, toNode); //dataCom(nw, fromNode, toNode);
 			case 2:
 				return distCom(nw, fromNode, toNode);
 		}

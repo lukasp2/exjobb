@@ -3,7 +3,7 @@ import devstudio.generatedcode.exceptions.HlaBaseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -40,7 +40,7 @@ public class RadioSimulator {
         HlaInteractionManager _manager = _hlaWorld.getHlaInteractionManager();
 
         try {
-            File myObj = new File("DATAFILE2.txt");
+            File myObj = new File("input/Nodes_1_uuid.txt");
             Scanner scanner = new Scanner(myObj);
             scanner.useLocale(Locale.US);
 
@@ -48,7 +48,6 @@ public class RadioSimulator {
                 int comType = scanner.nextInt();
                 byte[] fromNodeByte = UuidAdapter.getBytesFromUUID(scanner.next());
                 byte[] toNodeByte = UuidAdapter.getBytesFromUUID(scanner.next());
-
                 long transactionID = scanner.nextInt();
 
                 _manager.sendRequest(fromNodeByte, toNodeByte, comType, transactionID);
