@@ -9,6 +9,8 @@ import java.io.File;  // file class
 import java.io.FileNotFoundException;  // handle errors
 
 public class ConnectionSimulator {
+    private final boolean VERBOSE = true;
+
     private final HlaWorld _hlaWorld;
 
     public Map<UUID, Boolean> visitedIDs = new HashMap<UUID, Boolean>();
@@ -57,8 +59,10 @@ public class ConnectionSimulator {
             Scanner scanner = new Scanner(myObj);
             scanner.useLocale(Locale.US);
 
+            if (VERBOSE) {
+                System.out.println("from \tto \t\tquality \tlat \t\t\t\tlong");
+            }
 
-            System.out.println("from \tto \t\tquality \tlat \t\t\t\tlong");
             while (scanner.hasNext()) {
                 byte[] fromUuidArr = UuidAdapter.getBytesFromUUID(scanner.next());
                 byte[] toUuidArr = UuidAdapter.getBytesFromUUID(scanner.next());
@@ -66,7 +70,9 @@ public class ConnectionSimulator {
                 double pos_x = scanner.nextDouble();
                 double pos_y = scanner.nextDouble();
 
-                System.out.print(UuidAdapter.getUUIDFromBytes(fromUuidArr).toString() + "\t\t" + UuidAdapter.getUUIDFromBytes(toUuidArr).toString()  + "\t\t" + signalQuality + "\t\t" + pos_x + "\t\t" + pos_y);
+                if (VERBOSE) {
+                    System.out.print(UuidAdapter.getUUIDFromBytes(fromUuidArr).toString() + "\t\t" + UuidAdapter.getUUIDFromBytes(toUuidArr).toString() + "\t\t" + signalQuality + "\t\t" + pos_x + "\t\t" + pos_y);
+                }
 
                 // if new uuid: create new object
                 if (!visitedIDs.containsKey(UuidAdapter.getUUIDFromBytes(fromUuidArr))) {
@@ -77,8 +83,9 @@ public class ConnectionSimulator {
                 }
 
                 networkConnectivityStructs.add(NetworkConnectivityStruct.create(toUuidArr, fromUuidArr, (float)signalQuality));
-
-                System.out.println();
+                if (VERBOSE) {
+                    System.out.println();
+                }
             }
             scanner.close();
 
@@ -91,6 +98,8 @@ public class ConnectionSimulator {
         initialUpdater.setCommunicationConnectivity(networkConnectivityStructs.toArray(new NetworkConnectivityStruct[0]));
 
         initialUpdater.sendUpdate();
+
+        //System.out.println("all connections sent.");
 
         // prevent disconnecting from federation prematurely
         Thread.sleep(1000);

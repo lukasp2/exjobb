@@ -17,13 +17,12 @@ public class RequestQueueList {
 	private final Semaphore sema = new Semaphore(0);
 
 	// LOGGER:
-	private boolean firstRequest = true;
-	private long startMillis;
+	public boolean firstRequest = true;
+	public static long startMillis;
 	//
 
 	public void add(Request request) {
 		if (firstRequest) {
-			System.out.println("timer started.");
 			startMillis = System.currentTimeMillis();
 			firstRequest = false;
 		}
@@ -46,14 +45,11 @@ public class RequestQueueList {
 		while (requestQueueList.get(requestType).isEmpty() && i++ < Radio.numComTypes) {
 			requestType = (++requestType) % Radio.numComTypes;
 		}
-		RequestQueue requestQueue = requestQueueList.get(requestType).poll20();
+		RequestQueue requestQueue = requestQueueList.get(requestType).poll25();
 
 		sema.acquire(requestQueue.size() - 1);
 
-		if (queuesAreEmpty()) {
-			System.out.print("elapsed time (sec): ");
-			System.out.println((double) (System.currentTimeMillis() - startMillis) / 1000);
-		}
+
 		queueLock.unlock();
 
 		return requestQueue;
@@ -70,11 +66,13 @@ public class RequestQueueList {
     }
 
 	public boolean queuesAreEmpty() {
+		queueLock.lock();
 		for (int i = 0; i < Radio.numComTypes; ++i) {
 			if (!requestQueueList.get(i).isEmpty()) {
 				return false;
 			}
 		}
+		queueLock.unlock();
 		return true;
 	}
 }

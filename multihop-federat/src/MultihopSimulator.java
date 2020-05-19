@@ -3,17 +3,23 @@ import devstudio.generatedcode.exceptions.*;
 import internal.prti1516e.com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
-    public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw, RequestQueueList requestQueueList, BiMap<UUID, Integer> nodeIDs, ReentrantLock lock) {
+    public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw,
+                             RequestQueueList requestQueueList,
+                             BiMap<UUID, Integer> nodeIDs,
+                             Logger logger,
+                             ReentrantLock lock) {
         this._hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
         this.name = name;
         this.nw = nw;
         this.requestQueueList = requestQueueList;
         this.nodeIDs = nodeIDs;
+        this.logger = logger;
         this.lock = lock;
     }
 
@@ -27,6 +33,8 @@ public class MultihopSimulator implements Runnable {
 
     public BiMap<UUID, Integer> nodeIDs;
 
+    public Logger logger;
+
     private int prevRequestType = -1;
 
     private final String name;
@@ -36,12 +44,16 @@ public class MultihopSimulator implements Runnable {
     private RequestQueue requests = new RequestQueue();
 
     public void run() {
-        // for logging statistical data
-        // Logger logs = new Logger(nw.getNumNodes(), radio.DISTANCE, dynamicQueue.BLOCK_SIZE, 1);
 
         while (true) {
             if (requests.isEmpty()) {
                 try {
+
+                    if (requestQueueList.queuesAreEmpty() && !requestQueueList.firstRequest) {
+                        logger.setElapsedTime();
+                        break;
+                    }
+
                     requests = requestQueueList.poll();
 
                     if ( requests.getRequestType() != prevRequestType ) {
@@ -53,11 +65,10 @@ public class MultihopSimulator implements Runnable {
 
             Request request = requests.poll();
 
-            //logs.branchFactors.add(graph.branchingFactor);
-
-            //logs.startTime();
+            logger.addBFactor(graph.branchingFactor);
+            logger.startTime();
             ArrayList<Integer> res = graph.aStar(request);
-            //logs.Astarstats.add(System.nanoTime() - logs.startTime);
+            logger.stopTime(logger.Astarstats);
 
             try {
                 sendResponse(res, request);
@@ -66,18 +77,21 @@ public class MultihopSimulator implements Runnable {
             }
         }
 
-        // logs.print();
+        //logger.print();
+        //logger.printGraph();
+        //logger.printAstar();
 
-        // logs.printAstar2();
-        // logs.printBuild();
+        int sum = 0;
+        for (long d : logger.Astarstats) {
+            sum += d;
+        }
+        System.out.println("runtime: " + sum/1000000 + " ms");
     }
 
     public void rebuildGraph() {
-        //logs.startTime();
+        logger.startTime();
         graph = new Graph(nw, requests.getRequestType()); // graph.print();
-        //logs.graphstats.add(System.nanoTime() - logs.startTime);
-        //logs.graphRebuilds++;
-
+        logger.stopTime(logger.graphstats);
         prevRequestType = requests.getRequestType();
     }
 

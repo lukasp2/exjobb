@@ -3,29 +3,40 @@ import java.util.List;
 
 public class Logger {
 
+	public double elapsedTime = 0;
     public long startTime = 0;	
-    public int graphRebuilds = 0;
-    
-    public List<Long> BFSstats = new ArrayList<Long>();
+
     public List<Long> Astarstats = new ArrayList<Long>();
     public List<Long> graphstats = new ArrayList<Long>();
     public List<Double> branchFactors = new ArrayList<Double>();
 
-    public int NUM_REQUESTS = 0;
-    public int RADIO_DISTANCE = 0;
+    public double RADIO_DISTANCE = 0;
     public int BLOCK_SIZE = 0;
     public int NUM_NODES = 0;
+    public int HEURISTIC_TYPE = 0;
 
-    Logger(int NUM_NODES, int RADIO_DISTANCE, int BLOCK_SIZE, int NUM_REQUESTS) {
+    Logger(int NUM_NODES, double RADIO_DISTANCE, int BLOCK_SIZE, int HEURISTIC_TYPE) {
 		this.NUM_NODES = NUM_NODES;
 		this.RADIO_DISTANCE = RADIO_DISTANCE;
 		this.BLOCK_SIZE = BLOCK_SIZE;
-		this.NUM_REQUESTS = NUM_REQUESTS;
+		this.HEURISTIC_TYPE = HEURISTIC_TYPE;
     }
     
     public void startTime() {
 		startTime = System.nanoTime();
     }
+
+	public void stopTime(List<Long> statList) {
+		statList.add(System.nanoTime() - startTime);
+	}
+
+	public void setElapsedTime() {
+		elapsedTime = ((double) (System.currentTimeMillis() - RequestQueueList.startMillis) / 1000);
+	}
+
+	public void addBFactor(double d) {
+    	branchFactors.add(d);
+	}
 
     public void print() {
 		double avgbr = 0;
@@ -34,16 +45,11 @@ public class Logger {
 		}
 		avgbr /= branchFactors.size();
 
-		System.out.println("graph searches: " + NUM_REQUESTS);
-		System.out.println("nodes in graph: " + NUM_NODES);
+		System.out.println("elapsed time: " + elapsedTime + " seconds");
+		System.out.println("nodes in network: " + NUM_NODES);
 		System.out.println("radio reach: " + RADIO_DISTANCE);
 		System.out.println("queue block size: " + BLOCK_SIZE);
 		System.out.printf("%s%.2f\n\n", "avg branching factor: ", avgbr);
-		System.out.printf("%s%d%s%.2f%s\n\n","rebuilds: ", graphRebuilds, " (", (double)graphRebuilds/NUM_REQUESTS * 100,"% of requests required rebuild)");
-
-		printGraph();
-		printBFS();
-		printAstar();
     }
 
     public void printGraph() {
@@ -52,32 +58,11 @@ public class Logger {
 		for (long d : graphstats) {
 			sum += d;
 		}
+		System.out.println("\trebuilds: " + graphstats.size() + " (" + (double)graphstats.size()/Astarstats.size() * 100 + "% of requests required rebuild)");
 		System.out.println("\ttot runtime: " + sum/1000000 + " ms");
 
 		double Graphavg = (double)sum / graphstats.size();
-		System.out.printf("\t%s%.3f%s\n","avg runtime: ", Graphavg/1000000, " ms");
-    }
-    
-    public void printBFS() {
-		System.out.println("\nBreadth First Search");
-		int sum = 0;
-		for (long d : BFSstats) {
-			sum += d;
-		}
-		System.out.println("\ttot runtime: " + sum/1000000 + " ms");
-
-		double BFSavg = (double)sum / BFSstats.size();
-		System.out.printf("%s%.3f%s\n","\tavg runtime: ", BFSavg/1000000, " ms");
-    }
-    
-    public void printBFS2() {
-		System.out.print("[" + NUM_NODES);
-
-		int sum = 0;
-		for (long d : BFSstats) {
-			sum += d;
-		}
-		System.out.println("," + (double)sum/1000000 + "],");
+		System.out.printf("\t%s%.3f%s\n\n","avg runtime: ", Graphavg/1000000, " ms");
     }
 
     public void printAstar() {
@@ -90,25 +75,5 @@ public class Logger {
 
 		double Astaravg = (double)sum / Astarstats.size();
 		System.out.printf("%s%.3f%s\n","\tavg runtime: ", Astaravg/1000000, " ms");
-    }
-
-    public void printAstar2() {
-		System.out.print("[" + NUM_NODES);
-
-		int sum = 0;
-		for (long d : Astarstats) {
-			sum += d;
-		}
-		System.out.println("," + (double)sum/1000000 + "],");
-    }
-    
-    public void printBuild() {
-		System.out.print("[" + BLOCK_SIZE);
-
-		long sum = 0;
-		for (long d : graphstats) {
-			sum += d;
-		}
-		System.out.println("," + (double)sum/1000000 + "],");
     }
 }

@@ -4,7 +4,10 @@ import java.lang.Math;
 public class Graph {
     public final boolean VERBOSE = false;
     public final boolean PLOT = false;
-    
+
+    // 0 : distance, 1: signal, 2: random
+    public final static int HEURISTIC_TYPE = 0;
+
     public final ArrayList<Node> nodes = new ArrayList<>();
 
 	private final Radio radio = new Radio();
@@ -121,7 +124,7 @@ public class Graph {
 		Node goal = nodes.get(request.getToNode());
 
 		// heuristic based on distance to the goal
-		Comparator<Node> nodeDistanceComparator = (n1, n2) -> {
+		Comparator<Node> distanceComparator = (n1, n2) -> {
 			double n1dx = Math.abs(n1.position.x - goal.position.x);
 			double n1dy = Math.abs(n1.position.y - goal.position.y);
 			double n1ddist = Math.sqrt(Math.pow(n1dx, 2) + Math.pow(n1dy, 2));
@@ -134,14 +137,28 @@ public class Graph {
 		};
 
 		// heuristic based on signal quality to the goal
-		Comparator<Node> nodeSignalQualityComparator = (n1, n2) -> {
+		Comparator<Node> signalQualityComparator = (n1, n2) -> {
 			double n1S = nw.getConnection(n1.id, goal.id);
 			double n2S = nw.getConnection(n2.id, goal.id);
 			return (int) (n1S - n2S);
 		};
 
-		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeDistanceComparator);
-		PriorityQueue<Node> prioQueue = new PriorityQueue<>(nodeSignalQualityComparator);
+		// heuristic based on signal quality to the goal
+		Comparator<Node> randomComparator = (n1, n2) -> {
+			Random random = new Random();
+			int b = random.nextInt(2) + 1;
+			return (int) (b  - 2);
+		};
+
+		PriorityQueue<Node> prioQueue = new PriorityQueue<>();
+		switch(HEURISTIC_TYPE) {
+			case 0:
+				prioQueue = new PriorityQueue<>(distanceComparator);
+			case 1:
+				prioQueue = new PriorityQueue<>(signalQualityComparator);
+			case 2:
+				prioQueue = new PriorityQueue<>(randomComparator);
+		}
 
 		prioQueue.add(fromNode);
 

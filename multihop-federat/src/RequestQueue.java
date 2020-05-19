@@ -4,19 +4,19 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RequestQueue {
     public RequestQueue() {}
 
-    private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue();
+    public static final int BLOCK_SIZE = 25;
 
-    private final ReentrantLock lock = new ReentrantLock();
+    private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue();
 
     public void add(Request r) {
         requestQueue.add(r);
     }
 
-    // removes and returns 20 elements in the request queue
-    public RequestQueue poll20() {
+    // removes and returns BLOCK_SIZE elements in the request queue
+    public RequestQueue poll25() {
         RequestQueue subRequestQueue = new RequestQueue();
 
-        for (int i = 0; i < 20; ++i) {
+        for (int i = 0; i < BLOCK_SIZE; ++i) {
             Request request = requestQueue.poll();
 
             if (request == null) {

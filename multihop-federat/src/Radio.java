@@ -1,7 +1,8 @@
 import java.util.Random;
 
 public class Radio {
-    private double DISTANCE = 0.005;
+    public static double DISTANCE = 0.005;
+    //public static double DISTANCE = 1.0;
 
 	private final int MAX_HOPS = 4;
 

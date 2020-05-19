@@ -5,6 +5,8 @@ import internal.prti1516e.com.google.common.collect.BiMap;
 import internal.prti1516e.com.google.common.collect.HashBiMap;
 import se.pitch.rpr2.util.convert.GeodeticLocation;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -107,19 +109,26 @@ public class Main {
     public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 
-        System.out.println("Simulator ready!");
+        //System.out.println("Simulator ready!");
 
         ReentrantLock printLock = new ReentrantLock();
 
-        int numThreads = 9;
+        FileReader fw = new FileReader(nw, requestQueueList, nodeIDs);
+        fw.readFile();
+
+        // for logging statistical data
+        Logger logger = new Logger(200, Radio.DISTANCE, RequestQueue.BLOCK_SIZE, Graph.HEURISTIC_TYPE);
+        //logger.print();
+
+        int numThreads = 1;
         for (int i = 1; i < numThreads; ++i) {
             Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread " + i,
-                    nw, requestQueueList, nodeIDs, printLock));
+                    nw, requestQueueList, nodeIDs, logger, printLock));
             t1.start();
         }
 
         MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread " + numThreads,
-                nw, requestQueueList, nodeIDs, printLock);
+                nw, requestQueueList, nodeIDs, logger, printLock);
         t2.run();
 
         _hlaWorld.disconnect();
