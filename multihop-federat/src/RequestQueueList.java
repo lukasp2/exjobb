@@ -14,7 +14,7 @@ public class RequestQueueList {
 
 	private final ReentrantLock queueLock = new ReentrantLock();
 
-	private Semaphore sema = new Semaphore(0);
+	private final Semaphore sema = new Semaphore(0);
 
 	// LOGGER:
 	private boolean firstRequest = true;
@@ -29,6 +29,7 @@ public class RequestQueueList {
 		}
 
 		requestQueueList.get(request.getRequestType()).add(request);
+
 		sema.release();
 	}
 
@@ -36,24 +37,24 @@ public class RequestQueueList {
 	// will attempt to poll, but only one is let through
     public RequestQueue poll() throws InterruptedException {
 
+		int requestType = Radio.randomizeCom();
+		int i = 0;
+
 		queueLock.lock();
 		sema.acquire();
-		int requestType = Radio.randomizeCom();
 
-		int i = 0;
 		while (requestQueueList.get(requestType).isEmpty() && i++ < Radio.numComTypes) {
 			requestType = (++requestType) % Radio.numComTypes;
 		}
-
 		RequestQueue requestQueue = requestQueueList.get(requestType).poll20();
 
 		sema.acquire(requestQueue.size() - 1);
-		queueLock.unlock();
 
 		if (queuesAreEmpty()) {
 			System.out.print("elapsed time (sec): ");
 			System.out.println((double) (System.currentTimeMillis() - startMillis) / 1000);
 		}
+		queueLock.unlock();
 
 		return requestQueue;
 	}

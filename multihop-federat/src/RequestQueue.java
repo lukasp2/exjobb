@@ -1,10 +1,12 @@
-import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class RequestQueue {
     public RequestQueue() {}
 
     private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue();
+
+    private final ReentrantLock lock = new ReentrantLock();
 
     public void add(Request r) {
         requestQueue.add(r);
@@ -20,23 +22,31 @@ public class RequestQueue {
             if (request == null) {
                 break;
             }
+
             subRequestQueue.add(request);
         }
 
         return subRequestQueue;
     }
 
-    public Request poll() {
-        return requestQueue.poll();
-    }
-
     public int size() { return requestQueue.size(); }
 
     public boolean isEmpty() { return requestQueue.isEmpty(); }
+
+    public int getRequestType() {
+        if (requestQueue.peek() != null) {
+            return requestQueue.peek().getRequestType();
+        }
+        return -1;
+    }
 
     public void print() {
         for (Request r : requestQueue) {
             System.out.print(r.toString() + ", ");
         }
+    }
+
+    public Request poll() {
+        return requestQueue.poll();
     }
 }

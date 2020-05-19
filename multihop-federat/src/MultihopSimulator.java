@@ -8,16 +8,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
-    public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw, RequestQueueList requestQueueList, BiMap<UUID, Integer> nodeIDs, ReentrantLock printLock) {
+    public MultihopSimulator(HlaWorld _hlaWorld, String name, Network nw, RequestQueueList requestQueueList, BiMap<UUID, Integer> nodeIDs, ReentrantLock lock) {
         this._hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
         this.name = name;
         this.nw = nw;
         this.requestQueueList = requestQueueList;
         this.nodeIDs = nodeIDs;
-        this.printLock = printLock;
-
-        Thread t = new Thread(this);
-        t.start();
+        this.lock = lock;
     }
 
     HlaInteractionManager.HlaResponseInteraction _hlaRI;
@@ -26,7 +23,7 @@ public class MultihopSimulator implements Runnable {
 
     public RequestQueueList requestQueueList;
 
-    public ReentrantLock printLock;
+    public ReentrantLock lock;
 
     public BiMap<UUID, Integer> nodeIDs;
 
@@ -36,7 +33,7 @@ public class MultihopSimulator implements Runnable {
 
     private Graph graph = new Graph();
 
-    RequestQueue requests = new RequestQueue();
+    private RequestQueue requests = new RequestQueue();
 
     public void run() {
         // for logging statistical data
@@ -44,24 +41,17 @@ public class MultihopSimulator implements Runnable {
 
         while (true) {
             if (requests.isEmpty()) {
-                try { requests = requestQueueList.poll(); }
+                try {
+                    requests = requestQueueList.poll();
+
+                    if ( requests.getRequestType() != prevRequestType ) {
+                        rebuildGraph();
+                    }
+                }
                 catch (InterruptedException e) { e.printStackTrace(); }
             }
 
-            printLock.lock();
-            System.out.println("requests size " + requests.size());
             Request request = requests.poll();
-
-            if (request.getRequestType() != prevRequestType) {
-                printLock.unlock();
-                //logs.startTime();
-                graph = new Graph(nw, request.getRequestType()); // graph.print();
-                //logs.graphstats.add(System.nanoTime() - logs.startTime);
-                //logs.graphRebuilds++;
-
-                prevRequestType = request.getRequestType();
-            }
-            else { printLock.unlock(); }
 
             //logs.branchFactors.add(graph.branchingFactor);
 
@@ -82,19 +72,28 @@ public class MultihopSimulator implements Runnable {
         // logs.printBuild();
     }
 
+    public void rebuildGraph() {
+        //logs.startTime();
+        graph = new Graph(nw, requests.getRequestType()); // graph.print();
+        //logs.graphstats.add(System.nanoTime() - logs.startTime);
+        //logs.graphRebuilds++;
+
+        prevRequestType = requests.getRequestType();
+    }
+
     public void sendResponse(ArrayList<Integer> intArray, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
 
         ArrayList<byte[]> byteArray = new ArrayList<>();
 
         if (false) {
-            printLock.lock();
+            lock.lock();
             System.out.print(name + " with request " + request.toString() + " is publishing path ");
             for (int nodeID : intArray) {
                 System.out.print(nodeID + " ");
                 byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
             }
             System.out.println();
-            printLock.unlock();
+            lock.unlock();
         }
 
         _hlaRI.setPath(byteArray.toArray(new byte[byteArray.size()][16]));

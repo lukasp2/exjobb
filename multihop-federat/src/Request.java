@@ -14,18 +14,20 @@ public class Request {
     }
 
     public int getRequestType() {
-	return comType;
+        return comType;
     }
     
     public int getToNode() {
-	return toNode;
+	    return toNode;
     }
     
     public int getFromNode() {
-	return fromNode;
+	    return fromNode;
     }
 
-    public long getTransactionID() { return transactionID; }
+    public long getTransactionID() {
+        return transactionID;
+    }
 
     public String toString() { return "[" + comType + ": " + toNode + "->" + fromNode + "]"; }
 

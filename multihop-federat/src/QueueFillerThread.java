@@ -25,7 +25,7 @@ public class QueueFillerThread implements Runnable {
             }
         }
 
-        if (true) {
+        if (false) {
             System.out.println("Filled queue:");
             requestQueueList.print();
         }
