@@ -1,10 +1,12 @@
 import java.util.Random;
 
 public class Radio {
-    public static double DISTANCE = 0.005;
-    //public static double DISTANCE = 1.0;
+	//avg distance was 0.034
+    //public static double DISTANCE = 0.005;
+    public static double DISTANCE = 0.002;
 
 	private final int MAX_HOPS = 4;
+	//private final int MAX_HOPS = 4;
 
 	public static final int numComTypes = 3;
 
@@ -15,6 +17,7 @@ public class Radio {
 	public static int randomizeCom() {
 		Random random = new Random();
 		return random.nextInt(numComTypes);
+		//return 1;
 	}
 
     public void setCom(int i) {

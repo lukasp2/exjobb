@@ -3,7 +3,6 @@ import devstudio.generatedcode.exceptions.*;
 import internal.prti1516e.com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -44,17 +43,18 @@ public class MultihopSimulator implements Runnable {
     private RequestQueue requests = new RequestQueue();
 
     public void run() {
-
         while (true) {
             if (requests.isEmpty()) {
                 try {
 
+                    lock.lock();
                     if (requestQueueList.queuesAreEmpty() && !requestQueueList.firstRequest) {
+                        lock.unlock();
                         logger.setElapsedTime();
                         break;
                     }
-
                     requests = requestQueueList.poll();
+                    lock.unlock();
 
                     if ( requests.getRequestType() != prevRequestType ) {
                         rebuildGraph();
@@ -65,10 +65,12 @@ public class MultihopSimulator implements Runnable {
 
             Request request = requests.poll();
 
-            logger.addBFactor(graph.branchingFactor);
-            logger.startTime();
+            //logger.addBFactor(graph.branchingFactor);
+            //logger.startTime();
+
             ArrayList<Integer> res = graph.aStar(request);
-            logger.stopTime(logger.Astarstats);
+            //sum = sum + System.nanoTime() - startTime;
+            //logger.stopTime(logger.Astarstats);
 
             try {
                 sendResponse(res, request);
@@ -80,18 +82,16 @@ public class MultihopSimulator implements Runnable {
         //logger.print();
         //logger.printGraph();
         //logger.printAstar();
+        //System.out.println(name + " finished with time " + sum/1000000);
 
-        int sum = 0;
-        for (long d : logger.Astarstats) {
-            sum += d;
-        }
-        System.out.println("runtime: " + sum/1000000 + " ms");
+        //sum = System.nanoTime() - startTime;
+        //logger.addAstarstat(sum);
     }
 
     public void rebuildGraph() {
-        logger.startTime();
-        graph = new Graph(nw, requests.getRequestType()); // graph.print();
-        logger.stopTime(logger.graphstats);
+        //logger.startTime();
+        graph = new Graph(nw, requests.getRequestType());
+        //logger.stopTime(logger.graphstats);
         prevRequestType = requests.getRequestType();
     }
 
@@ -104,6 +104,7 @@ public class MultihopSimulator implements Runnable {
             System.out.print(name + " with request " + request.toString() + " is publishing path ");
             for (int nodeID : intArray) {
                 System.out.print(nodeID + " ");
+                //System.out.print(Arrays.toString(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID))));
                 byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
             }
             System.out.println();

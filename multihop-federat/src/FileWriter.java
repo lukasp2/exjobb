@@ -10,27 +10,27 @@ import java.util.Arrays;
 public class FileWriter {
 
     public void write(String filename, List<String> lines, boolean append) {
-	try {
-	    if (append) {
-		Files.write(Paths.get(filename), lines, StandardCharsets.UTF_8,
-			    StandardOpenOption.CREATE,
-			    StandardOpenOption.APPEND);
-	    }
-	    else {
-		Files.write(Paths.get(filename), lines, StandardCharsets.UTF_8);
-	    }
-	}
-	catch (IOException e) {
-	    e.printStackTrace();
-	}
+		try {
+			if (append) {
+				Files.write(Paths.get(filename), lines, StandardCharsets.UTF_8,
+						StandardOpenOption.CREATE,
+						StandardOpenOption.APPEND);
+			}
+			else {
+				Files.write(Paths.get(filename), lines, StandardCharsets.UTF_8);
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
     public void writeHeader() {
-	List<String> lines = new ArrayList<String>();
-	lines.add("#!/usr/bin/env python3");
-	lines.add("import matplotlib.pyplot as plt\n");
-	
-	write("plotter.py", lines, false);
+		List<String> lines = new ArrayList<String>();
+		lines.add("#!/usr/bin/env python3");
+		lines.add("import matplotlib.pyplot as plt\n");
+
+		write("plotter.py", lines, false);
     }
 
     // writes all points and names of the points
@@ -58,7 +58,7 @@ public class FileWriter {
 		}
 
 		lines.add("");
-		write("plotter.py", lines, true);
+		//write("plotter.py", lines, true);
     }
 
     // writes one line
@@ -76,8 +76,8 @@ public class FileWriter {
 		double pos_x = (x1 + x2) / 2;
 		double pos_y = (y1 + y2) / 2;
 
-		lines.add("plt.text(" + pos_x + ", " + pos_y + ", " + Math.round(dist)
-			  + ", " + "fontsize=6" + ")");
+		// write the length of each connection
+		//lines.add("plt.text(" + pos_x + ", " + pos_y + ", " + Math.round(dist) + ", " + "fontsize=6" + ")");
 
 		write("plotter.py", lines, true);
     }
@@ -101,7 +101,7 @@ public class FileWriter {
 			double x2 = nodes.get(curr).position.x;
 			double y2 = nodes.get(curr).position.y;
 
-			pathLines.add("\tplt.pause(0.3)");
+			pathLines.add("\tplt.pause(0.1)");
 			pathLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'r' )");
 			neighbourLines.add("\tplt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'g' )");
 		}
@@ -109,10 +109,28 @@ public class FileWriter {
 		Collections.reverse(pathLines);
 
 		lines.add("\nwhile True:");
-		lines.add("\tplt.pause(0.4)");
+		lines.add("\tplt.pause(0.2)");
 
 		write("plotter.py", lines, true);
 		write("plotter.py", pathLines, true);
 		write("plotter.py", neighbourLines, true);
     }
+
+	public void writeNonActiveResult(Map<Integer, Integer> steps, ArrayList<Graph.Node> nodes, int goal) {
+		List<String> lines = new ArrayList<String>();
+
+		int curr = goal;
+		while (steps.get(curr) != -1) {
+			double x1 = nodes.get(curr).position.x;
+			double y1 = nodes.get(curr).position.y;
+			curr = steps.get(curr);
+			double x2 = nodes.get(curr).position.x;
+			double y2 = nodes.get(curr).position.y;
+
+			lines.add("plt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'r' )");
+		}
+
+		lines.add("plt.show()");
+		write("plotter.py", lines, true);
+	}
 }

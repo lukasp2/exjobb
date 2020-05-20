@@ -4,9 +4,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RequestQueue {
     public RequestQueue() {}
 
-    public static final int BLOCK_SIZE = 25;
+    public static final int BLOCK_SIZE = 1;
 
     private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue();
+
+    private final ReentrantLock lock = new ReentrantLock();
 
     public void add(Request r) {
         requestQueue.add(r);
@@ -16,6 +18,7 @@ public class RequestQueue {
     public RequestQueue poll25() {
         RequestQueue subRequestQueue = new RequestQueue();
 
+        lock.lock();
         for (int i = 0; i < BLOCK_SIZE; ++i) {
             Request request = requestQueue.poll();
 
@@ -25,13 +28,18 @@ public class RequestQueue {
 
             subRequestQueue.add(request);
         }
+        lock.unlock();
 
         return subRequestQueue;
     }
 
-    public int size() { return requestQueue.size(); }
+    public int size() {
+        return requestQueue.size();
+    }
 
-    public boolean isEmpty() { return requestQueue.isEmpty(); }
+    public boolean isEmpty() {
+        return requestQueue.isEmpty();
+    }
 
     public int getRequestType() {
         if (requestQueue.peek() != null) {

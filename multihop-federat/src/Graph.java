@@ -5,9 +5,6 @@ public class Graph {
     public final boolean VERBOSE = false;
     public final boolean PLOT = false;
 
-    // 0 : distance, 1: signal, 2: random
-    public final static int HEURISTIC_TYPE = 0;
-
     public final ArrayList<Node> nodes = new ArrayList<>();
 
 	private final Radio radio = new Radio();
@@ -63,16 +60,10 @@ public class Graph {
 		int id;
 		boolean visited = false;
 		int hops = 0;
-
-		Node previous_node; // FOR FW, CALC PACKETLOSS AND BANDWIDTH
+		Node previous_node;
 
 		List<Node> neighbours = new ArrayList<>();
-		Position position = new Position(0, 0);
-
-		// construct with id of a node (used by BFS)
-		Node(int id) {
-			this.id = id;
-		}
+		Position position;
 
 		// construct with geographic position of a node (used by A* search)
 		Node(int id, Position position) {
@@ -110,7 +101,7 @@ public class Graph {
 				path.add(curr);
 			}
 
-			if (PLOT) { fw.writeResult(steps, nodes, goal); }
+			if (PLOT) { fw.writeNonActiveResult(steps, nodes, goal); }
 
 			return path;
 		}
@@ -127,20 +118,27 @@ public class Graph {
 		Comparator<Node> distanceComparator = (n1, n2) -> {
 			double n1dx = Math.abs(n1.position.x - goal.position.x);
 			double n1dy = Math.abs(n1.position.y - goal.position.y);
-			double n1ddist = Math.sqrt(Math.pow(n1dx, 2) + Math.pow(n1dy, 2));
+			double n1dist = Math.sqrt(Math.pow(n1dx, 2) + Math.pow(n1dy, 2));
 
 			double n2dx = Math.abs(n2.position.x - goal.position.x);
 			double n2dy = Math.abs(n2.position.y - goal.position.y);
-			double n2ddist = Math.sqrt(Math.pow(n2dx, 2) + Math.pow(n2dy, 2));
+			double n2dist = Math.sqrt(Math.pow(n2dx, 2) + Math.pow(n2dy, 2));
 
-			return (int) (n1ddist - n2ddist);
+			if (n1dist > n2dist) // > is good, < is bad
+				return 1;
+			else
+				return -1;
 		};
 
 		// heuristic based on signal quality to the goal
 		Comparator<Node> signalQualityComparator = (n1, n2) -> {
 			double n1S = nw.getConnection(n1.id, goal.id);
 			double n2S = nw.getConnection(n2.id, goal.id);
-			return (int) (n1S - n2S);
+
+			if (n1S > n2S)
+				return 1;
+			else
+				return -1;
 		};
 
 		// heuristic based on signal quality to the goal
@@ -150,15 +148,9 @@ public class Graph {
 			return (int) (b  - 2);
 		};
 
-		PriorityQueue<Node> prioQueue = new PriorityQueue<>();
-		switch(HEURISTIC_TYPE) {
-			case 0:
-				prioQueue = new PriorityQueue<>(distanceComparator);
-			case 1:
-				prioQueue = new PriorityQueue<>(signalQualityComparator);
-			case 2:
-				prioQueue = new PriorityQueue<>(randomComparator);
-		}
+		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(distanceComparator);
+		PriorityQueue<Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
+		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(randomComparator);
 
 		prioQueue.add(fromNode);
 

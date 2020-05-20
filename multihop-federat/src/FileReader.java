@@ -1,7 +1,6 @@
 import devstudio.generatedcode.HlaSettings;
 import devstudio.generatedcode.HlaWorld;
 import internal.prti1516e.com.google.common.collect.BiMap;
-import internal.prti1516e.com.google.common.collect.HashBiMap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -57,6 +56,7 @@ public class FileReader {
                     visitedIDs.put(fromUuid, true);
                     nw.addNode(nodeIDs.get(fromUuid), pos_x, pos_y);
                 }
+
             }
             scanner.close();
 

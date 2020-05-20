@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Logger {
 
 	public double elapsedTime = 0;
     public long startTime = 0;	
 
-    public List<Long> Astarstats = new ArrayList<Long>();
+    private List<Long> Astarstats = new ArrayList<Long>();
     public List<Long> graphstats = new ArrayList<Long>();
     public List<Double> branchFactors = new ArrayList<Double>();
 
@@ -15,19 +16,32 @@ public class Logger {
     public int NUM_NODES = 0;
     public int HEURISTIC_TYPE = 0;
 
+    private final ReentrantLock lock = new ReentrantLock();
+
     Logger(int NUM_NODES, double RADIO_DISTANCE, int BLOCK_SIZE, int HEURISTIC_TYPE) {
 		this.NUM_NODES = NUM_NODES;
 		this.RADIO_DISTANCE = RADIO_DISTANCE;
 		this.BLOCK_SIZE = BLOCK_SIZE;
 		this.HEURISTIC_TYPE = HEURISTIC_TYPE;
     }
-    
-    public void startTime() {
+
+    public void addAstarstat(Long val) {
+    	lock.lock();
+    	Astarstats.add(val);
+    	lock.unlock();
+	}
+
+	public List<Long> getAstarstats() {
+    	return Astarstats;
+	}
+
+	public void startTime() {
 		startTime = System.nanoTime();
     }
 
 	public void stopTime(List<Long> statList) {
-		statList.add(System.nanoTime() - startTime);
+    	Long time = System.nanoTime() - startTime;
+		statList.add(time);
 	}
 
 	public void setElapsedTime() {

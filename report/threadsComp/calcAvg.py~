@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+
+'''
+Testing how many threads is optimal. 
+Time was taken from before threads start to right before we disconnect from _hlaWorld.
+
+"the lists contain the total time (ms) it took N threads to calculate 39800 x 100 paths, the average time is ..."
+
+- BLOCK_SIZE: 1
+- threads: 1 .. 
+- Radio l=0.002
+- MAX_HOPS=4
+- 39800 requests
+- 200 noder
+- distance heur
+- randomized radioCom (but same resulting graph)
+'''
+
+# results is [[t1],[t2], ... [tn]]
+results = [
+    
+]
+    
+k = 1
+for n in results:
+    total_time = 0
+    for time in n:
+        total_time += time
+    
+    print("avg for", k, "thread(s) =",  total_time / len(n))
+    k = k + 1

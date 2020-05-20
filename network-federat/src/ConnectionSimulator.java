@@ -76,7 +76,7 @@ public class ConnectionSimulator {
 
                 // if new uuid: create new object
                 if (!visitedIDs.containsKey(UuidAdapter.getUUIDFromBytes(fromUuidArr))) {
-                    //if (pos_x != 0.0)
+                    if (pos_x != 0.0)
                     {
                         createObject(scanner, fromUuidArr, pos_x, pos_y);
                     }

@@ -49,7 +49,6 @@ public class RequestQueueList {
 
 		sema.acquire(requestQueue.size() - 1);
 
-
 		queueLock.unlock();
 
 		return requestQueue;
@@ -66,13 +65,13 @@ public class RequestQueueList {
     }
 
 	public boolean queuesAreEmpty() {
-		queueLock.lock();
+		//queueLock.lock();
 		for (int i = 0; i < Radio.numComTypes; ++i) {
 			if (!requestQueueList.get(i).isEmpty()) {
 				return false;
 			}
 		}
-		queueLock.unlock();
+		//queueLock.unlock();
 		return true;
 	}
 }

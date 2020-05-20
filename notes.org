@@ -48,36 +48,9 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 ** TODO bitBucket.
 ** TODO undersökningar
 *** TODO jämför bruteforce och rr
-*** TODO undersök vilken heuristik som är bäst
-**** nodeDistanceComp
-0.732
-0.695
-0.712
-0.761
-0.784
-0.758
-0.730
-0.752
-0.726
-0.808
-
-**** nodeSignalQualityComp
-0.712
-0.869
-0.787
-0.725
-0.839
-0.779
-0.789
-0.840
-0.828
-0.885
+*** DONE undersök vilken heuristik som är bäst
 
 *** TODO undersök optimala antalet trådar
-
-*** DONE Radio.{data,voice,dist}Com kan alla ha samma implementation. Justera den så att graferna som byggs upp innehåller fler bågar.
-
-*** TODO gör en ny Nodes_200_uuid.txt där positionen är slumpad mellan 0-1 på x och y
 
 ** TODO uppdatera bara nw max var 5:e sek?
 * pass

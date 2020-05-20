@@ -80,7 +80,7 @@ public class Main {
             }
 
             // new thread: fills the queue with all possible requests (for brute force)
-            new QueueFillerThread(nw, requestQueueList);
+            //new QueueFillerThread(nw, requestQueueList);
         }
     };
 
@@ -117,10 +117,12 @@ public class Main {
         fw.readFile();
 
         // for logging statistical data
-        Logger logger = new Logger(200, Radio.DISTANCE, RequestQueue.BLOCK_SIZE, Graph.HEURISTIC_TYPE);
+        Logger logger = new Logger(200, Radio.DISTANCE, RequestQueue.BLOCK_SIZE, 0);
         //logger.print();
 
-        int numThreads = 1;
+        long startTime = System.nanoTime();
+
+        int numThreads = 11;
         for (int i = 1; i < numThreads; ++i) {
             Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread " + i,
                     nw, requestQueueList, nodeIDs, logger, printLock));
@@ -130,6 +132,17 @@ public class Main {
         MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread " + numThreads,
                 nw, requestQueueList, nodeIDs, logger, printLock);
         t2.run();
+
+        /*
+        List<Long> longList = logger.getAstarstats();
+        long sum = 0L;
+        for (Long l : longList) {
+            sum += l;
+        }
+         */
+        long stopTime = System.nanoTime();
+
+        System.out.print((stopTime - startTime) / 1000000 + ", "); // in milliseconds
 
         _hlaWorld.disconnect();
     }
