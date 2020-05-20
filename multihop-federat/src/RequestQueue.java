@@ -4,9 +4,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RequestQueue {
     public RequestQueue() {}
 
-    public static final int BLOCK_SIZE = 1;
+    public static final int BLOCK_SIZE = 120;
 
-    private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue();
+    private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue<>();
 
     private final ReentrantLock lock = new ReentrantLock();
 

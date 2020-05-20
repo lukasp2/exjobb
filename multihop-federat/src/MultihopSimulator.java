@@ -46,7 +46,6 @@ public class MultihopSimulator implements Runnable {
         while (true) {
             if (requests.isEmpty()) {
                 try {
-
                     lock.lock();
                     if (requestQueueList.queuesAreEmpty() && !requestQueueList.firstRequest) {
                         lock.unlock();
@@ -57,20 +56,15 @@ public class MultihopSimulator implements Runnable {
                     lock.unlock();
 
                     if ( requests.getRequestType() != prevRequestType ) {
-                        rebuildGraph();
+                        graph = new Graph(nw, requests.getRequestType());
+                        prevRequestType = requests.getRequestType();
                     }
                 }
                 catch (InterruptedException e) { e.printStackTrace(); }
             }
 
             Request request = requests.poll();
-
-            //logger.addBFactor(graph.branchingFactor);
-            //logger.startTime();
-
             ArrayList<Integer> res = graph.aStar(request);
-            //sum = sum + System.nanoTime() - startTime;
-            //logger.stopTime(logger.Astarstats);
 
             try {
                 sendResponse(res, request);
@@ -78,21 +72,6 @@ public class MultihopSimulator implements Runnable {
                 e.printStackTrace();
             }
         }
-
-        //logger.print();
-        //logger.printGraph();
-        //logger.printAstar();
-        //System.out.println(name + " finished with time " + sum/1000000);
-
-        //sum = System.nanoTime() - startTime;
-        //logger.addAstarstat(sum);
-    }
-
-    public void rebuildGraph() {
-        //logger.startTime();
-        graph = new Graph(nw, requests.getRequestType());
-        //logger.stopTime(logger.graphstats);
-        prevRequestType = requests.getRequestType();
     }
 
     public void sendResponse(ArrayList<Integer> intArray, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
@@ -104,7 +83,6 @@ public class MultihopSimulator implements Runnable {
             System.out.print(name + " with request " + request.toString() + " is publishing path ");
             for (int nodeID : intArray) {
                 System.out.print(nodeID + " ");
-                //System.out.print(Arrays.toString(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID))));
                 byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
             }
             System.out.println();

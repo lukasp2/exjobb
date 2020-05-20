@@ -90,7 +90,7 @@ public class Graph {
 		}
 
 		public ArrayList<Integer> getPath(int goal) {
-			ArrayList<Integer> path = new ArrayList<Integer>();
+			ArrayList<Integer> path = new ArrayList<>();
 
 			if (steps.containsKey(goal)) {
 				int curr = goal;
@@ -195,7 +195,7 @@ public class Graph {
 		return path.getPath(goal.id);
     }
 
-    public void print() {
+    public void printAdjecencyList() {
 		System.out.format("%10s\n", "Graph Adjacency List");
 		for (Node node : nodes) {
 			System.out.print("Node " + node.id + " | ");

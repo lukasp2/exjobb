@@ -109,8 +109,6 @@ public class Main {
     public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 
-        //System.out.println("Simulator ready!");
-
         ReentrantLock printLock = new ReentrantLock();
 
         FileReader fw = new FileReader(nw, requestQueueList, nodeIDs);
@@ -133,13 +131,6 @@ public class Main {
                 nw, requestQueueList, nodeIDs, logger, printLock);
         t2.run();
 
-        /*
-        List<Long> longList = logger.getAstarstats();
-        long sum = 0L;
-        for (Long l : longList) {
-            sum += l;
-        }
-         */
         long stopTime = System.nanoTime();
 
         System.out.print((stopTime - startTime) / 1000000 + ", "); // in milliseconds
