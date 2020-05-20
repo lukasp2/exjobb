@@ -18,7 +18,7 @@ public class RequestQueueList {
 
 	// LOGGER:
 	public boolean firstRequest = true;
-	public static long startMillis;
+	public long startMillis;
 	//
 
 	public void add(Request request) {
@@ -64,14 +64,13 @@ public class RequestQueueList {
 		queueLock.unlock();
     }
 
-	public boolean queuesAreEmpty() {
-		//queueLock.lock();
+    // returns true iff the RequestQueues contained in the RequestQueueList are empty
+	public boolean isEmpty() {
 		for (int i = 0; i < Radio.numComTypes; ++i) {
 			if (!requestQueueList.get(i).isEmpty()) {
 				return false;
 			}
 		}
-		//queueLock.unlock();
 		return true;
 	}
 }

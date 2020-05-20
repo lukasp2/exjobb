@@ -2,28 +2,25 @@ import java.util.*;
 import java.lang.Math;
 
 public class Graph {
-    public final boolean VERBOSE = false;
+
+	Graph() { }
+
     public final boolean PLOT = false;
 
     public final ArrayList<Node> nodes = new ArrayList<>();
 
+	public Network nw;
+
 	private final Radio radio = new Radio();
 
-    // for writing to file
-    public FileWriter fw = new FileWriter();
+	// for writing to file
+	public FileWriter fw = new FileWriter();
 
-    public double branchingFactor = 0; // FOR TESTING
-    
-    Graph() { }
-    
-    public Network nw;
-    
     // builds graph from input data
     Graph(Network nw, int requestType) {
 
 		radio.setCom(requestType);
-
-    	this.nw = nw;
+		this.nw = nw;
 
 		if (PLOT) { fw.writeHeader(); }
 		List<Position> posList = new ArrayList<>();
@@ -47,12 +44,9 @@ public class Graph {
 					n1.addNeighbour(n2);
 
 					if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, 'y'); }
-					branchingFactor++;
 				}
 			}
 		}
-
-		branchingFactor /= numNodes; // avg. branch factor
     }
 
     // defines the nodes in the graph
@@ -100,7 +94,6 @@ public class Graph {
 				}
 				path.add(curr);
 			}
-
 			if (PLOT) { fw.writeNonActiveResult(steps, nodes, goal); }
 
 			return path;
@@ -148,8 +141,8 @@ public class Graph {
 			return (int) (b  - 2);
 		};
 
-		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(distanceComparator);
-		PriorityQueue<Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
+		PriorityQueue<Node> prioQueue = new PriorityQueue<>(distanceComparator);
+		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
 		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(randomComparator);
 
 		prioQueue.add(fromNode);
@@ -167,12 +160,9 @@ public class Graph {
 					 curr.previous_node.position.x, curr.previous_node.position.y, 'g'); }
 
 			if (curr.hops < maxhops) {
-				if (VERBOSE) { System.out.println("expanded node " + curr.id); }
-
 				List<Node> neighbours = curr.getNeighbours();
 
 				if (neighbours.contains(goal)) {
-					if (VERBOSE) { System.out.println("expanded node " + goal.id + ", found path!"); }
 					path.addStep(goal.id, curr.id);
 					break;
 				}
@@ -187,23 +177,8 @@ public class Graph {
 					}
 				}
 			}
-			else {
-				if (VERBOSE) { System.out.println("... could not access node " + curr.id + ": maxhops reached"); }
-			}
 		}
 
 		return path.getPath(goal.id);
-    }
-
-    public void printAdjecencyList() {
-		System.out.format("%10s\n", "Graph Adjacency List");
-		for (Node node : nodes) {
-			System.out.print("Node " + node.id + " | ");
-			for (int k = 0; k < node.neighbours.size(); ++k) {
-				System.out.format("%4d", node.neighbours.get(k).id);
-			}
-			System.out.println();
-		}
-		System.out.println();
     }
 }

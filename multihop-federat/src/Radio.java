@@ -40,17 +40,11 @@ public class Radio {
     // return the possibility of voice communication between node A and node B
     public boolean voiceCom(Network nw, int fromNode, int toNode) {
     	return nw.getConnection(fromNode, toNode) > 5;
-		/*return nw.readCell(fromNode, toNode, nw.LATENCY) < 20
-			&& nw.readCell(fromNode, toNode, nw.BANDWIDTH) > 600
-			&& nw.readCell(fromNode, toNode, nw.PACKETLOSS) < 0.2;*/
     }
     
     // return the possibility of data communication between node A and node B
     public boolean dataCom(Network nw, int fromNode, int toNode) {
 		return nw.getConnection(fromNode, toNode) > 3;
-		/*return nw.readCell(fromNode, toNode, nw.LATENCY) < 70
-			&& nw.readCell(fromNode, toNode, nw.BANDWIDTH) > 300
-			&& nw.readCell(fromNode, toNode, nw.PACKETLOSS) < 0.3;*/
     }
 
     // return the possibility of communication between node A and node B

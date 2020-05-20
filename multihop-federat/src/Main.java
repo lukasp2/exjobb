@@ -109,31 +109,25 @@ public class Main {
     public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 
-        ReentrantLock printLock = new ReentrantLock();
-
         FileReader fw = new FileReader(nw, requestQueueList, nodeIDs);
         fw.readFile();
 
-        // for logging statistical data
-        Logger logger = new Logger(200, Radio.DISTANCE, RequestQueue.BLOCK_SIZE, 0);
-        //logger.print();
-
         long startTime = System.nanoTime();
 
-        int numThreads = 11;
+        int numThreads = 8;
         for (int i = 1; i < numThreads; ++i) {
-            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, "thread " + i,
-                    nw, requestQueueList, nodeIDs, logger, printLock));
+            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, i,
+                    nw, requestQueueList, nodeIDs));
             t1.start();
         }
 
-        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,"thread " + numThreads,
-                nw, requestQueueList, nodeIDs, logger, printLock);
+        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,numThreads,
+                nw, requestQueueList, nodeIDs);
         t2.run();
 
         long stopTime = System.nanoTime();
 
-        System.out.print((stopTime - startTime) / 1000000 + ", "); // in milliseconds
+        System.out.print( "executiontime (ms): " + (stopTime - startTime) / 1000000 + " ");
 
         _hlaWorld.disconnect();
     }
