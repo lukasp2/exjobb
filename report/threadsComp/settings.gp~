@@ -1,0 +1,9 @@
+set terminal pngcairo size 1024, 768 font "Helvetica,19"
+unset key
+
+set xlabel "Trådar"
+set ylabel "Exekveringstid (ms)"
+set grid
+
+set output "~/Desktop/exjobb/report/threadsComp/plot.png"
+plot "~/Desktop/exjobb/report/threadsComp/results.txt" linetype 7 linecolor 6 with linespoints

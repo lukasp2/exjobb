@@ -12,6 +12,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
 
+    private final boolean BRUTE_FORCE = true;
+    private final boolean REQUEST_RESPONSE = true;
+
     private final boolean PRINT_NODES_ADDED = false;
     private final boolean PRINT_CONN_INFO = false;
 
@@ -79,8 +82,9 @@ public class Main {
                 System.out.println("network has been fully (re)built");
             }
 
-            // new thread: fills the queue with all possible requests (for brute force)
-            //new QueueFillerThread(nw, requestQueueList);
+            if (BRUTE_FORCE) {
+                new QueueFillerThread(nw, requestQueueList);
+            }
         }
     };
 
@@ -92,7 +96,7 @@ public class Main {
             int comType = parameters.getComType();
             long transactionID = parameters.getTransactionID();
 
-            if (nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
+            if (REQUEST_RESPONSE && nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
                 Request r = new Request(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), comType, transactionID);
                 requestQueueList.add(r);
             }
@@ -106,11 +110,12 @@ public class Main {
         }
     };
 
-    public void simulate() throws HlaBaseException, InterruptedException {
+    public void simulate() throws HlaBaseException {
         _hlaWorld.connect();
 
-        FileReader fw = new FileReader(nw, requestQueueList, nodeIDs);
-        fw.readFile();
+        // a replacement for the network-federate:
+        //FileReader fw = new FileReader(nw, requestQueueList, nodeIDs);
+        //fw.readFile();
 
         long startTime = System.nanoTime();
 
@@ -125,14 +130,12 @@ public class Main {
                 nw, requestQueueList, nodeIDs);
         t2.run();
 
-        long stopTime = System.nanoTime();
-
-        System.out.print( "executiontime (ms): " + (stopTime - startTime) / 1000000 + " ");
+        System.out.print( "execution time: " + (System.nanoTime() - startTime) / 1000000 + " ms");
 
         _hlaWorld.disconnect();
     }
 
-    public static void main(String[] args) throws HlaBaseException, InterruptedException {
+    public static void main(String[] args) throws HlaBaseException {
         new Main().simulate();
     }
 }

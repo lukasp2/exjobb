@@ -8,6 +8,9 @@ byt grafsökningsalgoritm beroende på grafens struktur
 ** hitta bästa vägen
 kräver att vi har någon funktion som jämför två vägar och avgör hur attributerna ska jämföras.
 
+det kräver även att vi inte längre behöver ha den kortaste vägen.
+
+
 * howto
 ** How to create, add, run and use a FOM
 1. start VisualOMT and devleop the FOM, save the module.
@@ -30,29 +33,20 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 4. Open pitchrti1516e.
 
 (5. how to use pitch recorder)
-* sparad LaTeX kod
-** ist för UML:
-\begin{enumerate}
-    \item Main.java \\
-        Innehåller ett huvudprogram. Programmet startas och ser till att grafen uppdateras så fort en ny inmatning kommer in från RTI:n. Används av Graph.java för att bygga upp grafen med hjälp av grannmatriser, och av DynamicQueue.java för att schemalägga förfrågningar.
-    \item Graph.java \\
-        Bygger upp grafen och utför en grafsökningarna. 
-    \item Radio.java \\
-        I denna klass är det definierat för varje typ av kommunikation vad som krävs av förbindelserna för att kommunikationen ska kunna föras över nätverket. Används av Graph.java för att bygga upp rätt graf för en viss typ av kommunikation.
-    \item DynamicQueue.java \\
-        Schemalägger förfrågningar. Används av Graph.java för att hämta förfrågningarna.
-\end{enumerate}{}
-
 * todo
 ** TODO (varje radio ska bara lyssna bara på de requests som den skickar)
 ** TODO bitBucket.
-** TODO undersökningar
-*** TODO jämför bruteforce och rr
-*** DONE undersök vilken heuristik som är bäst
-
-*** TODO undersök optimala antalet trådar
-
 ** TODO uppdatera bara nw max var 5:e sek?
+
+** ideer
+Om vi har två grafer G1 = (V, E1) och G2 = (V, E2) och E2 tillhör E1, så behöver vi inte räkna ut om det finns en väg genom G2 mellan två noder n1 och n2 om vi vet att den finns i G1. Det kan fortfarande finnas anledning att ta reda på om det finns en kortare väg genom G2 mellan nod n1 och n2. 
+
+Man kan cachea lösningar, den totala minnesanvändningen blir lägre, man kan föra statistik över vilka vägar som många noder tar och på så sätt "föreslå" till en nod var den bör gå för att öka uppkopplingen i nätverket.
+
+** report
+*** distinguera mellan multihop-simulator och federationens simulering.
+*** lägg till abstrakt och slutsats
+
 * pass
 yPitch%123
 lukas123
