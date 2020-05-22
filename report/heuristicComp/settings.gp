@@ -1,4 +1,4 @@
-set terminal pngcairo size 1920, 1200 font "Helvetica,30"
+set terminal pngcairo size 1920, 1200 font "Helvetica,50"
 unset key
 
 set boxwidth 0.5

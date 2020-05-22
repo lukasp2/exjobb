@@ -1,0 +1,29 @@
+* PRESENTATION
+16 slides
+25min ungefär
+
+- Ha med forskningsfrågan
+Framsida:
+- handläggare och examinator
+Bakgrund
+- kort om Pitch
+- Motivering
+- Målet
+Teori
+- förklara HLA
+Metod
+- förklara programmet (listener trådar, hur kommunikationen flödar genom programmet)
+- förklara arkitektren som användes när simulatorn testades.
+Resultat
+Slutsats, diskussion
+Framtida arbete
+
+
+det är ett program som är en del av en distribuerad simulation, programmet i sig utför grafsökningar efter den kortaste vägen.
+
+* OPPONERING
+lathund för opponenter
+
+
+
+

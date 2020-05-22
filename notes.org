@@ -10,7 +10,6 @@ kräver att vi har någon funktion som jämför två vägar och avgör hur attri
 
 det kräver även att vi inte längre behöver ha den kortaste vägen.
 
-
 * howto
 ** How to create, add, run and use a FOM
 1. start VisualOMT and devleop the FOM, save the module.
@@ -37,7 +36,6 @@ det kräver även att vi inte längre behöver ha den kortaste vägen.
 ** TODO (varje radio ska bara lyssna bara på de requests som den skickar)
 ** TODO bitBucket.
 ** TODO uppdatera bara nw max var 5:e sek?
-
 ** ideer
 Om vi har två grafer G1 = (V, E1) och G2 = (V, E2) och E2 tillhör E1, så behöver vi inte räkna ut om det finns en väg genom G2 mellan två noder n1 och n2 om vi vet att den finns i G1. Det kan fortfarande finnas anledning att ta reda på om det finns en kortare väg genom G2 mellan nod n1 och n2. 
 
@@ -46,7 +44,6 @@ Man kan cachea lösningar, den totala minnesanvändningen blir lägre, man kan f
 ** report
 *** distinguera mellan multihop-simulator och federationens simulering.
 *** lägg till abstrakt och slutsats
-
 * pass
 yPitch%123
 lukas123
