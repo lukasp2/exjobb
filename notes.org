@@ -36,6 +36,7 @@ RTI: Run Time Infrastructure
 Federat: en aktör kopplad till RTI:n
 Federation: en samling av federater som är kopplade till samma RTI
 Multihop-simulator
+Kommunikationstyp:
 
 *** TODO distinguera mellan multihop-simulator och federationens simulering.
 gäller främst inledning

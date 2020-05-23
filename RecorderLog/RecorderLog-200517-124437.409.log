@@ -1,7 +1,0 @@
-[2020-05-17 12:44:37.430 (+0200)] INFO: Pitch Recorder v.2.3.0 (build 144 @ 191113 08:50:56), started on debian [Linux v.4.19.0-9-amd64]
-[2020-05-17 12:44:37.431 (+0200)] INFO: Log saved to file RecorderLog/RecorderLog-200517-124437.409.log
-[2020-05-17 12:44:37.524 (+0200)] INFO: Graphical User Interface enabled
-[2020-05-17 12:44:37.743 (+0200)] INFO: Driver SQL Server 2005/2000 (jTDS) version 1.2 loaded
-[2020-05-17 12:44:37.743 (+0200)] INFO: Driver In Memory (Hsqldb) version 1.8 loaded
-[2020-05-17 12:44:37.743 (+0200)] INFO: Driver Local File (Hsqldb) version 1.8 loaded
-[2020-05-17 12:44:37.744 (+0200)] INFO: Driver Hsqldb version 1.8 loaded
