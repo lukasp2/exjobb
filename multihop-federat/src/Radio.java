@@ -1,10 +1,9 @@
 import java.util.Random;
 
 public class Radio {
-	//avg distance was 0.034
-    public static double DISTANCE = 0.002;
+	public static double DISTANCE = 0.002;
 
-	private final int MAX_HOPS = 4;
+	private final int MAX_HOPS = 100;
 
 	public static final int numComTypes = 3;
 

@@ -58,11 +58,11 @@ public class FileWriter {
 		}
 
 		lines.add("");
-		//write("plotter.py", lines, true);
+		write("plotter.py", lines, true);
     }
 
     // writes one line
-    public void writeLine(double x1, double y1, double x2, double y2, char color) {
+    public void writeLine(double x1, double y1, double x2, double y2, String color) {
 		List<String> lines = new ArrayList<String>();
 
 		lines.add("plt.plot(["
@@ -81,8 +81,26 @@ public class FileWriter {
 
 		write("plotter.py", lines, true);
     }
-    
-    public void writeResult(Map<Integer, Integer> steps, ArrayList<Graph.Node> nodes, int goal) {
+
+	public void writeNonActiveResult(Map<Integer, Integer> steps, ArrayList<Graph.Node> nodes, int goal) {
+		List<String> lines = new ArrayList<String>();
+
+		int curr = goal;
+		while (steps.get(curr) != -1) {
+			double x1 = nodes.get(curr).position.x;
+			double y1 = nodes.get(curr).position.y;
+			curr = steps.get(curr);
+			double x2 = nodes.get(curr).position.x;
+			double y2 = nodes.get(curr).position.y;
+
+			lines.add("plt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'limegreen' )");
+		}
+
+		lines.add("plt.show()");
+		write("plotter.py", lines, true);
+	}
+
+	public void writeResult(Map<Integer, Integer> steps, ArrayList<Graph.Node> nodes, int goal) {
 		List<String> pathLines = new ArrayList<String>();
 		List<String> neighbourLines = new ArrayList<String>();
 		List<String> lines = new ArrayList<String>();
@@ -114,23 +132,5 @@ public class FileWriter {
 		write("plotter.py", lines, true);
 		write("plotter.py", pathLines, true);
 		write("plotter.py", neighbourLines, true);
-    }
-
-	public void writeNonActiveResult(Map<Integer, Integer> steps, ArrayList<Graph.Node> nodes, int goal) {
-		List<String> lines = new ArrayList<String>();
-
-		int curr = goal;
-		while (steps.get(curr) != -1) {
-			double x1 = nodes.get(curr).position.x;
-			double y1 = nodes.get(curr).position.y;
-			curr = steps.get(curr);
-			double x2 = nodes.get(curr).position.x;
-			double y2 = nodes.get(curr).position.y;
-
-			lines.add("plt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'r' )");
-		}
-
-		lines.add("plt.show()");
-		write("plotter.py", lines, true);
 	}
 }

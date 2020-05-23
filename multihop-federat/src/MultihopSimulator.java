@@ -4,6 +4,7 @@ import internal.prti1516e.com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
@@ -11,12 +12,14 @@ public class MultihopSimulator implements Runnable {
 
     public MultihopSimulator(HlaWorld _hlaWorld, int id, Network nw,
                              RequestQueueList requestQueueList,
-                             BiMap<UUID, Integer> nodeIDs) {
+                             BiMap<UUID, Integer> nodeIDs,
+                             ReentrantLock lock) {
         this._hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
         this.name = "thread " + id;
         this.nw = nw;
         this.requestQueueList = requestQueueList;
         this.nodeIDs = nodeIDs;
+        this.lock = lock;
     }
 
     HlaInteractionManager.HlaResponseInteraction _hlaRI;
@@ -26,6 +29,8 @@ public class MultihopSimulator implements Runnable {
     public RequestQueueList requestQueueList;
 
     public BiMap<UUID, Integer> nodeIDs;
+
+    public ReentrantLock lock;
 
     private int prevRequestType = -1;
 
@@ -40,11 +45,15 @@ public class MultihopSimulator implements Runnable {
             if (requests.isEmpty()) {
                 try {
 
+                    lock.lock();
                     if (EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY && requestQueueList.isEmpty() && !requestQueueList.firstRequest) {
-                        break;
+                        Main.sema.release();
+                        lock.unlock();
+                        return;
                     }
 
                     requests = requestQueueList.poll();
+                    lock.unlock();
 
                     if ( requests.getRequestType() != prevRequestType ) {
                         graph = new Graph(nw, requests.getRequestType());
@@ -57,6 +66,7 @@ public class MultihopSimulator implements Runnable {
             }
 
             Request request = requests.poll();
+
             ArrayList<Integer> res = graph.aStar(request);
 
             try {

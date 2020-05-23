@@ -12,14 +12,14 @@ public class RequestQueueList {
 
 	private final ArrayList<RequestQueue> requestQueueList = new ArrayList<>();
 
-	private final ReentrantLock queueLock = new ReentrantLock();
+	public static final ReentrantLock lock = new ReentrantLock();
 
+	// tracks number of requests in the queue
 	private final Semaphore sema = new Semaphore(0);
 
-	// LOGGER:
 	public boolean firstRequest = true;
+
 	public long startMillis;
-	//
 
 	public void add(Request request) {
 		if (firstRequest) {
@@ -39,7 +39,7 @@ public class RequestQueueList {
 		int requestType = Radio.randomizeCom();
 		int i = 0;
 
-		queueLock.lock();
+		// wait for request
 		sema.acquire();
 
 		while (requestQueueList.get(requestType).isEmpty() && i++ < Radio.numComTypes) {
@@ -47,22 +47,11 @@ public class RequestQueueList {
 		}
 		RequestQueue requestQueue = requestQueueList.get(requestType).poll25();
 
+		// .acquire() for each request taken
 		sema.acquire(requestQueue.size() - 1);
-
-		queueLock.unlock();
 
 		return requestQueue;
 	}
-
-    // prints all requests in the queues
-    public void print() {
-    	queueLock.lock();
-		for (RequestQueue rQ : requestQueueList) {
-			rQ.print();
-			System.out.println();
-		}
-		queueLock.unlock();
-    }
 
     // returns true iff the RequestQueues contained in the RequestQueueList are empty
 	public boolean isEmpty() {

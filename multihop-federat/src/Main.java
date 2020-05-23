@@ -4,15 +4,14 @@ import devstudio.generatedcode.datatypes.*;
 import internal.prti1516e.com.google.common.collect.BiMap;
 import internal.prti1516e.com.google.common.collect.HashBiMap;
 import se.pitch.rpr2.util.convert.GeodeticLocation;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
+    private final static int NUM_THREADS = Runtime.getRuntime().availableProcessors();
 
-    private final boolean BRUTE_FORCE = true;
+    private final boolean BRUTE_FORCE = false;
     private final boolean REQUEST_RESPONSE = true;
 
     private final boolean PRINT_NODES_ADDED = false;
@@ -20,9 +19,11 @@ public class Main {
 
     private final HlaWorld _hlaWorld;
 
-    public Network nw = new Network();
+    public Network network = new Network();
 
     public RequestQueueList requestQueueList = new RequestQueueList();
+
+    public static Semaphore sema = new Semaphore(-1 * NUM_THREADS + 1);
 
     public BiMap<UUID, Integer> nodeIDs = HashBiMap.create();
     private int nextNodeID = 0;
@@ -48,14 +49,14 @@ public class Main {
             if (!nodeIDs.containsKey(uuid)) {
                 nodeIDs.put(uuid, nextNodeID++);
                 if (PRINT_NODES_ADDED) {
-                    System.out.println("Node " + nodeIDs.get(uuid) + " ADDED (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
+                    System.out.println("ADDED node " + nodeIDs.get(uuid) + " (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
                 }
             }
             else if (PRINT_NODES_ADDED) {
-                System.out.println("Node " + nodeIDs.get(uuid) + " UPDATED (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
+                System.out.println("UPDATED node " + nodeIDs.get(uuid) + " (uuid: " + uuid + ") position set to lat: " + latitude + ", long: " + longitude);
             }
 
-            nw.addNode(nodeIDs.get(uuid), latitude, longitude);
+            network.addNode(nodeIDs.get(uuid), loc1.getLatitude(), loc1.getLongitude());
         }
     };
 
@@ -71,7 +72,7 @@ public class Main {
                 UUID toUuid = UuidAdapter.getUUIDFromBytes(ncs.receiver);
 
                 if (nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
-                    nw.addConnection(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), ncs.networkState);
+                    network.addConnection(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), ncs.networkState);
                 }
                 else if (PRINT_CONN_INFO) {
                     System.out.println("Connection between uuid " + fromUuid + " and " + toUuid + " could not be added: nodes does not exists.");
@@ -79,11 +80,11 @@ public class Main {
             }
 
             if (PRINT_CONN_INFO) {
-                System.out.println("network has been fully (re)built");
+                System.out.println("network has been (re)built");
             }
 
             if (BRUTE_FORCE) {
-                new QueueFillerThread(nw, requestQueueList);
+                new QueueFillerThread(network, requestQueueList);
             }
         }
     };
@@ -110,32 +111,36 @@ public class Main {
         }
     };
 
-    public void simulate() throws HlaBaseException {
+    public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 
         // a replacement for the network-federate:
-        //FileReader fw = new FileReader(nw, requestQueueList, nodeIDs);
+        //FileReader fw = new FileReader(network, requestQueueList, nodeIDs);
         //fw.readFile();
+
+        ReentrantLock lock = new ReentrantLock();
 
         long startTime = System.nanoTime();
 
-        int numThreads = 8;
-        for (int i = 1; i < numThreads; ++i) {
+        for (int i = 1; i < NUM_THREADS; ++i) {
             Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, i,
-                    nw, requestQueueList, nodeIDs));
+                    network, requestQueueList, nodeIDs, lock));
             t1.start();
         }
 
-        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld,numThreads,
-                nw, requestQueueList, nodeIDs);
+        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld, NUM_THREADS,
+                network, requestQueueList, nodeIDs, lock);
         t2.run();
 
-        System.out.print( "execution time: " + (System.nanoTime() - startTime) / 1000000 + " ms");
+        // wait for all threads to finish
+        sema.acquire();
+
+        System.out.print((System.nanoTime() - startTime) / 1000000 + ", ");
 
         _hlaWorld.disconnect();
     }
 
-    public static void main(String[] args) throws HlaBaseException {
+    public static void main(String[] args) throws HlaBaseException, InterruptedException {
         new Main().simulate();
     }
 }

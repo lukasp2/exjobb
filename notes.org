@@ -1,15 +1,3 @@
-* graphs
-3. request satisfaction delay as a function of BLOCK_SIZE
-> decide how long delay is acceptable.
-
-* ideer för prestanda
-byt grafsökningsalgoritm beroende på grafens struktur
-* vidare arbete
-** hitta bästa vägen
-kräver att vi har någon funktion som jämför två vägar och avgör hur attributerna ska jämföras.
-
-det kräver även att vi inte längre behöver ha den kortaste vägen.
-
 * howto
 ** How to create, add, run and use a FOM
 1. start VisualOMT and devleop the FOM, save the module.
@@ -33,17 +21,48 @@ det kräver även att vi inte längre behöver ha den kortaste vägen.
 
 (5. how to use pitch recorder)
 * todo
-** TODO (varje radio ska bara lyssna bara på de requests som den skickar)
-** TODO bitBucket.
-** TODO uppdatera bara nw max var 5:e sek?
-** ideer
+** report
+*** prio 1
+*** TODO beskriv hur FOM in och ut skapades, hur den ser ut
+*** TODO minipage format
+*** prio 2
+*** TODO gör en ordlista
+Nätverk: sammankopplade radioapparater
+Nod: en radioapparat i nätverket
+Båge: en förbindelse över vilken två radioapparater kan kommunicera med varandra
+
+HLA: High Level Architecture, en standard för distribuerade simuleringar.
+RTI: Run Time Infrastructure
+Federat: en aktör kopplad till RTI:n
+Federation: en samling av federater som är kopplade till samma RTI
+Multihop-simulator
+
+*** TODO distinguera mellan multihop-simulator och federationens simulering.
+gäller främst inledning
+*** TODO ta upp 4 hopp ger ännu mindre skillnad mellan heuristikerna
+i resultatdelen kan detta tas upp.
+
+*** TODO notepad
+- metod ska vara en manual för hur man utför arbetet igen.
+- beskriv hur arkitekturen byggdes upp i tur och ordning
+- beskriv FOMen
+- crash coursen ska vara konkret
+
+** implementation
+*** prio 1
+*** prio 2
+*** TODO Gör Radio till en extends Node
+*** TODO Flytta ur Node ur Graph
+*** TODO uppdatera bara nw max var 5:e sek
+*** TODO flytta ur Astar ur Graph
+*** TODO uppdatera FOMarna, så att multihop inte har en send request
+** other
+*** TODO bitBucket 
+* notes / ideas
 Om vi har två grafer G1 = (V, E1) och G2 = (V, E2) och E2 tillhör E1, så behöver vi inte räkna ut om det finns en väg genom G2 mellan två noder n1 och n2 om vi vet att den finns i G1. Det kan fortfarande finnas anledning att ta reda på om det finns en kortare väg genom G2 mellan nod n1 och n2. 
 
-Man kan cachea lösningar, den totala minnesanvändningen blir lägre, man kan föra statistik över vilka vägar som många noder tar och på så sätt "föreslå" till en nod var den bör gå för att öka uppkopplingen i nätverket.
+byt grafsökningsalgoritm beroende på grafens struktur
 
-** report
-*** distinguera mellan multihop-simulator och federationens simulering.
-*** lägg till abstrakt och slutsats
 * pass
 yPitch%123
 lukas123
@@ -52,11 +71,3 @@ lukas123
 username: lukas.pohlman
 password: yPitch%123
 
-* qs
-Hur används .vomt filer efter att jag sparat ett projekt i VisualOMT? I Dev studio importeras ju endast .xml filer?
-
-skickar jag med hela arrayen nu?
-
-om man inte ska göra någon ny FOM modul så behöver man inte besöka visualOMT, utan man kan bara importera rätt XML filer i Dev Studio. Hur vet man vilka XML filer man ska importera? I ConnSimulation2 så ligger det fler XML filer än vad jag kan minnas att vi importerade.
-
-Vad gör man i Object/Interaction Classes i Dev. Studio?  

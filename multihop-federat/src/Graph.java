@@ -5,7 +5,7 @@ public class Graph {
 
 	Graph() { }
 
-    public final boolean PLOT = false;
+    public final boolean PLOT = true;
 
     public final ArrayList<Node> nodes = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class Graph {
 					Node n2 = nodes.get(x);
 					n1.addNeighbour(n2);
 
-					if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, 'y'); }
+					if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, "silver"); }
 				}
 			}
 		}
@@ -141,9 +141,9 @@ public class Graph {
 			return (int) (b  - 2);
 		};
 
-		PriorityQueue<Node> prioQueue = new PriorityQueue<>(distanceComparator);
+		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(distanceComparator);
 		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
-		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(randomComparator);
+		PriorityQueue<Node> prioQueue = new PriorityQueue<>(randomComparator);
 
 		prioQueue.add(fromNode);
 
@@ -157,7 +157,7 @@ public class Graph {
 			Node curr = prioQueue.poll();
 
 			if (PLOT) {  fw.writeLine(curr.position.x, curr.position.y,
-					 curr.previous_node.position.x, curr.previous_node.position.y, 'g'); }
+					 curr.previous_node.position.x, curr.previous_node.position.y, "firebrick"); }
 
 			if (curr.hops < maxhops) {
 				List<Node> neighbours = curr.getNeighbours();
