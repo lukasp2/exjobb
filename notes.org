@@ -23,9 +23,13 @@
 * todo
 ** report
 *** prio 1
-*** TODO beskriv hur FOM in och ut skapades, hur den ser ut
-*** prio 2
-*** TODO ta bort bakgrund: inmatningsformat? lägg till mer om HLA och om problemet?
+*** TODO Skriv klart
+**** Disskussion: Metod, arbete i vidare sammanhang
+
+*** TODO Skriv mer på
+- Utveckling av FOM-modulen
+- Bakgrund om HLA
+- Bakgrund om användningsområden av HLA
 *** TODO en ordlista
 Nätverk: sammankopplade radioapparater
 Nod: en radioapparat i nätverket
@@ -38,35 +42,55 @@ Federation: en samling av federater som är kopplade till samma RTI
 Multihop-simulator
 Kommunikationstyp:
 
-*** TODO distinguera mellan multihop-simulator och federationens simulering.
-gäller främst inledning
-*** TODO ta upp 4 hopp ger ännu mindre skillnad mellan heuristikerna
-i resultatdelen kan detta tas upp.
-
-*** TODO notepad
-- metod ska vara en manual för hur man utför arbetet igen.
-- beskriv hur arkitekturen byggdes upp i tur och ordning
-- beskriv FOMen
-- crash coursen ska vara konkret
-
-vidare arbete:
-man kan göra en rollback på ett par millisekunder varje gång en ny nätverksbeskrivning kommit in eftersom alla grafsökningar som gjort mellan det skede att beskrivningen kommit in och graferna uppdaterats inte nödvändigtvis är akurata.
-
-** implementation
-*** prio 1
-*** prio 2
-*** TODO Gör Radio till en extends Node
-*** TODO Flytta ur Node ur Graph
-*** TODO uppdatera bara nw max var 5:e sek
-*** TODO flytta ur Astar ur Graph
-*** TODO uppdatera FOMarna, så att multihop inte har en send request
-** other
-*** TODO bitBucket 
-* notes / ideas
+*** TODO mät hur lång tid det tar för ett nätverk att läsas in
+*** TODO vidare arbete
 Om vi har två grafer G1 = (V, E1) och G2 = (V, E2) och E2 tillhör E1, så behöver vi inte räkna ut om det finns en väg genom G2 mellan två noder n1 och n2 om vi vet att den finns i G1. Det kan fortfarande finnas anledning att ta reda på om det finns en kortare väg genom G2 mellan nod n1 och n2. 
 
 byt grafsökningsalgoritm beroende på grafens struktur
+** implementation
+*** TODO Gör Radio till en extends Node
+*** TODO Flytta ur Node ur Graph
+*** TODO uppdatera FOMarna, så att multihop inte har en send request
+** other
+*** TODO bitBucket 
+*** TODO maila Jonti, fråga om kartan
+* saved latex code
+** Bakgrund: inmatningsformat
+\subsection{Inmatningsformat}
+En Federation Object Model, FOM, finns som definierar hur en förbindelse mellan varje par av noder i nätverket ska beskrivas. Objektmodellen bidrar med information som kan liknas vid grannmatriser för viktade grafer. Det bör noteras att denna simulator kommer avgöra grafens utseende beroende på ett antal olika grannmatriser, och inte endast på en enda grannmatris. Enligt Tabell 1(a) är till exempel latensen från Nod A till Nod B 128 millisekunder. Notera att exempelvis latensen från nod A till nod B inte nödvändigtvis är densamma som latensen från nod B till nod A. Ett godtyckligt antal tabeller likt dessa kan användas för att beskriva förbindelsen mellan ett godtyckligt antal noder i ett nätverk.
 
+\begin{table}[ht]
+\centering
+\resizebox{0.8\columnwidth}{!}{
+\subfloat[Subtable 1 list of tables text][Latens (ms) mellan noderna]{
+\begin{tabular}{c c c c c}
+\hline\hline                       
+Nod & A & B & C & D \\ [0.5ex]
+\hline                  
+A & 0 & 128 & 97 & 95 \\
+B & 57 & 0 & 104 & 111 \\
+C & 71 & 45  & 0 & 91 \\
+D & 95 & 124 & 136 & 0 \\ [1ex]      
+\hline
+\end{tabular}}
+\qquad
+\subfloat[Subtable 2 list of tables text][Bandbredd (kB/s) mellan noderna]{
+\begin{tabular}{c c c c c}
+\hline\hline                       
+Nod & A & B & C & D\\ [0.5ex]
+\hline                  
+A & 0 & 1028 & 797 & 395\\
+B & 857 & 0 & 1004 & 711 \\
+C & 761 & 453  & 0 & 931 \\
+D & 954 & 1240 & 736 & 0 \\ [1ex]     
+\hline
+\end{tabular}
+}}
+\caption{Exempel på vilken typ av information om nätverket som federaterna kan prenumerera på och alltså ta del av.}
+\end{table}
+* saved comments
+Diskussion, metod:
+Man hade kunnat traversera nätverket i realtid genom att checka varje båge medans den traverseras. Det hade gett snabbare uppdatering och mindre krav på minne.
 * pass
 yPitch%123
 lukas123

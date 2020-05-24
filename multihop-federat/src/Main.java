@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
-    private final static int NUM_THREADS = 8;
+    private final static int NUM_THREADS = 4;
 
     private final boolean BRUTE_FORCE = false;
     private final boolean REQUEST_RESPONSE = true;
@@ -138,7 +138,7 @@ public class Main {
         // wait for all threads to finish
         sema.acquire();
 
-        System.out.print((System.nanoTime() - startTime) / 1000000 + ", ");
+        System.out.print((System.nanoTime() - startTime) / 1000000);
 
         _hlaWorld.disconnect();
     }
