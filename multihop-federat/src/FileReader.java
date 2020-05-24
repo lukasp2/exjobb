@@ -8,23 +8,19 @@ import java.util.*;
 
 public class FileReader {
 
+    public FileReader(Network network, BiMap<UUID, Integer> nodeIDs) {
+        this.network = network;
+        this.nodeIDs = nodeIDs;
+        HlaWorld.Factory.create(new HlaSettings() {});
+    }
+
     public Map<UUID, Boolean> visitedIDs = new HashMap<UUID, Boolean>();
 
-    public RequestQueueList requestQueueList;
+    public Network network;
 
     public BiMap<UUID, Integer> nodeIDs;
+
     private int nextNodeID = 0;
-
-    public Network nw;
-
-    private final HlaWorld _hlaWorld;
-
-    public FileReader(Network nw, RequestQueueList requestQueueList, BiMap<UUID, Integer> nodeIDs) {
-        this.nw = nw;
-        this.requestQueueList = requestQueueList;
-        this.nodeIDs = nodeIDs;
-        _hlaWorld = HlaWorld.Factory.create(new HlaSettings() {});
-    }
 
     public void readFile() {
         try {
@@ -50,11 +46,11 @@ public class FileReader {
                     nodeIDs.put(toUuid, nextNodeID++);
                 }
 
-                nw.addConnection(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), signalQuality);
+                network.addConnection(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), signalQuality);
 
                 if (!visitedIDs.containsKey(fromUuid)) {
                     visitedIDs.put(fromUuid, true);
-                    nw.addNode(nodeIDs.get(fromUuid), pos_x, pos_y);
+                    network.addNode(nodeIDs.get(fromUuid), pos_x, pos_y);
                 }
 
             }
@@ -65,7 +61,5 @@ public class FileReader {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-
-        new QueueFillerThread(nw, requestQueueList);
     }
 }

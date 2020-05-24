@@ -3,8 +3,6 @@ import java.util.Random;
 public class Radio {
 	public static double DISTANCE = 0.002;
 
-	private final int MAX_HOPS = 100;
-
 	public static final int numComTypes = 3;
 
     // specifies communication type currently used
@@ -19,10 +17,6 @@ public class Radio {
     public void setCom(int i) {
 	comType = i;
     }
-
-    public int getMaxHops() {
-		return MAX_HOPS;
-	}
 
     public boolean Com(Network nw, int fromNode, int toNode) {
 		switch (comType) {
@@ -46,8 +40,7 @@ public class Radio {
 		return nw.getConnection(fromNode, toNode) > 3;
     }
 
-    // return the possibility of communication between node A and node B
-    // purely based on distance
+    // return the possibility of communication between node A and node B purely based on distance
     public boolean distCom(Network nw, int fromNode, int toNode) {
 		Position p1 = nw.getPosition(fromNode);
 		Position p2 = nw.getPosition(toNode);

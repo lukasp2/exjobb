@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
-    private final static int NUM_THREADS = Runtime.getRuntime().availableProcessors();
+    private final static int NUM_THREADS = 8;
 
     private final boolean BRUTE_FORCE = false;
     private final boolean REQUEST_RESPONSE = true;
@@ -21,11 +21,12 @@ public class Main {
 
     public Network network = new Network();
 
-    public RequestQueueList requestQueueList = new RequestQueueList();
+    public GraphList graphs = new GraphList();
 
-    public static Semaphore sema = new Semaphore(-1 * NUM_THREADS + 1);
+    public RequestQueue requestQueue = new RequestQueue();
 
     public BiMap<UUID, Integer> nodeIDs = HashBiMap.create();
+
     private int nextNodeID = 0;
 
     public Main() {
@@ -83,8 +84,10 @@ public class Main {
                 System.out.println("network has been (re)built");
             }
 
+            graphs.update(network);
+
             if (BRUTE_FORCE) {
-                new QueueFillerThread(network, requestQueueList);
+                new QueueFillerThread(network, requestQueue);
             }
         }
     };
@@ -99,7 +102,7 @@ public class Main {
 
             if (REQUEST_RESPONSE && nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
                 Request r = new Request(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), comType, transactionID);
-                requestQueueList.add(r);
+                requestQueue.add(r);
             }
             else {
                 System.out.println("A request for a path between unknown node(s) was received. Ignoring request.");
@@ -115,22 +118,22 @@ public class Main {
         _hlaWorld.connect();
 
         // a replacement for the network-federate:
-        //FileReader fw = new FileReader(network, requestQueueList, nodeIDs);
-        //fw.readFile();
+        FileReader fw = new FileReader(network, nodeIDs);
+        fw.readFile();
+        graphs.update(network);
+        new QueueFillerThread(network, requestQueue);
+        //
+
+        Semaphore sema = new Semaphore(-1 * NUM_THREADS + 1);
 
         ReentrantLock lock = new ReentrantLock();
 
         long startTime = System.nanoTime();
 
-        for (int i = 1; i < NUM_THREADS; ++i) {
-            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, i,
-                    network, requestQueueList, nodeIDs, lock));
+        for (int i = 0; i < NUM_THREADS; ++i) {
+            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, network, graphs, requestQueue, nodeIDs, sema, lock));
             t1.start();
         }
-
-        MultihopSimulator t2 = new MultihopSimulator(_hlaWorld, NUM_THREADS,
-                network, requestQueueList, nodeIDs, lock);
-        t2.run();
 
         // wait for all threads to finish
         sema.acquire();

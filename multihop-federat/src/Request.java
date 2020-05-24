@@ -30,7 +30,5 @@ public class Request {
     }
 
     public String toString() { return "[" + comType + ": " + toNode + "->" + fromNode + "]"; }
-
-
 }
     

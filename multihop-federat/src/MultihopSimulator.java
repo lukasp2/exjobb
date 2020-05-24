@@ -4,88 +4,72 @@ import internal.prti1516e.com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
     public boolean EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY = true;
 
-    public MultihopSimulator(HlaWorld _hlaWorld, int id, Network nw,
-                             RequestQueueList requestQueueList,
+    public MultihopSimulator(HlaWorld _hlaWorld,
+                             Network network,
+                             GraphList graphs,
+                             RequestQueue requestQueue,
                              BiMap<UUID, Integer> nodeIDs,
-                             ReentrantLock lock) {
+                             Semaphore sema, ReentrantLock lock) {
         this._hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
-        this.name = "thread " + id;
-        this.nw = nw;
-        this.requestQueueList = requestQueueList;
+        this.aStarSearch = new AStarSearch(network);
+        this.graphs = graphs;
+        this.requestQueue = requestQueue;
         this.nodeIDs = nodeIDs;
+        this.sema = sema;
         this.lock = lock;
     }
 
+    public ReentrantLock lock;
+
     HlaInteractionManager.HlaResponseInteraction _hlaRI;
 
-    public Network nw;
+    private final AStarSearch aStarSearch;
 
-    public RequestQueueList requestQueueList;
+    public GraphList graphs;
+
+    public Network network;
+
+    public RequestQueue requestQueue;
 
     public BiMap<UUID, Integer> nodeIDs;
 
-    public ReentrantLock lock;
-
-    private int prevRequestType = -1;
-
-    private final String name;
-
-    private Graph graph = new Graph();
-
-    private RequestQueue requests = new RequestQueue();
+    public Semaphore sema;
 
     public void run() {
         while (true) {
-            if (requests.isEmpty()) {
-                try {
 
-                    lock.lock();
-                    if (EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY && requestQueueList.isEmpty() && !requestQueueList.firstRequest) {
-                        Main.sema.release();
-                        lock.unlock();
-                        return;
-                    }
-
-                    requests = requestQueueList.poll();
-                    lock.unlock();
-
-                    if ( requests.getRequestType() != prevRequestType ) {
-                        graph = new Graph(nw, requests.getRequestType());
-                        prevRequestType = requests.getRequestType();
-                    }
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            lock.lock();
+            if (EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY && requestQueue.isEmpty()) {
+                lock.unlock();
+                sema.release();
+                return;
             }
 
-            Request request = requests.poll();
+            Request request = requestQueue.poll();
+            lock.unlock();
 
-            ArrayList<Integer> res = graph.aStar(request);
+            ArrayList<Integer> res = aStarSearch.search(graphs, request);
+
+            ArrayList<byte[]> byteArray = new ArrayList<>();
+            for (int nodeID : res) {
+                byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
+            }
+
+            _hlaRI.setPath(byteArray.toArray(new byte[byteArray.size()][16]));
+            _hlaRI.setTransactionID(request.getTransactionID());
 
             try {
-                sendResponse(res, request);
-            } catch (HlaInternalException | HlaRtiException | HlaNotConnectedException | HlaFomException e) {
+                _hlaRI.sendInteraction();
+            } catch (HlaNotConnectedException | HlaFomException | HlaInternalException | HlaRtiException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void sendResponse(ArrayList<Integer> intArray, Request request) throws HlaInternalException, HlaRtiException, HlaNotConnectedException, HlaFomException {
-        ArrayList<byte[]> byteArray = new ArrayList<>();
-
-        for (int nodeID : intArray) {
-            byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
-        }
-
-        _hlaRI.setPath(byteArray.toArray(new byte[byteArray.size()][16]));
-        _hlaRI.setTransactionID(request.getTransactionID());
-        _hlaRI.sendInteraction();
     }
 }
