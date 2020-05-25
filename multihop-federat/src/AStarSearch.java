@@ -6,6 +6,9 @@ public class AStarSearch {
 
     public final boolean PLOT = false;
 
+    // for plotting graph
+    public FileWriter fw = new FileWriter();
+
     public AStarSearch(Network network) {
         this.network = network;
     }
@@ -15,9 +18,6 @@ public class AStarSearch {
     private Graph.Node goal;
 
     public Network network;
-
-    // for plotting graph
-    public FileWriter fw = new FileWriter();
 
     public ArrayList<Integer> search(GraphList graphs, Request request) {
         Graph graph = graphs.get(request.getRequestType());

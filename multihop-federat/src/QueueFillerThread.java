@@ -17,10 +17,9 @@ public class QueueFillerThread implements Runnable {
 
         for (int fromNode : network.getConnections().keySet()) {
             for (int toNode : network.getConnections().get(fromNode).keySet()) {
-                //for (int requestType = 0; requestType < Radio.numComTypes; ++requestType)
+                for (int requestType = 0; requestType < Radio.numComTypes; ++requestType)
                 {
                     requestQueueList.add(new Request(fromNode, toNode, Radio.randomizeCom(), 0), assignRequestToThread);
-                    //requestQueueList.get(assignRequestToThread).sema2.release();
                     assignRequestToThread = (++assignRequestToThread) % Main.NUM_THREADS;
                 }
             }

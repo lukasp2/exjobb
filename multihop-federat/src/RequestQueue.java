@@ -1,4 +1,5 @@
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class RequestQueue {
 
@@ -6,11 +7,16 @@ public class RequestQueue {
 
     private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue<>();
 
+    // count requests in the queue
+    public Semaphore requestSema = new Semaphore(0);
+
     public void add(Request r) {
         requestQueue.add(r);
+        requestSema.release();
     }
 
-    public Request poll() {
+    public Request poll() throws InterruptedException {
+        requestSema.acquire();
         return requestQueue.poll();
     }
 

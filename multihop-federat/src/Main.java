@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 public class Main {
-    public final static int NUM_THREADS = 5;
+    public final static int NUM_THREADS = 4;
 
     private final boolean BRUTE_FORCE = false;
     private final boolean REQUEST_RESPONSE = false;
@@ -139,6 +139,7 @@ public class Main {
         // wait for all threads to finish
         sema.acquire();
 
+        // print execution time
         System.out.print((System.nanoTime() - startTime) / 1000000);
 
         _hlaWorld.disconnect();

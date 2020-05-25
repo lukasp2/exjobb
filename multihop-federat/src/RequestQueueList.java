@@ -17,12 +17,4 @@ public class RequestQueueList {
     public RequestQueue get(int index) {
         return requestQueueList.get(index);
     }
-
-    public void print() {
-        for (RequestQueue rq : requestQueueList) {
-            System.out.println("ONE QUEUEEEEEEEEEEEEEEEEEEEEEE!!");
-            rq.print();
-            System.out.println("");
-        }
-    }
 }

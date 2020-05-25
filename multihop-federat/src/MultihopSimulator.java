@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 
 public class MultihopSimulator implements Runnable {
 
-    public boolean EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY = true;
+    public boolean EXIT_PROGRAM_WHEN_QUEUE_IS_EMPTY = true;
 
     public MultihopSimulator(HlaWorld _hlaWorld,
                              AStarSearch aStarSearch,
@@ -22,8 +22,7 @@ public class MultihopSimulator implements Runnable {
         this.graphs = graphs;
         this.requestQueue = requestQueue;
         this.nodeIDs = nodeIDs;
-        this.sema = sema;
-        this.id = i;
+        this.exitThread = sema;
     }
 
     HlaInteractionManager.HlaResponseInteraction _hlaRI;
@@ -32,44 +31,53 @@ public class MultihopSimulator implements Runnable {
 
     public GraphList graphs;
 
+    // queue of requests that are handled locally by the thread
     public RequestQueue requestQueue;
 
+    // translation between uuid <-> int
     public BiMap<UUID, Integer> nodeIDs;
 
-    public Semaphore sema;
-
-    private int id;
+    // counting threads that are not finished
+    public Semaphore exitThread;
 
     public void run() {
         while (true) {
-
-            if (EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY && requestQueue.isEmpty()) {
-                sema.release();
+            if (EXIT_PROGRAM_WHEN_QUEUE_IS_EMPTY && requestQueue.isEmpty()) {
+                exitThread.release();
                 return;
             }
-            else {
-                //sema2.aquire(); wait for new request
-            }
 
-            Request request = requestQueue.poll();
+            Request request = getRequest();
 
-            //System.out.println("thread " + id + " picked up request " + request.toString());
+            ArrayList<Integer> intPath = aStarSearch.search(graphs, request);
 
-            ArrayList<Integer> res = aStarSearch.search(graphs, request);
+            sendResult(intPath, request.getTransactionID());
+        }
+    }
 
-            ArrayList<byte[]> byteArray = new ArrayList<>();
-            for (int nodeID : res) {
-                byteArray.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
-            }
+    private Request getRequest() {
+        Request request = null;
+        try {
+            request = requestQueue.poll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return request;
+    }
 
-            _hlaRI.setPath(byteArray.toArray(new byte[byteArray.size()][16]));
-            _hlaRI.setTransactionID(request.getTransactionID());
+    private void sendResult(ArrayList<Integer> intPath, long transactionID) {
+        ArrayList<byte[]> bytePath = new ArrayList<>();
+        for (int nodeID : intPath) {
+            bytePath.add(UuidAdapter.getBytesFromUUID(nodeIDs.inverse().get(nodeID)));
+        }
 
-            try {
-                _hlaRI.sendInteraction();
-            } catch (HlaNotConnectedException | HlaFomException | HlaInternalException | HlaRtiException e) {
-                e.printStackTrace();
-            }
+        _hlaRI.setPath(bytePath.toArray(new byte[bytePath.size()][16]));
+        _hlaRI.setTransactionID(transactionID);
+
+        try {
+            _hlaRI.sendInteraction();
+        } catch (HlaNotConnectedException | HlaFomException | HlaInternalException | HlaRtiException e) {
+            e.printStackTrace();
         }
     }
 }
