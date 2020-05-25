@@ -1,24 +1,28 @@
 public class QueueFillerThread implements Runnable {
 
-    public QueueFillerThread(Network network, RequestQueue requestQueue) {
+    public QueueFillerThread(Network network, RequestQueueList requestQueueList) {
         this.network = network;
-        this.requestQueue = requestQueue;
+        this.requestQueueList = requestQueueList;
 
-        Thread t1 = new Thread(this);
-        t1.start();
+
     }
 
     Network network;
 
-    RequestQueue requestQueue;
+    RequestQueueList requestQueueList;
 
-    // fill the queue with all possible requests
+    // fill the queue with all possible requests R. for 200 nodes, N, and 3 request types, K: R = N(N - 1) * K
     public void run() {
+        int assignRequestToThread = 0;
+
         for (int fromNode : network.getConnections().keySet()) {
             for (int toNode : network.getConnections().get(fromNode).keySet()) {
-                //for (int i = 0; i < Radio.numComTypes; ++i) {
-                    requestQueue.add(new Request(fromNode, toNode, Radio.randomizeCom(), 1));
-                //}
+                //for (int requestType = 0; requestType < Radio.numComTypes; ++requestType)
+                {
+                    requestQueueList.add(new Request(fromNode, toNode, Radio.randomizeCom(), 0), assignRequestToThread);
+                    //requestQueueList.get(assignRequestToThread).sema2.release();
+                    assignRequestToThread = (++assignRequestToThread) % Main.NUM_THREADS;
+                }
             }
         }
     }

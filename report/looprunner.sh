@@ -2,7 +2,7 @@
 
 printf '%s' '['
 
-for i in {1..299}; do 
+for i in {1..99}; do 
     /home/lukas/Desktop/exjobb/multihop-federat/runner.sh
     printf '%s' ', '
 done

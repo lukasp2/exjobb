@@ -6,13 +6,12 @@ import internal.prti1516e.com.google.common.collect.HashBiMap;
 import se.pitch.rpr2.util.convert.GeodeticLocation;
 import java.util.*;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
-    private final static int NUM_THREADS = 4;
+    public final static int NUM_THREADS = 5;
 
     private final boolean BRUTE_FORCE = false;
-    private final boolean REQUEST_RESPONSE = true;
+    private final boolean REQUEST_RESPONSE = false;
 
     private final boolean PRINT_NODES_ADDED = false;
     private final boolean PRINT_CONN_INFO = false;
@@ -23,11 +22,13 @@ public class Main {
 
     public GraphList graphs = new GraphList();
 
-    public RequestQueue requestQueue = new RequestQueue();
+    public RequestQueueList requestQueueList = new RequestQueueList();
 
     public BiMap<UUID, Integer> nodeIDs = HashBiMap.create();
 
     private int nextNodeID = 0;
+
+    private int nextThreadQueue = 0;
 
     public Main() {
         _hlaWorld = HlaWorld.Factory.create(new HlaSettings() {});
@@ -87,7 +88,8 @@ public class Main {
             graphs.update(network);
 
             if (BRUTE_FORCE) {
-                new QueueFillerThread(network, requestQueue);
+                Thread q1 = new Thread(new QueueFillerThread(network, requestQueueList));
+                q1.start();
             }
         }
     };
@@ -102,7 +104,7 @@ public class Main {
 
             if (REQUEST_RESPONSE && nodeIDs.containsKey(fromUuid) && nodeIDs.containsKey(toUuid)) {
                 Request r = new Request(nodeIDs.get(fromUuid), nodeIDs.get(toUuid), comType, transactionID);
-                requestQueue.add(r);
+                requestQueueList.add(r, (nextThreadQueue++) % NUM_THREADS);
             }
             else {
                 System.out.println("A request for a path between unknown node(s) was received. Ignoring request.");
@@ -121,17 +123,16 @@ public class Main {
         FileReader fw = new FileReader(network, nodeIDs);
         fw.readFile();
         graphs.update(network);
-        new QueueFillerThread(network, requestQueue);
+        QueueFillerThread q1 = new QueueFillerThread(network, requestQueueList);
+        q1.run();
         //
 
         Semaphore sema = new Semaphore(-1 * NUM_THREADS + 1);
 
-        ReentrantLock lock = new ReentrantLock();
-
         long startTime = System.nanoTime();
 
         for (int i = 0; i < NUM_THREADS; ++i) {
-            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, network, graphs, requestQueue, nodeIDs, sema, lock));
+            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, new AStarSearch(network), graphs, requestQueueList.get(i), nodeIDs, sema, i));
             t1.start();
         }
 

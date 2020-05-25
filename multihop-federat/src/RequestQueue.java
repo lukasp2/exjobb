@@ -6,17 +6,12 @@ public class RequestQueue {
 
     private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue<>();
 
-    public boolean firstRequest = true;
-
-    public long startMillis;
-
     public void add(Request r) {
-        if (firstRequest) {
-            startMillis = System.currentTimeMillis();
-            firstRequest = false;
-        }
-
         requestQueue.add(r);
+    }
+
+    public Request poll() {
+        return requestQueue.poll();
     }
 
     public int size() {
@@ -27,7 +22,9 @@ public class RequestQueue {
         return requestQueue.isEmpty();
     }
 
-    public Request poll() {
-        return requestQueue.poll();
+    public void print() {
+        for (Request r : requestQueue) {
+            System.out.println(r.toString());
+        }
     }
 }

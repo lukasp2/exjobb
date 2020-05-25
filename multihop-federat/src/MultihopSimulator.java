@@ -5,28 +5,26 @@ import internal.prti1516e.com.google.common.collect.BiMap;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class MultihopSimulator implements Runnable {
 
     public boolean EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY = true;
 
     public MultihopSimulator(HlaWorld _hlaWorld,
-                             Network network,
+                             AStarSearch aStarSearch,
                              GraphList graphs,
                              RequestQueue requestQueue,
                              BiMap<UUID, Integer> nodeIDs,
-                             Semaphore sema, ReentrantLock lock) {
+                             Semaphore sema,
+                             int i) {
         this._hlaRI = _hlaWorld.getHlaInteractionManager().getHlaResponseInteraction();
-        this.aStarSearch = new AStarSearch(network);
+        this.aStarSearch = aStarSearch;
         this.graphs = graphs;
         this.requestQueue = requestQueue;
         this.nodeIDs = nodeIDs;
         this.sema = sema;
-        this.lock = lock;
+        this.id = i;
     }
-
-    public ReentrantLock lock;
 
     HlaInteractionManager.HlaResponseInteraction _hlaRI;
 
@@ -34,26 +32,28 @@ public class MultihopSimulator implements Runnable {
 
     public GraphList graphs;
 
-    public Network network;
-
     public RequestQueue requestQueue;
 
     public BiMap<UUID, Integer> nodeIDs;
 
     public Semaphore sema;
 
+    private int id;
+
     public void run() {
         while (true) {
 
-            lock.lock();
             if (EXIT_PROGRAM_WHEN_QUEUES_ARE_EMPTY && requestQueue.isEmpty()) {
-                lock.unlock();
                 sema.release();
                 return;
             }
+            else {
+                //sema2.aquire(); wait for new request
+            }
 
             Request request = requestQueue.poll();
-            lock.unlock();
+
+            //System.out.println("thread " + id + " picked up request " + request.toString());
 
             ArrayList<Integer> res = aStarSearch.search(graphs, request);
 

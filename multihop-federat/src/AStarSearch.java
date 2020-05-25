@@ -25,9 +25,9 @@ public class AStarSearch {
         start = graph.nodes.get(request.getFromNode());
         goal = graph.nodes.get(request.getToNode());
 
-        //PriorityQueue<Node> prioQueue = new PriorityQueue<>(distanceComparator);
-        //PriorityQueue<Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
-        PriorityQueue<Graph.Node> prioQueue = new PriorityQueue<>(randomComparator);
+        PriorityQueue<Graph.Node> prioQueue = new PriorityQueue<>(distanceComparator);
+        //PriorityQueue<Graph.Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
+        //PriorityQueue<Graph.Node> prioQueue = new PriorityQueue<>(randomComparator);
 
         prioQueue.add(start);
 
