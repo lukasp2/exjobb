@@ -91,6 +91,19 @@ D & 954 & 1240 & 736 & 0 \\ [1ex]
 * saved comments
 Diskussion, metod:
 Man hade kunnat traversera nätverket i realtid genom att checka varje båge medans den traverseras. Det hade gett snabbare uppdatering och mindre krav på minne.
+\\ \\
+%% SAKER SOM INTE HANNS MED (SOM BORDE GJORTS) SLUTSATSER?:
+Gör en rollback på ett par millisekunder varje gång en ny nätverksbeskrivning kommit in eftersom alla grafsökningar som gjort mellan det skede att beskrivningen kommit in och graferna uppdaterats inte nödvändigtvis är akkurata.
+\\ \\
+Det fanns inget stöd för multivariata variabler i indatat, vilket gör att simulatorn inte kan simulera en kommunikation mellan två radioapparater som försämras med antalet förbindelser som traverseras.
+\\ \\
+vidare:
+studera hur lång tid det i värsta fall tar för en federat att
+
+\subsection{Arbetet i ett vidare sammanhang}
+
+etiska  och samhälleliga aspekter relaterade till arbetet.
+ 
 * pass
 yPitch%123
 lukas123
