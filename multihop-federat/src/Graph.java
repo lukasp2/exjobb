@@ -43,7 +43,7 @@ public class Graph {
 					Node n2 = nodes.get(x);
 					n1.addNeighbour(n2);
 
-					if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, "silver"); }
+					if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, "b"); }
 				}
 			}
 		}

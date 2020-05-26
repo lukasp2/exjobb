@@ -44,7 +44,7 @@ public class FileWriter {
 		}
 		lines.add("]\n");
 
-		lines.add("plt.plot(*zip(*a), marker='o', color='k', ls='')\n");
+		//lines.add("plt.plot(*zip(*a), marker='o', color='k', ls='')\n");
 
 		// write the id of each node above it
 		for (int i = 0; i < positions.size(); ++i) {
