@@ -52,7 +52,7 @@ for n in results:
         total_time += time
         if (time < min_time):
             min_time = time
-    print(k, total_time / len(n), statistics.stdev(n))
+    print(k, total_time / len(n), statistics.stdev(n), "min,", min_time)
     k = k + 1
 
     
