@@ -18,7 +18,6 @@ Resultat
 Slutsats, diskussion
 Framtida arbete
 
-
 det är ett program som är en del av en distribuerad simulation, programmet i sig utför grafsökningar efter den kortaste vägen.
 
 * OPPONERING
@@ -27,3 +26,7 @@ lathund för opponenter
 
 
 
+
+* SLIDENOTES
+** Intro
+** 

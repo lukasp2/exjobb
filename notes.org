@@ -30,18 +30,6 @@
 - Utveckling av FOM-modulen
 - Bakgrund om HLA
 - Bakgrund om användningsområden av HLA
-*** TODO en ordlista
-Nätverk: sammankopplade radioapparater
-Nod: en radioapparat i nätverket
-Båge: en förbindelse över vilken två radioapparater kan kommunicera med varandra
-
-HLA: High Level Architecture, en standard för distribuerade simuleringar.
-RTI: Run Time Infrastructure
-Federat: en aktör kopplad till RTI:n
-Federation: en samling av federater som är kopplade till samma RTI
-Multihop-simulator
-Kommunikationstyp:
-
 *** TODO mät hur lång tid det tar för ett nätverk att läsas in
 *** TODO vidare arbete
 Om vi har två grafer G1 = (V, E1) och G2 = (V, E2) och E2 tillhör E1, så behöver vi inte räkna ut om det finns en väg genom G2 mellan två noder n1 och n2 om vi vet att den finns i G1. Det kan fortfarande finnas anledning att ta reda på om det finns en kortare väg genom G2 mellan nod n1 och n2. 
