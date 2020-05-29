@@ -21,42 +21,32 @@
 
 (5. how to use pitch recorder)
 * todo
-** report
-*** prio 1
-*** TODO beskriv hur FOM in och ut skapades, hur den ser ut
-*** TODO minipage format
-*** prio 2
-*** TODO gör en ordlista
-Nätverk: sammankopplade radioapparater
-Nod: en radioapparat i nätverket
-Båge: en förbindelse över vilken två radioapparater kan kommunicera med varandra
+** report DEADLINE: <2020-05-31 Sun>
+*** TODO Floyd Warshall
+Lägg till i både teorin och i diskussion. Diskussion: den hann inte med att göras.
 
-HLA: High Level Architecture, en standard för distribuerade simuleringar.
-RTI: Run Time Infrastructure
-Federat: en aktör kopplad till RTI:n
-Federation: en samling av federater som är kopplade till samma RTI
-Multihop-simulator
-Kommunikationstyp:
+*** TODO Jonas kommentarer
+*** TODO Formatera snyggare
+\begin{equation}
 
-*** TODO distinguera mellan multihop-simulator och federationens simulering.
-gäller främst inledning
-*** TODO ta upp 4 hopp ger ännu mindre skillnad mellan heuristikerna
-i resultatdelen kan detta tas upp.
+*** TODO etiskta aspekter
+se ~/Downloads
 
-*** TODO notepad
-- metod ska vara en manual för hur man utför arbetet igen.
-- beskriv hur arkitekturen byggdes upp i tur och ordning
-- beskriv FOMen
-- crash coursen ska vara konkret
+*** TODO python matplotlib svg
 
+https://stackoverflow.com/questions/24525111/how-can-i-get-the-output-of-a-matplotlib-plot-as-an-svg
+** presentation
+*** TODO bildtexter
+*** TODO tydligare inledning
+*** TODO "koda program"->"programimplementation"
+*** TODO dela upp Federat-delen och koddelen
+*** TODO bildtexter
 ** implementation
 *** prio 1
 *** prio 2
 *** TODO Gör Radio till en extends Node
-*** TODO Flytta ur Node ur Graph
-*** TODO uppdatera bara nw max var 5:e sek
-*** TODO flytta ur Astar ur Graph
 *** TODO uppdatera FOMarna, så att multihop inte har en send request
+
 ** other
 *** TODO bitBucket 
 * notes / ideas
