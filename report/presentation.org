@@ -48,22 +48,22 @@ Så den subtila skillnaden mellan graf och nätverk är att nätverket består a
 ** Simulator
 Ordet simulator betyder i sammanhanget helt enkelt att det handlar om något typ av program som ska beräkna vilka radioapparater i nätverket som har möjlighet att kommunicera med varandra, och i sådana fall hur de ska kommunicera med varandra.
 
-Om vi alltså har någon typ av tabell som beskriver hur bra förbindelserna i nätverket är, och vi vet vilket värde som motsvarar en tillräckligt bra förbindelse, så bör vi kunna ta reda på vilka noder som kan kommunicera.
+i figuren ser vi hur simulatorn får ett uppdrag om att ta reda på en väg mellan nod A och nod C. Ut spottas en väg som kommunikationen ska ta för att ta sig mellan noderna. Vi kan även tänka oss att med den här förfrågningen så skickar vi med en kommunikationstyp för att vi ska veta vilka graf det är som ska sökas.
 
 ** High Level Architecture
-High Level Architecture, förkortat HLA, är en metod som kan användas för distribuerade simuleringar. Distribuerade simuleringar är många små simuleringar som kopplas ihop till en stor simulering. I figuren så kan vi se en distribuerad simulering där tre simuleringar, kallade federater, som potentiellt körs på helt olika datorer, har kopplat upp sig till en servicebuss som kallas Runtime Infrastructure, eller RTI, för att kunna kommunicera med varandra. Hela strukturen kallas för en federation.
+High Level Architecture, förkortat HLA, är en metod som kan användas för distribuerade simuleringar. Distribuerade simuleringar är många små simuleringar som kopplas ihop till en stor simulering. 
 
-Om vi till exempel vill simulera vädret så kan ett federat simulera vinden och hur den rör sig, ett federat kan simulera moln (var de finns och hur stora de är), och ett tredje federat kan simulera solen och hur den skiner. 
+I figuren så kan vi se en distribuerad simulering där tre simuleringar, kallade federater, som potentiellt körs på helt olika datorer, har kopplat upp sig till en servicebuss som kallas Runtime Infrastructure, eller RTI, för att kunna kommunicera med varandra. Hela strukturen kallas för en federation.
 
-Om då det federatet är vinden så kanske den plötsligt börjar få en västlig vindriktning, den informationen skickas via RTI:n till molnen, som då rör sig väster ut, och de i sin tur skickar sin position till solen som då vet att okej nu ska jag inte lysa på göteborg längre för molnen ligger i vägen.
+Om vi till exempel vill simulera vädret så kan ett federat simulera vinden och hur den rör sig, ett federat kan simulera moln (var de finns och hur stora de är), och ett tredje federat kan simulera solen och hur den skiner.  Om då det federatet är vinden så kanske den plötsligt börjar få en västlig vindriktning, den informationen skickas via RTI:n till molnen, som då rör sig väster ut, och de i sin tur skickar sin position till solen som då vet att okej nu ska jag inte lysa på göteborg längre för molnen ligger i vägen.
 
 Det finns en liten sak i federationen som kallas för FOM (Federation Object Module) och detta definierar formatet som informationen skickas på. För att vinden till exemepel ska skicka sin vindrikting till molnen så måste molnen veta vilka fält i paketet som betyder vad i paketet som skickas. Därför så måste de enas om ett format på informationen. Formatet specificeras i FOM:en.
 ** Pitch
-Pitch heter företaget som jag har exjobbat på och Pitch har använt HLA för att göra ett sorts taktikspel åt militären. Militärer sitter då framför varsin dator och styr en av de här blåa fyrkanterna som ni ser på bilden. 
+Pitch heter företaget som jag har exjobbat på och Pitch har använt HLA för att göra ett sorts taktikspel åt militären. Militärer sitter då framför varsin dator och styr en av de här blåa fyrkanterna som ni ser på bilden.  Varje blå fyrkant på bilden är ett federat och kan representera en stridsvagn, ett flygplan eller en soldat osv. 
 
-Varje blå fyrkant på bilden är ett federat och kan representera en stridsvagn, ett flygplan eller en soldat osv. Om en soldat vill skicka sin position till en stridsvagen, så måste vi ta reda på om denna kommunikation är möjlig. Alltså: ska de kunna överhuvudtaget se varandra på deras kartor? 
+Om en soldat vill skicka sin position till en stridsvagen, så måste vi ta reda på om denna kommunikation är möjlig. Alltså: ska de kunna överhuvudtaget se varandra på deras kartor? 
 
-Tidigare har inte multihop routing varit möjlig i radioapparater, men det här spelet som Pitch har gjort kan fortfarande inte simulera multihop routing. Det betyder att även om militären har radioapparater som stödjer multihop routing, och även om två radioapparater bör kunna kommunicera med varandra över nätverket, så kan det hända att simuleringen säger att det inte är möjligt.
+Multihop routing är möjligt i dagens radioapparater, men det här spelet som Pitch har inte stöd för  multihop routing. Så även om två radioapparater bör kunna kommunicera med varandra över nätverket genom multihop, så kan det hända att simuleringen säger att det inte är möjligt. (och man vill ju att spelet ska vara så verklighetsbaserat som möjligt)
 
 * FRÅGESTÄLLNINGAR
 ** Ska routingalgoritmen vara centraliserad eller distribuerad?
@@ -85,12 +85,20 @@ Vi vet att det handlar om en A* sökning, men vilken heuristik?
 ** centraliserad routingalgoritm
 Jag valde att implementera en centraliserad routingalgoritm. Den är inte särskilt skalbar, men det visade sig nästan krävas en centraliserad routingalgoritm eftersom federaterna inte hade stöd för att beräkna sina egna vägar och då hade även det behövts stöd för att i varje federat ta in en nätverksbeskrivning för att veta hur radionätverket ser ut och så vidare. Thomas gjorde klart för mig tidigt att Pitch ville ha en centraliserad routingalgoritm.  
 ** stöd för både uttömmande sökning och request response
+Innebär att förfrågningar både kan komma in både från andra federater och så kan vi när vi fått in nätverksbeskrivningen generera alla olika typer av förfrågningar och lägga i någon typ av kö här.
+
 ** A* sökning med två heuristiker
+En för att få ut den kortaste vägen mellan två noder och en för att få ut den väg med bäst uppkopplingskvalité.
 
 * METOD-EXCECUTION
 ** skapa ett federat
-När vi har klart för oss en övergripande idé över hur programmet ska beté sig så kan vi skapa federatet.
+När vi har en övergripande idé över hur programmet ska beté sig så kan vi börja implementera alltihop. Detta görs i två steg, vi behöver skapa federatet och vi behöver koda federatets beteende.
+
+När detta har gjorts så har vi ett federat som är uppkopplat till RTI:n samt kan skicka och ta emot information från de andra federaterna.
 
 ** koda program
+Nästa steg är att koda federatets specifika beteende. Som jag nämnde tidigare tidigare så finns det två olika sätt för förfrågningarna att komma in i federatet, och det enda är att andra federat explicit skickar förfrågningarna. Det andra är att förfrågningarna genereras i samban med att nätverksbeskrivningen tas emot. Oavsett vilket det är så schemaläggs förfrågningarna i en kö som behandlas av en tråd. ..
+
 * RESULTAT
 * SLUTSATS
+* FRAMTIDA ARBETE

@@ -1,0 +1,80 @@
+* INTRO
+Hej jag heter Lukas och jag ska presentera mitt exjobb som jag har döpt till "Simulator för Multihop Routing med High Level Architecture". 
+ 
+* TEORI
+.. teorin, förklara vad titeln betyder, vad exjobbet handlar om. 
+
+** Multihop Routing
+- teknik som används ...
+- i figuren kan vi se ...
+- radio A vill ...
+- jag kommer att kalla cirklarna ...
+- det kan finnas olika typer av kommunikation ...
+** Simulator
+- ordet simulator betyder ...
+- i figuren
+
+** High Level Architecture
+- en standard ...
+- i figuren ... (tre simuleringar - federater)
+- om vi vill simulera vädret ...
+- FOM ...
+** Pitch
+- Pitch heter företaget ...
+- Om en soldat vill skicka ...
+- multihop routing är möjligt ...
+
+* FRÅGESTÄLLNINGAR
+** Ska routingalgoritmen vara centraliserad eller distribuerad?
+** Är simulatorn tillräckligt snabb för en uttömmande sökning?
+Ska den centraliserade routingalgoritmen räkna ut alla vägar till och från alla noder (200 noder), eller ska den arbeta på förfrågning?
+
+Tillräckligt snabb: så snabb att den hinner räkna ut förfrågningarna snabbare än den får nya. Om jag vill veta den kortaste vägen från nod A till B varje sekund, och algoritmen tar mer än en sekund på sig så kommer ju kön att bli större och större.
+
+Kan vi tråda den och hur mycket påverkar det?
+** Vilken sökalgoritm bör användas?
+För att få fram den kortaste vägen mellan två noder?
+Kan vi även få vägen mellan två noder som har bäst förbindelsekvalité?
+
+--
+Vi vet att det handlar om en A* sökning, men vilken heuristik?
+
+* METOD-IDÉ
+** centraliserad routingalgoritm
+- nackdel: inte skalbar, all belastning läggs på ett ställe.
+- fördel: enkel. ingen impl. krävs i de andra federaterna.
+
+** stöd för både uttömmande sökning och request response
+- innebär att förfrågningar kan ...
+
+** A* sökning med två heuristiker
+   
+* METOD-EXCECUTION
+** skapa ett federat
+- Vi kan nu börja med att implementera ...
+- när dessa steg har utförts så har vi ett federat som kan skicka .. 
+
+** koda program
+- nästa steg: koda federats beteende.
+- som nämndes finns två olika sätt för förfrågningarna
+
+* RESULTAT
+** A*
+- alla värden är i millisekunder och är baserade på 100 körningar.
+- jämfördes mot en blind heuristik
+ 
+** Trådar
+- med distansheuristiken
+- standardavvikelse
+- på en tråd: 390 ms
+- mer än 4 trådar hjälpte inte.
+
+* SLUTSATS
+- centraliserad
+
+- kortaste och bäst signal:
+... utan märkvärdig skillnad i prestanda mellan de två.
+
+* FRAMTIDA ARBETE
+- distribuerad routingalgoritm med request response
+- skalar proportionellt mot antalet förfrågningar hellre än att skala med antalet noder och kommunikationstyper.
