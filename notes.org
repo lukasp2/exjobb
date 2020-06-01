@@ -21,24 +21,10 @@
 
 (5. how to use pitch recorder)
 * todo
-** report DEADLINE: <2020-05-31 Sun>
-*** TODO Floyd Warshall
-Lägg till i både teorin och i diskussion. Diskussion: den hann inte med att göras.
-
-*** TODO Jonas kommentarer
-*** TODO Formatera snyggare
-\begin{equation}
-
-*** TODO etiskta aspekter
-se ~/Downloads
-
-*** TODO python matplotlib svg
-
-https://stackoverflow.com/questions/24525111/how-can-i-get-the-output-of-a-matplotlib-plot-as-an-svg
+** report
 ** presentation
 *** TODO bildtexter
 *** TODO tydligare inledning
-*** TODO "koda program"->"programimplementation"
 *** TODO dela upp Federat-delen och koddelen
 *** TODO bildtexter
 ** implementation

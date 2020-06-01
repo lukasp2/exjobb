@@ -43,7 +43,7 @@ public class Graph {
 					Node n2 = nodes.get(x);
 					n1.addNeighbour(n2);
 
-					if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, "b"); }
+					if (PLOT) { fw.writeLine(n1.position.x, n1.position.y, n2.position.x, n2.position.y, "silver"); }
 				}
 			}
 		}
@@ -142,8 +142,8 @@ public class Graph {
 		};
 
 		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(distanceComparator);
-		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
-		PriorityQueue<Node> prioQueue = new PriorityQueue<>(randomComparator);
+		PriorityQueue<Node> prioQueue = new PriorityQueue<>(signalQualityComparator);
+		//PriorityQueue<Node> prioQueue = new PriorityQueue<>(randomComparator);
 
 		prioQueue.add(fromNode);
 

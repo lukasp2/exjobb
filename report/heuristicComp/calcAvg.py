@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import statistics
+
+
 '''
 Testing what heuristic is optimal. Time was taken every time astar was running.
 
@@ -27,16 +30,16 @@ tot = 0
 for i in distComp:
     tot += i
     
-print("avg in distComp =",  tot / len(distComp))
+print(" distComp: avg =",  tot / len(distComp), " median =", statistics.median(distComp), " st.av =", statistics.stdev(distComp))
 
 tot = 0
 for i in signalComp:
     tot += i
     
-print("avg in signalComp =",  tot / len(signalComp))
+print("avg signalComp =",  tot / len(signalComp), " median =",statistics.median(signalComp) , " st.av =", statistics.stdev(signalComp))
 
 tot = 0
 for i in rndComp:
     tot += i
     
-print("avg in rndComp =",  tot / len(rndComp))
+print("avg rndComp =",  tot / len(rndComp), " median =", statistics.median(rndComp), " st.av =", statistics.stdev(rndComp))

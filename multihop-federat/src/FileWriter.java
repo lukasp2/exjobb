@@ -44,7 +44,7 @@ public class FileWriter {
 		}
 		lines.add("]\n");
 
-		//lines.add("plt.plot(*zip(*a), marker='o', color='k', ls='')\n");
+		lines.add("plt.plot(*zip(*a), marker='o', color='k', ls='')\n");
 
 		// write the id of each node above it
 		for (int i = 0; i < positions.size(); ++i) {
@@ -96,6 +96,7 @@ public class FileWriter {
 			lines.add("plt.plot(["+x1+", "+x2+"], ["+y1+", "+y2+"], 'limegreen' )");
 		}
 
+		lines.add("plt.savefig(\"graph.svg\")");
 		lines.add("plt.show()");
 		write("plotter.py", lines, true);
 	}
