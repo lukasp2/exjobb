@@ -7,7 +7,7 @@ public class RequestQueue {
 
     private final LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue<>();
 
-    // count requests in the queue
+    // counts requests in the queue
     public Semaphore requestSema = new Semaphore(0);
 
     public void add(Request r) {
@@ -26,11 +26,5 @@ public class RequestQueue {
 
     public boolean isEmpty() {
         return requestQueue.isEmpty();
-    }
-
-    public void print() {
-        for (Request r : requestQueue) {
-            System.out.println(r.toString());
-        }
     }
 }

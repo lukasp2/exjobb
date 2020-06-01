@@ -1,5 +1,3 @@
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
-
 import java.util.ArrayList;
 
 public class GraphList {
@@ -27,7 +25,7 @@ public class GraphList {
         if (graphs.size() > requestType)
             return graphs.get(requestType);
         else
-            System.out.println("index " + requestType + " is out of rage of " + graphs.size() + " .. " + (System.currentTimeMillis() - timeSinceLastUpdate));
+            System.out.println("index " + requestType + " is out of rage");
 
         return null;
     }

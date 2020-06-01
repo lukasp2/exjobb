@@ -11,7 +11,8 @@ public class Main {
     public final static int NUM_THREADS = 4;
 
     private final boolean BRUTE_FORCE = false;
-    private final boolean REQUEST_RESPONSE = false;
+    private final boolean REQUEST_RESPONSE = true;
+    private final boolean REPLACE_NW_FEDERAT = false;
 
     private final boolean PRINT_NODES_ADDED = false;
     private final boolean PRINT_CONN_INFO = false;
@@ -119,20 +120,22 @@ public class Main {
     public void simulate() throws HlaBaseException, InterruptedException {
         _hlaWorld.connect();
 
-        // a replacement for the network-federate:
-        FileReader fw = new FileReader(network, nodeIDs);
-        fw.readFile();
-        graphs.update(network);
-        QueueFillerThread q1 = new QueueFillerThread(network, requestQueueList);
-        q1.run();
-        //
+        if (REPLACE_NW_FEDERAT) {
+            FileReader fw = new FileReader(network, nodeIDs);
+            fw.readFile();
+            graphs.update(network);
+            if (BRUTE_FORCE) {
+                QueueFillerThread q1 = new QueueFillerThread(network, requestQueueList);
+                q1.run();
+            }
+        }
 
         Semaphore sema = new Semaphore(-1 * NUM_THREADS + 1);
 
         long startTime = System.nanoTime();
 
         for (int i = 0; i < NUM_THREADS; ++i) {
-            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, new AStarSearch(network), graphs, requestQueueList.get(i), nodeIDs, sema, i));
+            Thread t1 = new Thread(new MultihopSimulator(_hlaWorld, new AStarSearch(network), graphs, requestQueueList.get(i), nodeIDs, sema));
             t1.start();
         }
 

@@ -3,8 +3,6 @@ public class QueueFillerThread implements Runnable {
     public QueueFillerThread(Network network, RequestQueueList requestQueueList) {
         this.network = network;
         this.requestQueueList = requestQueueList;
-
-
     }
 
     Network network;

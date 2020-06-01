@@ -2,12 +2,10 @@ import java.util.*;
 
 public class AStarSearch {
 
-    private final int MAX_HOPS = 4;
-
-    public final boolean PLOT = false;
+    private final int MAX_HOPS = 10;
 
     // for plotting graph
-    public FileWriter fw = new FileWriter();
+    public Plotter plotter = new Plotter();
 
     public AStarSearch(Network network) {
         this.network = network;
@@ -40,7 +38,7 @@ public class AStarSearch {
         while (!prioQueue.isEmpty()) {
             Graph.Node curr = prioQueue.poll();
 
-            if (PLOT) {  fw.writeLine(curr.position.x, curr.position.y,
+            if (MultihopSimulator.PLOT) {  plotter.writeLine(curr.position.x, curr.position.y,
                     curr.previous_node.position.x, curr.previous_node.position.y, "firebrick"); }
 
             if (curr.hops < MAX_HOPS) {
@@ -100,11 +98,6 @@ public class AStarSearch {
         return (int) (b  - 2);
     };
 
-    public void setSearch(Graph.Node start, Graph.Node goal) {
-        this.start = start;
-        this.goal = goal;
-    }
-
     // defines the graph traversal path
     class Path {
         Path() { }
@@ -125,7 +118,6 @@ public class AStarSearch {
                 }
                 path.add(curr);
             }
-            //if (PLOT) { fw.writeNonActiveResult(steps, nodes, goal); }
 
             return path;
         }
