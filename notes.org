@@ -21,25 +21,17 @@
 
 (5. how to use pitch recorder)
 * todo
-** report
 ** presentation
 *** TODO bildtexter
 *** TODO tydligare inledning
 *** TODO dela upp Federat-delen och koddelen
 *** TODO bildtexter
 ** implementation
-*** prio 1
-*** prio 2
 *** TODO Gör Radio till en extends Node
 *** TODO uppdatera FOMarna, så att multihop inte har en send request
 
 ** other
 *** TODO bitBucket 
-* notes / ideas
-Om vi har två grafer G1 = (V, E1) och G2 = (V, E2) och E2 tillhör E1, så behöver vi inte räkna ut om det finns en väg genom G2 mellan två noder n1 och n2 om vi vet att den finns i G1. Det kan fortfarande finnas anledning att ta reda på om det finns en kortare väg genom G2 mellan nod n1 och n2. 
-
-byt grafsökningsalgoritm beroende på grafens struktur
-
 * pass
 yPitch%123
 lukas123
@@ -48,3 +40,22 @@ lukas123
 username: lukas.pohlman
 password: yPitch%123
 
+
+* PRES
+- same presentation
+- HLA will be skipped
+- figures, if you have a question
+
+i think the title of the thesis encapsulates what the work is about, so let me explain what the title means
+
+
+C:
+there can be different communication types in this network. A might want to send its position to C, and thats one communication type. Or it might want to have voice communication with C, and thats another communication type. Different communication types may require different things of the connections.
+
+This is a network containing all connections between all pairs of nodes. From this network we can extract one graph per communication type containing only the edges that can be traveersed by that communication type. 
+
+
+
+- each graph only contains the edges that can be traversed by that communicationtype
+
+I'll be presenting my thesis, which i named simulation for 
